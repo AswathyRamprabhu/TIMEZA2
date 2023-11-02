@@ -15,7 +15,6 @@ dbConnect(err => {
     if (err) console.log("Connection with Database failed")
 })
 
-
 const userRoute = require('./routes/userRoutes')
 const adminRoute = require('./routes/adminRoutes')
 
