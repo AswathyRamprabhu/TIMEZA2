@@ -1,0 +1,69 @@
+<%- include('../layouts/userHeader.ejs') %>
+
+    <section class="banner-area organic-breadcrumb">
+        <div class="container">
+            <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+                <div class="col-first">
+                    <h1 style="background-color: black; color: white; padding: 10px;">Add Address</h1>
+                    <nav class="d-flex align-items-center">
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="mt-4 mb-4">
+                    <h2 class="text-center" style="color: black;">Add Your Address</h2>
+                    <hr class="my-3">
+                </div>
+
+                <div class="mt-4 mb-4">
+                    <h6 class="text-uppercase">Enter Your Address Here...</h6>
+
+                    <form action="/addaddress" method="POST" id="addaddressform">
+                        <div class="form-group">
+                            <input type="text" name="address" class="form-control" placeholder="Address">
+                            <span class="error-message" id="address-error"></span>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="col-md-6">
+                                <input type="text" name="city" class="form-control" placeholder="City">
+                                <span class="error-message" id="city-error"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <input type="text" name="state" class="form-control" placeholder="State">
+                                <span class="error-message" id="state-error"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group mt-2">
+                            <input type="text" name="pincode" class="form-control" placeholder="Pincode">
+                            <span class="error-message" id="pincode-error"></span>
+                        </div>
+
+                        <div class="text-center mt-3">
+                            <button class="btn btn-primary" type="submit"
+                                style="background-color: black; border-color: black;">SUBMIT</button>
+                            <span class="error-message" id="submit-error"></span>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <%- include('../layouts/userFooter.ejs') %>
+
+        <script src="javascripts/addressValidation.js"></script>
+
+        <style>
+            .error-message {
+                color: red;
+                display: none;
+            }
+        </style>

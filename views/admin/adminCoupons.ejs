@@ -1,0 +1,94 @@
+<%- include('../layouts/adminHeader.ejs') %>
+
+    <section class="content-main">
+        <div class="content-header">
+            <div>
+                <h2 class="content-title card-title">Coupon List</h2>
+                <p>Add Coupons</p>
+            </div>
+            <div>
+                <a href="/admin/addcoupon" class="btn btn-primary btn-sm rounded">Create new</a>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th style="width: 20%;">Coupon Name</th>
+                                    <th style="width: 20%;">Discount Amount</th>
+                                    <th style="width: 20%;">Minimal Amount</th>
+                                    <th style="width: 20%;">Expiration Date</th>
+                                    <th style="width: 20%;">is referal</th>
+
+                                    <th class="text-end" style="width: 30%;">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% coupon.forEach(function(item) { %>
+                                    <tr>
+                                        <td><b>
+                                                <%= item.code %>
+                                            </b></td>
+                                        <td>
+                                            <%=item.discountAmount %>
+                                        </td>
+                                        <td>
+                                            <%=item.minimumAmount %>
+                                        </td>
+                                        <td>
+                                            <%= item.expirationDate.toLocaleDateString('en-US', { year: 'numeric' ,
+                                                month: 'long' , day: 'numeric' }) %>
+                                        </td>
+
+                                        <td>
+                                            <%=item.isReferral %>
+                                        </td>
+
+                                        <td class="text-end">
+
+                                            <a href="/admin/coupon/edit?_id=<%= item._id %>">
+                                                <button class="btn btn-primary">Edit</button>
+                                            </a>
+
+                                        </td>
+                                    </tr>
+                                    <% }); %>
+
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="pagination-area mt-15 mb-50">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-start">
+                    <% for(let i=1; i<=totalPages;i++) { %>
+                        <% if(i===currentPage){ %>
+                            <li class="page-item active"><a class="page-link" href="#">
+                                    <%= i %>
+                                </a></li>
+                            <% } else { %>
+                                <li class="page-item"><a class="page-link" href="/admin/coupons?page=<%= i %>">
+                                        <%= i %>
+                                    </a></li>
+                                <% } %>
+                                    <% } %>
+                </ul>
+            </nav>
+        </div>
+
+
+
+    </section>
+
+
+
+
+    <%- include('../layouts/adminFooter.ejs') %>

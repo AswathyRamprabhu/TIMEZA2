@@ -1,0 +1,275 @@
+<%- include('../layouts/adminHeader.ejs') %>
+  <section class=" gradient-custom">
+    <div class="content-header">
+      <div class="container py-5 h-100">
+        <div class="row justify-content-center align-items-center h-100">
+          <div class="col-12 col-lg-9 col-xl-7">
+            <div class="card shadow-2-strong card-registration" style="border-radius: 15px">
+              <div class="card-body p-4 p-md-5">
+                <h3 class="mb-4 pb-2 pb-md-0 mb-md-5">Add Products</h3>
+                <form id="productForm" action="/admin/addproduct" method="POST" enctype="multipart/form-data">
+                  <div class="row">
+                    <div class="col-md-6 mb-4">
+                      <div class="form-outline">
+                        <label class="form-label" for="productName">Product Name</label>
+                        <input type="text" id="productName" class="form-control form-control-lg" name="productname" />
+                        <span class="error-message" id="productname-error"></span>
+
+                      </div>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                      <div class="form-outline">
+                        <label class="form-label" for="productname"> Category</label>
+                        <div class="col-12">
+                          <select class="select form-control-lg" name="categoryname">
+                            <option value="1" disabled selected>Choose category</option>
+                            <% data.forEach(function(item) { %>
+                              <option value=<%=item._id %>><%= item.categoryname %>
+                              </option>
+                              <% }); %>
+                          </select>
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-6 mb-4 d-flex align-items-center"></div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-6 mb-4 pb-2">
+                      <div class="form-outline">
+                        <label class="form-label" for="description">Product Description</label>
+                        <input type="text" id="description" class="form-control form-control-lg" name="description" />
+                        <span class="error-message" id="description-error"></span>
+
+                      </div>
+                    </div>
+                    <div class="col-md-6 mb-4 pb-2">
+                      <div class="form-outline">
+                        <label class="form-label" for="mrp">MRP</label>
+                        <input type="number" id="mrp" class="form-control form-control-lg" name="mrp" />
+                        <span class="error-message" id="mrp-error"></span>
+
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6 mb-4 pb-2">
+                      <div class="form-outline">
+                        <label class="form-label" for="price">Offer Price</label>
+                        <input type="number" id="price" name="price" class="form-control form-control-lg" />
+                        <span class="error-message" id="price-error"></span>
+
+                      </div>
+                    </div>
+
+                    <div class="col-md-6 mb-4 pb-2">
+                      <div class="form-outline">
+                        <label class="form-label" for="addimage">Add images</label>
+                        <input type="file" name="file" accept="image/*" multiple />
+
+
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+
+                    <div class="col-md-6 mb-4 pb-2">
+                      <div class="form-outline">
+                        <label class="form-label" for="price">Product Offer</label>
+                        <input type="number" id="offerprice" name="productOffer" class="form-control form-control-lg" />
+                        <span class="error-message" id="productOffer-error"></span>
+                      </div>
+                    </div>
+
+
+                    <div class="col-md-6 mb-4 pb-2">
+                      <div class="form-outline">
+                        <label class="form-label" for="price">Stock</label>
+                        <input type="number" id="stock" name="stock" class="form-control form-control-lg" />
+                        <span class="error-message" id="stock-error"></span>
+
+                      </div>
+                    </div>
+
+                  </div>
+
+                  <div class="mt-4 pt-2">
+                    <button class="btn btn-primary btn-lg" type="submit">
+                      ADD PRODUCT
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <%- include('../layouts/adminFooter.ejs') %>
+
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        const productForm = document.getElementById('productForm');
+        const productnameInput = document.querySelector('input[name="productname"]');
+        const productnameError = document.getElementById('productname-error');
+        const descriptionInput = document.querySelector('input[name="description"]');
+        const descriptionError = document.getElementById('description-error');
+        const mrpInput = document.querySelector('input[name="mrp"]');
+        const mrpError = document.getElementById('mrp-error');
+        const priceInput = document.querySelector('input[name="price"]');
+        const priceError = document.getElementById('price-error');
+        const productOfferInput = document.querySelector('input[name="productOffer"]');
+        const productOfferError = document.getElementById('productOffer-error');
+
+
+        const stockInput = document.querySelector('input[name="stock"]');
+        const stockError = document.getElementById('stock-error');
+
+        productForm.addEventListener('submit', function (event) {
+          // Check if any field is empty and validate
+          let isValid = true; // Add this flag to track overall form validity
+
+          if (!isValidProductName(productnameInput.value)) {
+            productnameError.textContent = 'Invalid input';
+            productnameError.style.display = 'block';
+            isValid = false;
+          } else {
+            productnameError.style.display = 'none'; // Corrected the typo here
+          }
+
+          if (!isValidDescription(descriptionInput.value)) {
+            descriptionError.textContent = 'Invalid input';
+            descriptionError.style.display = 'block';
+            isValid = false;
+          } else {
+            descriptionError.style.display = 'none'; // Corrected the typo here
+          }
+
+          if (!isValidMrp(mrpInput.value)) {
+            mrpError.textContent = 'Invalid input';
+            mrpError.style.display = 'block';
+            isValid = false;
+          } else {
+            mrpError.style.display = 'none'; // Corrected the typo here
+          }
+
+          if (!isValidPrice(priceInput.value)) {
+            priceError.textContent = 'offer price should be ZERO';
+            priceError.style.display = 'block';
+            isValid = false;
+          } else {
+            priceError.style.display = 'none'; // Corrected the typo here
+          }
+
+
+          if (!isValidStock(stockInput.value)) {
+            stockError.textContent = 'Invalid input';
+            stockError.style.display = 'block';
+            isValid = false;
+          } else {
+            stockError.style.display = 'none'; // Corrected the typo here
+          }
+
+          if (!isValidProductOffer(productOfferInput.value)) {
+            productOfferError.textContent = 'Invalid input';
+            productOfferError.style.display = 'block';
+            isValid = false;
+          } else {
+            productOfferError.style.display = 'none'; // Corrected the typo here
+          }
+
+
+          // Prevent form submission if any field is invalid
+          if (!isValid) {
+            event.preventDefault(); // Prevent form submission
+          }
+        });
+
+        const productName = productData[0];
+        function isValidProductName(productname) {
+          const productnamePattern = /^[A-Za-z\s]{1,50}$/;
+          return productnamePattern.test(productname);
+        }
+
+
+
+        function isValidDescription(description) {
+          // Check if the input is not empty and contains the allowed characters
+          const descriptionPattern = /^[A-Za-z0-9\s!@#$%^&*()_+-=,.<>;:'"\\/{}[\]]*$/;
+          return description.trim() !== '' && descriptionPattern.test(description);
+        }
+
+
+        function isValidMrp(mrp) {
+          // Check if the input is not empty and is a number
+          if (mrp.trim() === '' || isNaN(mrp)) {
+            return false;
+          }
+
+          // Parse the input as an integer
+          const parsedMrp = parseInt(mrp);
+
+          // Check if it's a number, within the specified range
+          return parsedMrp >= 1000 && parsedMrp <= 30000;
+        }
+
+        function isValidPrice(price) {
+          // Check if the input is not empty and is a number
+          if (price.trim() === '' || isNaN(price)) {
+            return false;
+          }
+
+          // Check if price is within the specified range
+          const parsedPrice = parseInt(price);
+
+
+          return parsedPrice === 0;
+          ;
+        }
+
+        function isValidProductOffer(productOffer) {
+          // Check if the input is not empty and is a number
+          if (productOffer.trim() === '' || isNaN(productOffer)) {
+            return false;
+          }
+
+          // Check if price is within the specified range
+          const parsedProductOffer = parseInt(productOffer);
+
+
+          return parsedProductOffer === 0;
+          ;
+        }
+
+
+
+        function isValidStock(stock) {
+          // Check if the input is not empty and is a number
+          if (stock.trim() === '' || isNaN(stock)) {
+            return false;
+          }
+
+          // Parse the input as an integer
+          const parsedStock = parseInt(stock);
+
+          // Check if stock is within the specified range
+          return parsedStock >= 0 && parsedStock <= 50;
+        }
+
+      });
+
+    </script>
+
+    <style>
+      .error-message {
+        color: red;
+        display: none;
+      }
+    </style>

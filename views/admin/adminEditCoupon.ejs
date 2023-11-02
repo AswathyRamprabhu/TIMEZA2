@@ -1,0 +1,254 @@
+<%- include('../layouts/adminHeader.ejs') %>
+
+
+  <section class=" gradient-custom">
+    <div class="content-header">
+      <div class="container py-5 h-100">
+        <div class="row justify-content-center align-items-center h-100">
+          <div class="col-12 col-lg-9 col-xl-7">
+            <div class="card shadow-2-strong card-registration" style="border-radius: 15px">
+              <div class="card-body p-4 p-md-5">
+                <h3 class="mb-4 pb-2 pb-md-0 mb-md-5">Edit Coupons</h3>
+                <form id="couponForm" action="/admin/editcoupon" method="POST">
+                  <div class="row">
+                    <div class="col-md-6 mb-4">
+                      <input name="id" value="<%= coupon._id %>" hidden />
+                      <div class="form-outline">
+                        <label class="form-label" for="code">Enter PromoCode</label>
+                        <input type="text" id="code" class="form-control form-control-lg" name="code"
+                          value="<%= coupon.code %>" />
+                        <span class="error-message" id="code-error"></span>
+
+                      </div>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                      <div class="form-outline">
+                        <label class="form-label" for="discountType">Choose Discount Type</label>
+                        <div class="col-12">
+                          <select class="select form-control-lg" name="discountType">
+
+
+                            <option value="Fixed" <%=coupon.discountType==='Fixed' ? 'selected' : '' %> >Fixed Amount
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-6 mb-4 d-flex align-items-center"></div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-6 mb-4 pb-2">
+                      <div class="form-outline">
+                        <label class="form-label" for="description">Code Description</label>
+                        <input type="text" id="description" class="form-control form-control-lg" name="description"
+                          value="<%= coupon.description %>" />
+                        <span class="error-message" id="description-error"></span>
+
+                      </div>
+                    </div>
+                    <div class="col-md-6 mb-4 pb-2">
+                      <div class="form-outline">
+                        <label class="form-label" for="discountAmount">Discount Amount</label>
+                        <input type="number" id="discountAmount" class="form-control form-control-lg"
+                          name="discountAmount" value="<%= coupon.discountAmount %>" />
+                        <span class="error-message" id="discountAmount-error"></span>
+
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6 mb-4 pb-2">
+                      <div class="form-outline">
+                        <label class="form-label" for="minimumAmount">Minimum Amount</label>
+                        <input type="number" id="minimumAmount" name="minimumAmount"
+                          class="form-control form-control-lg" value="<%= coupon.minimumAmount %>" />
+                        <span class="error-message" id="minimumAmount-error"></span>
+
+                      </div>
+                    </div>
+
+                    <div class="col-md-6 mb-4 pb-2">
+                      <div class="form-outline">
+                        <label class="form-label" for="maxRedemptions">Maximum Redemptions</label>
+                        <input type="number" id="maxRedemptions" name="maxRedemptions"
+                          class="form-control form-control-lg" value="<%= coupon.maxRedemptions %>" />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6 mb-4 pb-2">
+                      <div class="form-outline">
+                        <label class="form-label" for="expirationDate">Expiration Date</label>
+                        <input type="datetime-local" id="expirationDate" name="expirationDate"
+                          class="form-control form-control-lg"
+                          value="<%= coupon.expirationDate.toISOString().slice(0, 16) %>" />
+                        <span class="error-message" id="expirationDate-error"></span>
+
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6 mb-4 pb-2">
+                      <div class="form-outline">
+                        <label class="form-label" for="isReferral">Is Referral?</label>
+                        <div class="col-12">
+                          <select class="select form-control-lg" name="isReferral">
+                            <option value="true">Yes</option>
+                            <option value="false">No</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="mt-4 pt-2">
+                    <button class="btn btn-primary btn-lg" type="submit">
+                      UPDATE COUPON
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <%- include('../layouts/adminFooter.ejs') %>
+
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        const couponForm = document.getElementById('couponForm');
+        const codeInput = document.querySelector('input[name="code"]');
+        const codeError = document.getElementById('code-error');
+        const descriptionInput = document.querySelector('input[name="description"]');
+        const descriptionError = document.getElementById('description-error');
+        const discountAmountInput = document.querySelector('input[name="discountAmount"]');
+        const discountAmountError = document.getElementById('discountAmount-error');
+        const minimumAmountInput = document.querySelector('input[name="minimumAmount"]');
+        const minimumAmountError = document.getElementById('minimumAmount-error');
+        const expirationDateInput = document.querySelector('input[name="expirationDate"]');
+        const expirationDateError = document.getElementById('expirationDate-error');
+
+        couponForm.addEventListener('submit', function (event) {
+          // Check if any field is empty and validate
+          let isValid = true; // Add this flag to track overall form validity
+
+          if (!isValidCode(codeInput.value)) {
+            codeError.textContent = 'Invalid input';
+            codeError.style.display = 'block';
+            isValid = false;
+          } else {
+            codeError.style.display = 'none'; // Corrected the typo here
+          }
+
+          if (!isValidDescription(descriptionInput.value)) {
+            descriptionError.textContent = 'Invalid input';
+            descriptionError.style.display = 'block';
+            isValid = false;
+          } else {
+            descriptionError.style.display = 'none'; // Corrected the typo here
+          }
+
+          if (!isValidDiscountAmount(discountAmountInput.value)) {
+            discountAmountError.textContent = 'Invalid input';
+            discountAmountError.style.display = 'block';
+            isValid = false;
+          } else {
+            discountAmountError.style.display = 'none'; // Corrected the typo here
+          }
+
+          if (!isValidMinimumAmount(minimumAmountInput.value)) {
+            minimumAmountError.textContent = 'Invalid input';
+            minimumAmountError.style.display = 'block';
+            isValid = false;
+          } else {
+            minimumAmountError.style.display = 'none'; // Corrected the typo here
+          }
+
+          if (!isValidExpirationDate(expirationDateInput.value)) {
+            expirationDateError.textContent = 'Invalid input';
+            expirationDateError.style.display = 'block';
+            isValid = false;
+          } else {
+            expirationDateError.style.display = 'none'; // Corrected the typo here
+          }
+
+
+          // Prevent form submission if any field is invalid
+          if (!isValid) {
+            event.preventDefault(); // Prevent form submission
+          }
+        });
+
+        function isValidCode(code) {
+          const codePattern = /^[A-Z0-9]{5,15}$/;
+          return code.trim() !== '' && codePattern.test(code);
+        }
+
+
+        function isValidDescription(description) {
+          // Check if the input is not empty and contains the allowed characters
+          const descriptionPattern = /^[A-Za-z0-9\s!@#$%^&*()_+-=,.<>;:'"\\/{}[\]]*$/;
+          return description.trim() !== '' && descriptionPattern.test(description);
+        }
+
+
+        function isValidDiscountAmount(discountAmount) {
+          // Check if the input is not empty and contains only numbers
+          if (discountAmount.trim() === '' || isNaN(discountAmount)) {
+            return false;
+          }
+
+          // Parse the input as a floating-point number
+          const parsedAmount = parseFloat(discountAmount);
+
+          // Check if it's a number, greater than or equal to 100, and less than or equal to 2000
+          return parsedAmount >= 100 && parsedAmount <= 2000;
+        }
+
+        function isValidMinimumAmount(minimumAmount) {
+          // Check if the input is not empty and contains only numbers
+          if (minimumAmount.trim() === '' || isNaN(minimumAmount)) {
+            return false;
+          }
+
+          // Parse the input as a floating-point number
+          const parsedAmount = parseFloat(minimumAmount);
+
+          // Check if it's a number, greater than or equal to 100, and less than or equal to 2000
+          return parsedAmount >= 1000;
+        }
+
+        function isValidExpirationDate(expirationDate) {
+          // Check if the input is not empty and contains only numbers
+          if (expirationDate.trim() === '' || isNaN(Date.parse(expirationDate))) {
+            return false;
+          }
+
+          // Parse the input date
+          const parsedDate = new Date(expirationDate);
+          const currentDate = new Date();
+
+          // Check if the parsed date is not in the past and is within 30 days from the current date
+          const daysDifference = Math.floor((parsedDate - currentDate) / (1000 * 60 * 60 * 24));
+
+          return daysDifference >= 0 && daysDifference <= 30;
+        }
+
+      });
+    </script>
+
+    <style>
+      .error-message {
+        color: red;
+        display: none;
+      }
+    </style>

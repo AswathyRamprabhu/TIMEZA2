@@ -1,0 +1,280 @@
+<%- include('../layouts/userHeader.ejs') %>
+
+    <!-- Start Banner Area -->
+    <<section class="banner-area organic-breadcrumb">
+        <div class="container">
+            <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+                <div class="col-first">
+                    <h1 style="background-color: black; color: white; padding: 10px;">Order Details</h1>
+                    <nav class="d-flex align-items-center">
+
+                    </nav>
+                </div>
+            </div>
+        </div>
+        </section>
+        <!-- End Banner Area -->
+
+        <div class="container d-flex justify-content-center">
+            <div class="col-75">
+                <div class="container">
+                    <div class="row1">
+                        <div class="col-50">
+                            <section class="content-main">
+                                <div class="content-header">
+                                    <div>
+                                        <h2 class="content-title card-title">Invoice</h2>
+                                        <p>Details for Order ID: <%= order. humanReadableID %>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <header class="card-header">
+                                        <div class="row align-items-center">
+                                            <div class="col-lg-6 col-md-6 mb-lg-0 mb-3">
+                                                <span>
+                                                    <i class="material-icons md-calendar_today"></i> <b>
+                                                        <p>Order Date: <%= new
+                                                                Date(order.createdAt).toLocaleString('en-US', {
+                                                                weekday: 'short' , month: 'short' , day: 'numeric' ,
+                                                                year: 'numeric' , hour: 'numeric' , minute: 'numeric' ,
+                                                                hour12: true })%>
+                                                        </p>
+                                                    </b>
+                                                </span>
+                                            </div>
+                                            <input name="id" value="" hidden />
+                                            <div class="col-lg-6 col-md-6 text-md-end">
+                                                <button class="btn btn-success"
+                                                    onclick="invoiceGenerate('<%= order._id %>')">Download
+                                                    Invoice</button>
+                                            </div>
+
+                                        </div>
+                                    </header>
+                                    <div class="card-body">
+                                        <div class="row mb-5 mt-3 order-info-wrap">
+                                            <div class="col-md-6">
+                                                <article class="icontext align-items-start">
+                                                    <span class="icon icon-sm rounded-circle bg-primary-light">
+                                                        <i class="text-primary material-icons md-person"></i>
+                                                    </span>
+                                                    <div class="text">
+                                                        <h6 class="mb-3">Customer:</h6>
+                                                        <p class="mb-3 text-secondary">
+                                                            Name: <%=user.name %><br>
+                                                                Email:<a href="mailto:example@gmail.com">
+                                                                    <%=user.name%>@gmail.com
+                                                                </a><br>
+                                                                Phone: <%=user.phonenumber %>
+                                                        </p>
+                                                    </div>
+                                                </article>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <!-- Add any additional information you want to display -->
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-7">
+                                                <div class="table-responsive">
+                                                    <table class="table table-striped table-bordered">
+                                                        <thead>
+                                                            <tr>
+                                                                <th width="40%">Product</th>
+                                                                <th width="20%">Unit Price</th>
+                                                                <th width="20%">Quantity</th>
+                                                                <th width="20%" class="text-end">Total</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <% order.items.forEach(function(item) { %>
+                                                            <% if (item.productOrderStatus !=="Cancelled" ) { %>
+                                                                <tr>
+                                                                    <td>
+                                                                        <a class="itemside d-flex" href="#">
+                                                                            <div class="left">
+                                                                                <!-- Add product image here -->
+                                                                            </div>
+                                                                            <div class="info">
+                                                                                <span class="text-primary">
+                                                                                    <%= item.productId.productname %>
+                                                                                </span>
+                                                                            </div>
+                                                                        </a>
+                                                                    </td>
+                                                                    <td>
+                                                                        ₹<%= item.productId.price %>
+                                                                    </td>
+                                                                    <td>
+                                                                        <%= item.quantity %>
+                                                                    </td>
+                                                                    <td class="text-end">
+                                                                        ₹<%= item.productId.price * item.quantity %>
+                                                                    </td>
+                                                                </tr>
+                                                                <% } %>
+                                                                    <% }) %>
+
+
+
+                                                                        <tr>
+                                                                            <td colspan="4">
+                                                                                <article class="float-end">
+                                                                                    <dl class="dlist d-flex">
+                                                                                        <dt class="text-dark">Subtotal:
+                                                                                        </dt>
+                                                                                        <dd class="text-success">₹<%=
+                                                                                                order.totalAmount %>
+                                                                                        </dd>
+                                                                                    </dl>
+                                                                                    <% if (order.coupon &&
+                                                                                        order.totalAmount>=
+                                                                                        order.coupon.minimumAmount) { %>
+                                                                                        <dl class="dlist d-flex">
+                                                                                            <dt class="text-dark">
+                                                                                                Discount:
+                                                                                            </dt>
+                                                                                            <dd class="text-success">₹
+                                                                                                <%= order.discountAmount
+                                                                                                    %>
+                                                                                            </dd>
+                                                                                        </dl>
+                                                                                        <dl class="dlist d-flex">
+                                                                                            <dt class="text-dark">Grand
+                                                                                                total:</dt>
+                                                                                            <dd><b
+                                                                                                    class="h5 text-success">₹
+                                                                                                    <%= order.finalPrice
+                                                                                                        %>
+                                                                                                </b></dd>
+                                                                                        </dl>
+                                                                                        <% } else { %>
+                                                                                            <dl class="dlist d-flex">
+                                                                                                <dt class="text-dark">
+                                                                                                    Grand
+                                                                                                    total:</dt>
+                                                                                                <dd><b
+                                                                                                        class="h5 text-success">₹
+                                                                                                        <%= order.totalAmount
+                                                                                                            %>
+                                                                                                    </b></dd>
+                                                                                            </dl>
+                                                                                            <% } %>
+                                                                                </article>
+                                                                            </td>
+                                                                        </tr>
+
+
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-1"></div>
+                                            <div class="col-lg-4">
+                                                <div class="box shadow bg-light p-3">
+                                                    <h6 class="mb-3 text-primary">Payment Info</h6>
+                                                    <ul class="list-unstyled">
+                                                        <% if (order.orderStatus==='Cancelled' ) { %>
+                                                            <li>
+                                                                <i class="material-icons text-success"
+                                                                    style="color: red;">Cancelled</i>
+                                                            </li>
+                                                            <% } else if (order.paymentMode==='cashondelivery' ) { %>
+                                                                <li>
+                                                                    <i class="material-icons text-success">Pending</i>
+                                                                    <span class="text-success">(Cash On Delivery)</span>
+                                                                </li>
+                                                                <% } else if (order.paymentMode==='onlinepayment' ) { %>
+                                                                    <li>
+                                                                        <i class="material-icons text-success">Done</i>
+                                                                        <span class="text-success">(Digital
+                                                                            Transaction)</span>
+                                                                    </li>
+                                                                    <% } else if (order.paymentMode==='walletpayment' )
+                                                                        { %>
+                                                                        <li>
+                                                                            <i
+                                                                                class="material-icons text-success">Done</i>
+                                                                            <span class="text-success">(Time-Za Wallet
+                                                                                Payment)</span>
+                                                                        </li>
+                                                                        <% } else { %>
+                                                                            <!-- Handle the default case here if needed -->
+                                                                            <% } %>
+                                                    </ul>
+
+
+                                                    <article class="icontext align-items-start">
+                                                        <span class="icon icon-sm rounded-circle bg-primary-light">
+                                                            <i class="text-primary material-icons md-place"></i>
+                                                        </span>
+                                                        <div class="text">
+                                                            <h6 class="mb-3 text-primary">Delivery Address</h6>
+                                                            <p class="mb-3 text-secondary">
+                                                                Address: <%= order.address.address %><br>
+                                                                    City: <%= order.address.city %><br>
+                                                                        State: <%= order.address.state %><br>
+                                                                            Pin-Code: <%= order.address.pincode %>
+                                                            </p>
+                                                        </div>
+                                                    </article>
+                                                </div> <!-- col// -->
+                                            </div>
+                                        </div> <!-- card-body end// -->
+                                    </div> <!-- card end// -->
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <%- include('../layouts/userFooter.ejs') %>
+
+            <script>
+                document.addEventListener("DOMContentLoaded", function () {
+                    // Email obfuscation function
+                    function decodeEmail(encodedEmail) {
+                        let email = "";
+                        for (let i = 0; i < encodedEmail.length; i += 2) {
+                            email += String.fromCharCode(parseInt(encodedEmail.substr(i, 2), 16));
+                        }
+                        return email;
+                    }
+
+                    // Replace the span's content with the decoded email
+                    const emailSpan = document.getElementById("email");
+                    const encodedEmail = "6d61696c746f3a6578616d706c6540676d61696c2e636f6d"; // Example encoded email
+                    emailSpan.textContent = decodeEmail(encodedEmail);
+                });
+
+            </script>
+
+
+            <script>
+                function invoiceGenerate(orderId) {
+                    console.log("Invoice generation requested for order ID:", orderId);
+
+                    // Make an AJAX request to the server-side endpoint
+                    fetch(`/generate-invoice/${orderId}`)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+                            return response.blob();
+                        })
+                        .then(blob => {
+                            // Create a URL for the blob
+                            const url = window.URL.createObjectURL(blob);
+
+                            // Create a download link and trigger the download
+                            const a = document.createElement('a');
+                            a.href = url;
+                            a.download = 'invoice.pdf'; // Set the desired file name
+                            document.body.appendChild(a);
+                            a.click();
+                            window.URL.revokeObjectURL(url);
+                        })
+                        .catch(error => console.error('Error downloading invoice:', error));
+                }
+            </script>

@@ -1,0 +1,58 @@
+<%- include('../layouts/adminHeader.ejs') %>
+
+    <section class="content-main">
+        <div class="content-header">
+            <div>
+                <h2 class="content-title card-title">CATEGORIES </h2>
+                <p>ADD - EDIT - CREATE <br>new categories</p>
+            </div>
+            <div>
+                <a href="/admin/adminaddcategory" class="btn btn-primary btn-sm rounded">Create new Category</a>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th style="width: 35%;">Name</th>
+                                    <th style="width: 35%;">Description</th>
+                                    <th style="width: 35%;">Status</th>
+
+                                    <th class="text-end" style="width: 30%;">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% data.forEach(function(item) { %>
+                                    <tr>
+                                        <td><b>
+                                                <%= item.categoryname %>
+                                            </b></td>
+                                        <td>
+                                            <%= item.description %>
+                                        </td>
+                                        <td>
+                                            <%= item.status %>
+                                        </td>
+                                        <td class="text-end">
+                                            <a href="/admin/admineditcategory?_id=<%= item._id %>">
+                                                <button class="btn btn-primary">Edit</button>
+                                            </a>
+                                            <a href="/admin/deletecategory?_id=<%= item._id %>">
+                                                <button class="btn btn-primary"
+                                                    style="background-color: red;">Delete</button>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <% }); %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <%- include('../layouts/adminFooter.ejs') %>

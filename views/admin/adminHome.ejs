@@ -1,0 +1,186 @@
+<%- include('../layouts/adminHeader.ejs') %>
+  <section class="content-main">
+    <div class="content-header"
+      style="background: linear-gradient(90deg, #4491a9, #3045d3); color: #fff; padding: 20px; border-radius: 5px; text-align: center; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+      <div>
+        <h2 class="content-title card-title"
+          style="font-size: 32px; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);">Dashboard</h2>
+        <p style="font-size: 20px; margin: 0; text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);">Admin Control Center:
+          Discover Your Business Data</p>
+
+      </div>
+    </div>
+
+    <div class="submenu" style="text-align: right;">
+      <a href="/admin/salesreport"
+        style="display: inline-block; padding: 10px 20px; background-color: #007bff; color: #fff; text-decoration: none; border: 1px solid #007bff; border-radius: 5px; transition: background-color 0.3s; margin-bottom: 20px;">
+        View More Sales Details
+      </a>
+    </div>
+
+
+
+
+    <div class="row">
+      <div class="col-xl-4 col-lg-12">
+        <div class="card mb-4"
+          style="background: #fff; border-radius: 20px; box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);">
+          <article class="card-body">
+            <h3 style="color: #3045d3;">Total Sales</h3>
+            <p style="font-size: 32px; margin: 0; color: #4491a9;" id="totalSalesAmount">INR 0</p>
+          </article>
+        </div>
+      </div>
+      <div class="col-xl-4 col-lg-12">
+        <div class="card mb-4"
+          style="background: #fff; border-radius: 20px; box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);">
+          <article class="card-body">
+            <h3 style="color: #3045d3;">Today's Sales</h3>
+            <p style="font-size: 20px; margin: 0; color: #4491a9;" id="todaysSalesReport">INR 0</p>
+            <p style="font-size: 16px; margin: 0; color: #4491a9;" id="todaysSalesDate">Date: -</p>
+          </article>
+        </div>
+      </div>
+      <div class="col-xl-4 col-lg-12">
+        <div class="card mb-4"
+          style="background: #fff; border-radius: 20px; box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);">
+          <article class="card-body">
+            <h3 style="color: #3045d3;">Last Week's Sales</h3>
+            <p style="font-size: 20px; margin: 0; color: #4491a9;" id="lastWeekSalesReport">INR 0</p>
+            <p style="font-size: 16px; margin: 0; color: #4491a9;" id="lastWeekSalesDate">Date Range: -</p>
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="card mb-4" style="background: #fff; border-radius: 20px; box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);">
+
+      <article class="card-body">
+        <h3 style="color: #3045d3;">Total Sales</h3>
+        <div id="chartContainer" style="width:100%; height:400px; border: 2px solid #3045d3; border-radius: 10px;">
+        </div>
+      </article>
+    </div>
+
+    <div class="row">
+      <div class="col-xl-4 col-lg-12">
+        <div class="card mb-4"
+          style="background: #fff; border-radius: 20px; box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);">
+          <article class="card-body">
+            <h3 style="color: #3045d3;">Total Sales</h3>
+            <div id="chartContainer2" style="width:100%; height:400px; border: 2px solid #3045d3; border-radius: 10px;">
+            </div>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <%- include('../layouts/adminFooter.ejs') %>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script>
+      const data = <% - JSON.stringify(data) %>;
+      const date = data.map(item => {
+        const date = new Date(item.date);
+        return date.getDate();
+      });
+      const amount = data.map(item => item.amount);
+
+      const totalSalesAmount = amount.reduce((acc, current) => acc + current, 0);
+      document.getElementById('totalSalesAmount').textContent = `INR ${totalSalesAmount}`;
+
+      // Calculate today's sales report
+      const today = new Date();
+      const todayDate = today.getDate();
+      const todaySales = amount[date.indexOf(todayDate)] || 0;
+      document.getElementById('todaysSalesReport').textContent = `INR ${todaySales}`;
+      document.getElementById('todaysSalesDate').textContent = `Date: ${today.toLocaleDateString()}`;
+
+      // Calculate last week's sales report
+      const lastWeekStart = new Date();
+      lastWeekStart.setDate(today.getDate() - 7);
+      const lastWeekEnd = new Date();
+      lastWeekEnd.setDate(today.getDate() - 1);
+      const lastWeekRange = `${lastWeekStart.toLocaleDateString()} - ${lastWeekEnd.toLocaleDateString()}`;
+      let lastWeekSales = 0;
+      for (let i = 0; i < 7; i++) {
+        const index = date.indexOf(lastWeekStart.getDate());
+        if (index !== -1) {
+          lastWeekSales += amount[index];
+        }
+        lastWeekStart.setDate(lastWeekStart.getDate() + 1);
+      }
+      document.getElementById('lastWeekSalesReport').textContent = `INR ${lastWeekSales}`;
+      document.getElementById('lastWeekSalesDate').textContent = `Date Range: ${lastWeekRange}`;
+
+      Highcharts.chart('chartContainer', {
+        chart: {
+          type: 'line',
+          backgroundColor: 'transparent',
+          borderWidth: 0,
+        },
+        title: {
+          text: '',
+        },
+        xAxis: {
+          categories: date,
+        },
+        yAxis: {
+          title: {
+            text: 'Total Sales',
+          },
+        },
+        legend: {
+          enabled: false,
+        },
+        series: [{
+          name: 'Total Sales',
+          data: amount,
+        }],
+        plotOptions: {
+          line: {
+            lineWidth: 5,
+            color: '#3045d3',
+            marker: {
+              radius: 6,
+              fillColor: '#4491a9',
+              lineWidth: 2,
+              lineColor: '#3045d3',
+            },
+          },
+        },
+      });
+
+      Highcharts.chart('chartContainer2', {
+        chart: {
+          type: 'column',
+          backgroundColor: 'transparent',
+          borderWidth: 0,
+        },
+        title: {
+          text: '',
+        },
+        xAxis: {
+          categories: date,
+        },
+        yAxis: {
+          title: {
+            text: 'Total Sales',
+          },
+        },
+        legend: {
+          enabled: false,
+        },
+        series: [{
+          name: 'Total Sales',
+          data: amount,
+          color: '#4491a9',
+        }],
+        plotOptions: {
+          column: {
+            pointWidth: 10,
+            borderWidth: 0,
+          },
+        },
+      });
+    </script>

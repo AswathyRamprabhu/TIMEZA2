@@ -1,0 +1,338 @@
+<%- include('../layouts/userHeader.ejs') %>
+
+    <!-- Start Banner Area -->
+    <section class="banner-area organic-breadcrumb">
+        <div class="container">
+            <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+                <div class="col-first">
+                    <h1 style="background-color: black; color: white; padding: 10px;">Order Confirmation</h1>
+                    <nav class="d-flex align-items-center">
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End Banner Area -->
+
+    <!--================Order Details Area =================-->
+    <section class="order_details section_gap">
+        <div class="container">
+            <!-- Thank you message -->
+            <div class="row">
+                <div class="col-lg-12">
+                    <h3 class="title_confirmation">
+                        <% if (orderStatus==='Cancelled' ) { %>
+                            <span style="font-weight: bold; color: red;">
+                                Sorry, your order got cancelled.
+                                <i class="ti-face-sad"></i>
+                            </span>
+                            <% } else { %>
+                                <span style="font-weight: bold; color: #333;">
+                                    Your purchase is complete! Thank you for shopping with us!
+                                </span>
+                                <br>
+                                <span style="font-weight: bold; font-size: 50px; color: #4CAF50;">
+                                    <i class="ti-face-smile"></i>
+                                </span>
+                                <% } %>
+                    </h3>
+
+
+
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- Left Side: Order Info and Billing Address -->
+                <div class="col-lg-6">
+                    <div class="order_info_box">
+                        <h4>Order Details</h4>
+                        <ul class="list">
+                            <ul class="list" style="list-style: none; padding: 0;">
+                                <li style="display: flex; justify-content: space-between;"><a href="#"><span>Order
+                                            ID</span> : <%= order. humanReadableID %></a></li>
+                                <li style="display: flex; justify-content: space-between;"><a href="#"><span>Date</span>
+                                        : <%= new Date(order.createdAt).toLocaleString('en-US', { weekday: 'short' ,
+                                            month: 'short' , day: 'numeric' , year: 'numeric' , hour: 'numeric' ,
+                                            minute: 'numeric' , hour12: true })%></a></li>
+
+
+                                <% if(order.orderStatus==='Cancelled' ) { %>
+                                    <li style="display: flex; justify-content: space-between;">
+                                        <a href="#">
+                                            <span>
+
+                                                Cancelled Order Amount:
+
+                                            </span> : Rs. <%= order.cancelledPrice.toLocaleString('en-US', {
+                                                minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>
+                                        </a>
+                                    </li>
+
+                                    <%} else {%>
+
+                                        <li style="display: flex; justify-content: space-between;">
+                                            <a href="#">
+                                                <span>
+                                                    <% if (order.paymentMode==='cashondelivery' ) { %>
+                                                        Amount to be paid
+                                                        <% } else { %>
+                                                            Order Total
+                                                            <% } %>
+
+                                                </span>
+                                                <% if (order.coupon && order.totalAmount>=
+                                                    order.coupon.minimumAmount) { %>
+                                                    : Rs. <%= order.finalPrice.toLocaleString('en-US', {
+                                                        minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>
+                                                        <% } else { %>
+                                                            : Rs. <%= order.totalAmount.toLocaleString('en-US', {
+                                                                minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>
+                                                                <% } %>
+
+                                            </a>
+                                        </li>
+                                        <% }%>
+
+
+
+                                            <% if (order.paymentMode==='cashondelivery' ) { %>
+                                                <li style="display: flex; justify-content: space-between;">
+                                                    <a href="#"><span>Payment method</span> : Cash On Delivery</a>
+                                                </li>
+                                                <% } else if (order.paymentMode==='onlinepayment' ) { %>
+                                                    <li style="display: flex; justify-content: space-between;">
+                                                        <a href="#"><span>Payment method</span> : Digital
+                                                            Transaction</a>
+                                                    </li>
+
+
+                                                    <% } else if (order.paymentMode==='walletpayment' ) { %>
+                                                        <li style="display: flex; justify-content: space-between;">
+                                                            <a href="#"><span>Payment method</span> : Time-Za Wallet
+                                                                Payment</a>
+                                                        </li>
+                                                        <% } %>
+
+
+                            </ul>
+
+
+                        </ul>
+                    </div>
+
+                    <div class="order_info_box">
+                        <h4>Shipping Address</h4>
+                        <ul class="list">
+                            <li><a href="#"><span>Name</span> : <%= user.name %></a></li>
+                            <li><a href="#"><span>Phone</span> : <%= user.phonenumber %></a></li>
+                            <li><a href="#"><span>Address</span> : <%= order.address.address %></a></li>
+                            <li><a href="#"><span>City</span> : <%= order.address.city %></a></li>
+                            <li><a href="#"><span>State</span> : <%= order.address.state %></a></li>
+                            <li><a href="#"><span>Pincode</span> : <%= order.address.pincode %></a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Right Side: Order Details -->
+                <div class="col-lg-6">
+                    <div class="order_details_table" style="margin-top: 0px;">
+                        <h2>Order Summary</h2>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Product</th>
+                                        <th scope="col">Quantity</th>
+                                        <th scope="col">Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% order.items.forEach(function(item) { %>
+                                        <% if (item.productOrderStatus !=="Cancelled" ) { %>
+                                            <tr>
+                                                <td>
+                                                    <%= item.productId.productname %>
+                                                </td>
+                                                <td>x <%= item.quantity %>
+                                                </td>
+                                                <td>
+                                                    <%= item.price.toLocaleString('en-US', { minimumFractionDigits: 2,
+                                                        maximumFractionDigits: 2 }) %>
+                                                </td>
+                                            </tr>
+                                            <% } else { %>
+                                                <tr>
+                                                    <td>
+                                                        <del>
+                                                            <%= item.productId.productname %>
+                                                        </del>
+                                                    </td>
+                                                    <td><del>x <%= item.quantity %></del>
+                                                    </td>
+                                                    <td><del>
+                                                            <%= item.price.toLocaleString('en-US', {
+                                                                minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>
+                                                        </del>
+                                                    </td>
+                                                </tr>
+                                                <% } %>
+                                                    <% }) %>
+
+                                                        <tr>
+                                                            <td>
+                                                                <h4>Subtotal</h4>
+                                                            </td>
+                                                            <td></td>
+                                                            <td>
+                                                                <%= order.totalAmount.toLocaleString('en-US', {
+                                                                    minimumFractionDigits: 2, maximumFractionDigits: 2
+                                                                    }) %>
+                                                            </td>
+                                                        </tr>
+                                                        <% if (order.coupon && order.totalAmount>=
+                                                            order.coupon.minimumAmount) { %>
+                                                            <tr>
+                                                                <td>
+                                                                    <h4>Coupon Discount</h4>
+                                                                </td>
+                                                                <td>
+                                                                    <h5></h5>
+                                                                </td>
+                                                                <td>
+                                                                    <p>
+                                                                        <%= order.discountAmount %>
+                                                                    </p>
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <h4>Grand Total</h4>
+                                                                </td>
+                                                                <td></td>
+                                                                <td>
+                                                                    <%= order.finalPrice.toLocaleString('en-US', {
+                                                                        minimumFractionDigits: 2, maximumFractionDigits:
+                                                                        2 }) %>
+                                                                </td>
+                                                            </tr>
+                                                            <% } else { %>
+                                                                <tr>
+                                                                    <td>
+                                                                        <h4>Grand Total</h4>
+                                                                    </td>
+                                                                    <td></td>
+                                                                    <td>
+                                                                        <%= order.totalAmount.toLocaleString('en-US', {
+                                                                            minimumFractionDigits: 2,
+                                                                            maximumFractionDigits: 2 }) %>
+                                                                    </td>
+                                                                </tr>
+                                                                <% } %>
+
+                                                                    <% if (orderStatus==='Cancelled' ) { %>
+                                                                        <tr style="color: red;">
+
+                                                                            <td>
+                                                                                <h3>Cancelled Order Total:</h3>
+                                                                            </td>
+                                                                            <td></td>
+                                                                            <td>
+                                                                                <h3>
+                                                                                    <%=order.cancelledPrice.toLocaleString('en-US',
+                                                                                        { minimumFractionDigits: 2,
+                                                                                        maximumFractionDigits: 2 }) %>
+                                                                                </h3>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <% } %>
+
+
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                    <div class="row" style="text-align: center;">
+                        <div class="col-lg-12" style="margin-top: 20px;">
+                            <% if (order.orderStatus==='pending' || order.orderStatus==='placed' ) { %>
+                                <button
+                                    style="padding: 10px 20px; background-color: #cbc8c8; color: white; border: none; cursor: pointer; border-radius: 15px; font-weight: bold; transition: background-color 0.3s, color 0.3s, transform 0.3s; width: 550px;"
+                                    onclick="cancelOrder('<%= order._id %>')"
+                                    onmouseover="this.style.backgroundColor='#ff5252';"
+                                    onmouseout="this.style.backgroundColor='#ff7f7f';">Cancel Order</button>
+
+                                <% } %>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+            <!-- Return and Cancel Order Buttons -->
+
+        </div>
+    </section>
+    <!--================End Order Details Area =================-->
+
+    <%- include('../layouts/userFooter.ejs') %>
+
+        <style>
+            .order_info_box {
+                border: 1px solid #ccc;
+                padding: 20px;
+                margin-bottom: 20px;
+            }
+        </style>
+
+        <script>
+            function cancelOrder(orderId) {
+                Swal.fire({
+                    title: 'Are you sure you want to Cancel the order?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Yes, Cancel it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // If the user confirms the action, perform the cancellation
+                        window.location.href = `/editorderdetails/${orderId}?action=cancel`;
+                    }
+                });
+            }
+
+            function returnOrder(orderId) {
+                Swal.fire({
+                    title: 'Are you sure you want to Return the order?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Yes, Return it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // If the user confirms the action, perform the return
+                        window.location.href = `/editorderdetails/${orderId}?action=return`;
+                    }
+                });
+            }
+        </script>
+
+        <style>
+            .list li {
+                display: flex;
+                justify-content: space-between;
+            }
+
+            .list span {
+                min-width: 150px;
+                /* Adjust as needed for your desired spacing */
+                display: inline-block;
+            }
+        </style>
+
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

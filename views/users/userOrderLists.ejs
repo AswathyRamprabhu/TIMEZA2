@@ -1,0 +1,292 @@
+<%- include('../layouts/userHeader.ejs') %>
+
+  <!-- Start Banner Area -->
+  <section class="banner-area organic-breadcrumb">
+    <div class="container">
+      <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+        <div class="col-first">
+          <h1 style="background-color: black; color: white; padding: 10px;">Your Orders</h1>
+          <nav class="d-flex align-items-center">
+
+          </nav>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- End Banner Area -->
+
+  <div class="container">
+    <!-- Your order list section code goes here -->
+    <div class="row">
+      <div class="col-12">
+        <h3 class="text-center mt-4"></h3>
+        <% orders.forEach(function(item) { %>
+          <div class="border border-2 p-3 mb-4">
+            <a href="/orderdetails/<%= item._id %>">
+              <h4 class="d-flex"><strong>Order ID: <%= item. humanReadableID %></strong></h4>
+            </a>
+
+            <div class="order-details">
+              <span>
+                <i class="material-icons md-calendar_today"></i>
+                <b>Order Date: <%= new Date(item.createdAt).toLocaleString('en-US', { weekday: 'short' , month: 'short'
+                    , day: 'numeric' , year: 'numeric' }) %></b>
+              </span>
+              <br>
+              <span>
+
+                <% if (item.orderStatus !=='Cancelled' && item.orderStatus !=='Delivered' && item.orderStatus
+                  !=='Returned' ) { %>
+                  <i class="material-icons md-calendar_today"></i>
+                  <b>Delivery Estimate: <%= new Date(item.createdAt.getTime() + 5 * 24 * 60 * 60 *
+                      1000).toLocaleString('en-US', { weekday: 'short' , month: 'short' , day: 'numeric' ,
+                      year: 'numeric' }) %></b>
+                  <% } %>
+              </span>
+
+              <!-- Update the badge styles for order status -->
+              <%if(item.orderStatus==='Delivered' ) {%>
+                <span class="badge custom-badge text-capitalize" id="status-badge"
+                  style="background-color: #000000; color: #2cb646; font-size: 20px; padding: 8px 16px;">
+                  <%= item.orderStatus %>
+                </span>
+                <%}else if (item.orderStatus==='pending' ){%>
+                  <span class="badge custom-badge text-capitalize" id="status-badge"
+                    style="background-color: #000000; color: #f5ec4a; font-size: 20px; padding: 8px 16px;">
+                    <%= item.orderStatus %>
+                  </span>
+                  <%}else if (item.orderStatus==='Cancelled' ){%>
+                    <span class="badge custom-badge text-capitalize" id="status-badge"
+                      style="background-color: #000000; color: #ee0000; font-size: 20px; padding: 8px 16px;">
+                      <%= item.orderStatus %>
+                    </span>
+                    <%}else if (item.orderStatus==='placed' ){%>
+                      <span class="badge custom-badge text-capitalize" id="status-badge"
+                        style="background-color: #000000; color: #2fdbc4; font-size: 20px; padding: 8px 16px;">
+                        <%= item.orderStatus %>
+                      </span>
+                      <%}else if (item.orderStatus==='Returned' ){%>
+                        <span class="badge custom-badge text-capitalize" id="status-badge"
+                          style="background-color: #000000; color: #f98500; font-size: 20px; padding: 8px 16px;">
+                          <%= item.orderStatus %>
+                        </span>
+                        <%}else if (item.orderStatus==='pending' ){%>
+                          <span class="badge custom-badge text-capitalize" id="status-badge"
+                            style="background-color: #33ff4b; color: #fff; font-size: 20px; padding: 8px 16px;">
+                            <%= item.orderStatus %>
+                          </span>
+                          <%}%>
+
+
+
+
+                            <!-- Add Cancel Order Button -->
+                            <div class="text-center mt-3">
+                              <% if (item.orderStatus !=='Cancelled' && item.orderStatus !=='Delivered' &&
+                                item.orderStatus !=='Returned' ) { %>
+                                <button class="btn btn-danger" onclick="cancelOrder('<%= item._id %>')"
+                                  onmouseover="this.style.backgroundColor='#ff5252';"
+                                  onmouseout="this.style.backgroundColor='#ff7f7f';">Cancel Order</button>
+                                <% } %>
+                            </div>
+                            <div class="text-center mt-3">
+                              <% if (item.orderStatus !=='Cancelled' && item.orderStatus !=='Delivered' &&
+                                item.orderStatus !=='Returned' ) { %>
+                                <a style="background-color: #000000; border-color: #000000;"
+                                  href="/singleorderdetails?_id=<%= item._id %>" class="btn btn-primary btn-sm">View
+                                  Details</a>
+                                <% } %>
+                            </div>
+
+
+
+                            <table class="table mt-4">
+                              <thead>
+                                <tr>
+                                  <th scope="col">Image</th>
+                                  <th scope="col">Product Name</th>
+                                  <th scope="col">Quantity</th>
+                                  <!-- <th scope="col">Price</th> -->
+                                  <th scope="col">Status</th>
+                                  <th scope="col">Action</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <% item.items.forEach(function(product) { %>
+                                  <tr>
+                                    <td>
+                                      <img src="/uploadProductImage/<%= product.productId.image[0] %>"
+                                        class="img-thumbnail" alt="Item" width="50px">
+                                    </td>
+                                    <td>
+                                      <%= product.productId.productname %>
+                                    </td>
+                                    <td>
+                                      <%= product.quantity %>
+                                    </td>
+
+                                    <% if (item.orderStatus !=='Delivered' ) { %>
+                                      <td>
+                                        <% console.log("Product Order Status:", product.productOrderStatus); %>
+                                          <% if (product.productOrderStatus==='Cancelled' ) { %>
+                                            <span style="color: red;">
+                                              <%= product.productOrderStatus %>
+                                            </span>
+                                            <% } else { %>
+                                              <%= product.productOrderStatus %>
+                                                <% } %>
+                                      </td>
+
+                                      <td>
+                                        <% if (product.productOrderStatus !=='Cancelled' && item.orderStatus
+                                          !=='Cancelled' && !item.coupon) { %>
+
+                                          <button class="cancelProductButton"
+                                            style="background-color: red; color: white; border-radius: 5px; border-color: red;"
+                                            data-orderid="<%= item._id.toHexString() %>"
+                                            data-productid="<%= product.productId._id %>">Cancel Product</button>
+                                          <% }else if(product.productOrderStatus !=='Cancelled' && item.orderStatus
+                                            !=='Cancelled' && item.paymentMode==='cashondelivery' ) {%>
+                                            <button class="cancelProductButton"
+                                              style="background-color: red; color: white; border-radius: 5px; border-color: red;"
+                                              data-orderid="<%= item._id.toHexString() %>"
+                                              data-productid="<%= product.productId._id %>">Cancel Product</button>
+                                            <% } %>
+                                      </td>
+                                      <% }else { %>
+                                        <td>
+                                          <span style="color: green;">Delivered</span>
+                                        </td>
+
+                                        <% } %>
+
+
+
+
+
+                                  </tr>
+                                  <% }); %>
+                              </tbody>
+                            </table>
+            </div>
+          </div>
+          <% }); %>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="custom-pagination">
+    <div class="paging">
+      <ul>
+        <% for (let i=1; i <=totalPages; i++) { %>
+          <li class="page-content" class="<%= i === page ? 'active' : '' %>">
+            <a class="page-button" href="?page=<%= i %>&perPage=<%= perPage %>">
+              <%= i %>
+            </a>
+          </li>
+          <% } %>
+            <% if (page < totalPages) { %>
+              <li><a class="page-content" class="page-button" href="?page=<%= page + 1 %>&perPage=<%= perPage %>"></a>
+              </li>
+              <% } %>
+      </ul>
+    </div>
+  </div>
+
+
+  <%- include('../layouts/userFooter.ejs') %>
+
+    <script>
+      function cancelOrder(orderId) {
+        Swal.fire({
+          title: 'Are you sure you want to Cancel the order?',
+          text: "You won't be able to revert this!",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#d33',
+          cancelButtonColor: '#3085d6',
+          confirmButtonText: 'Yes, Cancel it!'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            // If the user confirms the action, perform the cancellation
+            window.location.href = `/editorderdetails/${orderId}?action=cancel`;
+          }
+        });
+      }
+
+
+
+
+      // Find all "Cancel Product" buttons
+      const cancelButtons = document.querySelectorAll(".cancelProductButton");
+
+      cancelButtons.forEach((button) => {
+        button.addEventListener("click", async () => {
+          try {
+            const orderId = button.getAttribute("data-orderid");
+            const productId = button.getAttribute("data-productid");
+
+            // Rest of your code remains the same
+            Swal.fire({
+              title: 'Are you sure you want to Cancel the order?',
+              text: "You won't be able to revert this!",
+              icon: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#d33',
+              cancelButtonColor: '#3085d6',
+              confirmButtonText: 'Yes, Cancel it!'
+            }).then((result) => {
+              if (result.isConfirmed) {
+                // If the user confirms the action, perform the cancellation
+                window.location.href = `/cancelProduct/${orderId}?productId=${productId}`;
+              }
+            });
+          } catch (error) {
+            console.error(error);
+          }
+        });
+      });
+
+    </script>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+    <style>
+      .custom-pagination {
+        display: flex;
+        justify-content: center;
+        margin: 10px 0;
+      }
+
+      .custom-pagination .paging {
+        list-style: none;
+        padding: 0;
+        display: inline-block;
+      }
+
+      .custom-pagination .page-content {
+        display: inline;
+        margin-right: 5px;
+      }
+
+      .custom-pagination .page-button {
+        text-decoration: none;
+        padding: 5px 10px;
+        border: 1px solid #ddd;
+        background-color: #f0f0f0;
+        color: #333;
+      }
+
+      .custom-pagination .page-content.active .page-button {
+        background-color: #007bff;
+        color: #fff;
+      }
+
+      .custom-pagination .page-button:hover {
+        background-color: #007bff;
+        color: #fff;
+      }
+    </style>

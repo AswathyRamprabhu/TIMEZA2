@@ -1,0 +1,592 @@
+<%- include('../layouts/userHeader.ejs') %>
+
+    <!-- Start Banner Area -->
+    <section class="banner-area organic-breadcrumb">
+        <div class="container">
+            <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+                <div class="col-first">
+                    <h1 style="background-color: black; color: white; padding: 10px;">Order Summary</h1>
+                    <nav class="d-flex align-items-center">
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End Banner Area -->
+
+    <% let totalPriceSum=0 %>
+        <% if(cart.products.length==0) { %>
+            <div class="container-fluid mt-100">
+                <div class="row px-xl-5">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-body cart">
+                                <div class="col-sm-12 empty-cart-cls text-center">
+                                    <img src="/img/3516854.jpg" width="100" height="130" class="img-fluid mb-4 mr-3">
+                                    <h3><strong style="font-size: 24px; color: #333;">"Your Cart Awaits Your
+                                            Selections!"</strong></h3>
+                                    <h4 style="font-size: 18px; color: #555;">"Explore an Enchanting World of
+                                        Timepieces"</h4>
+                                    <a href="/home" class="btn btn-primary cart-btn-transform m-3" data-abc="true"
+                                        style="background-color: #040404; color: #fff; border: none; padding: 10px 20px; font-size: 16px; text-decoration: none; border-radius: 5px;">Continue
+                                        shopping</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <% } else { %>
+
+                <!--================Checkout Area =================-->
+                <section class="checkout_area section_gap">
+                    <div class="container">
+                        <div>
+                            <div class="container mt-5">
+                                <div class="row">
+                                    <div class="col-lg-8">
+                                        <h5 class="section-title position-relative text-uppercase mb-3"
+                                            style="font-size: 1.5rem; font-weight: bold; margin-bottom: 1rem;">
+                                            Select Address
+                                        </h5>
+                                        <% if(user.address.length> 0) { %>
+                                            <div class="bg-light p-3 mb-5"
+                                                style="background-color: #f8f9fa; padding: 20px; border-radius: 10px;">
+                                                <div class="row">
+                                                    <% for(let i=0; i < user.address.length; i++) { %>
+                                                        <div class="col-md-6 mb-3">
+                                                            <div class="border p-3"
+                                                                style="border: 1px solid #ccc; border-radius: 10px;">
+                                                                <% item=user.address[i] %>
+                                                                    <label>
+                                                                        <input type="radio" class="address-radio"
+                                                                            id="defaultaddress" name="defaultaddress"
+                                                                            value="defaultaddress"
+                                                                            data-address="<%= item._id %>"
+                                                                            style="margin-right: 10px;">
+                                                                        <strong style="font-weight: bold;">
+                                                                            <%= item.name %>
+                                                                        </strong>
+                                                                    </label>
+                                                                    <p>
+                                                                        <%= item.phonenumber %><br>
+                                                                            <%= item.address %>,<br>
+                                                                                <%= item.city %>, <%= item.state %>, <%=
+                                                                                            item.pincode %>
+                                                                    </p>
+                                                                    <!-- Adding an "Edit" button -->
+                                                                    <div class="edit-button"
+                                                                        style="text-align: center; margin-top: 10px; display: none;">
+                                                                        <a href="/editaddress/<%= item._id %>">
+                                                                            <button
+                                                                                class="btn btn-primary btn-sm genric-btn info"
+                                                                                style="background-color: #151616; color: #fff; border: none; border-radius: 5px;">Edit
+                                                                                Address</button>
+                                                                        </a>
+                                                                    </div>
+                                                            </div>
+                                                        </div>
+                                                        <% } %>
+                                                </div>
+                                            </div>
+                                            <% } %>
+
+
+
+
+                                                <% if(user.address.length===0) { %>
+                                                    <span style="font-weight: bold; font-size: 1.2rem;"> Add Delivery
+                                                        Address
+                                                    </span>
+                                                    <% } %>
+                                                        <div class="col-md-12">
+                                                            <div class="custom-control custom-checkbox mt-3">
+                                                                <input type="checkbox" class="custom-control-input"
+                                                                    id="shipto">
+                                                                <label class="custom-control-label" for="shipto"
+                                                                    data-toggle="collapse"
+                                                                    data-target="#shipping-address"
+                                                                    style="font-weight: bold; cursor: pointer; font-size: 1.2rem;">ADD
+                                                                    A NEW DELIVERY ADDRESS</label>
+                                                            </div>
+                                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <!-- new code ends here -->
+                        <br>
+                        <div class="collapse mb-5" id="shipping-address"
+                            style="background-color: #f8f9fa; padding: 20px; border-radius: 10px;">
+                            <h5 class="section-title position-relative text-uppercase mb-3"
+                                style="font-size: 1.5rem; font-weight: bold;">Add Alternate Shipping Address</h5>
+                            <div class="bg-light p-30">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <div class="mt-4 mb-4">
+                                            <form action="/addnewaddress" method="POST" id="addaddressform">
+                                                <div class="row mt-3">
+                                                    <div class="col-md-6">
+                                                        <div class="inputbox mt-3 mr-2">
+                                                            <input type="text" name="address" class="form-control"
+                                                                placeholder="Address"
+                                                                style="border: 1px solid #ccc; border-radius: 5px; padding: 5px;">
+                                                            <span class="error-message" id="address-error"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="inputbox mt-3 mr-2">
+                                                            <input type="text" name="city" class="form-control"
+                                                                placeholder="City"
+                                                                style="border: 1px solid #ccc; border-radius: 5px; padding: 5px;">
+                                                            <span class="error-message" id="city-error"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row mt-2">
+                                                    <div class="col-md-6">
+                                                        <div class="inputbox mt-3 mr-2">
+                                                            <input type="text" name="state" class="form-control"
+                                                                placeholder="State"
+                                                                style="border: 1px solid #ccc; border-radius: 5px; padding: 5px;">
+                                                            <span class="error-message" id="state-error"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="inputbox mt-3 mr-2">
+                                                            <input type="text" name="pincode" class="form-control"
+                                                                placeholder="Pincode"
+                                                                style="border: 1px solid #ccc; border-radius: 5px; padding: 5px;">
+                                                            <span class="error-message" id="pincode-error"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <br>
+                                                <button class="btn btn-success" type="submit"
+                                                    style="background-color: #161616; color: #fff; border: none; border-radius: 5px; padding: 5px;">SUBMIT</button>
+                                                <span class="error-message" id="submit-error"></span>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="cupon_area"
+                            style="text-align: center; margin: 20px; background-color: #f5f5f5; border-radius: 5px; padding: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
+                            <p style="font-size: 18px; color: red;">Kindly be aware that if your order includes multiple
+                                products, the option for individual product cancellation may be limited once a coupon
+                                has been applied and payment has been made online or via wallet. We appreciate your
+                                understanding.</p>
+                            <input type="text" placeholder="COUPON CODE" value="<%= coupon %>"
+                                style="width: 200px; padding: 10px; border: 1px solid #ccc; border-radius: 5px; font-size: 16px;">
+                            <a class="applycoupon" data-coupon="<%= couponId %>" href="#"
+                                style="background-color: #0e0e0f; color: #fff; padding: 10px 20px; border: none; border-radius: 5px; font-size: 18px; text-decoration: none; transition: background-color 0.3s; text-align: center; margin: 10px; display: inline-block;">Apply
+                                Coupon<span style="font-size: 16px; margin-left: 10px;"></span></a>
+                        </div>
+
+
+                        <li class="nav-item"
+                            style="background-color: #000000; border-radius: 10px; padding: 10px; margin: 5px;">
+                            <a href="/refer" class="share"
+                                style="text-decoration: none; color: #000000; font-weight: bold; background-color: #ffffff; padding: 8px 15px; border-radius: 5px;">Refer
+                                and Earn Rs.500!<span class="ti-share"
+                                    style="font-size: 24px; margin-left: 10px;"></span></a>
+                        </li>
+
+                        <!-- new code of billing ends here -->
+
+
+                        <div class="billing_details">
+                            <div class="row">
+                                <div class="col-lg-8 mx-auto">
+                                    <div class="order_details_table"
+                                        style="background-color: #fff; padding: 20px; border-radius: 10px;">
+                                        <h2 style="font-size: 1.5rem; font-weight: bold; text-align: center;">Order
+                                            Details</h2>
+                                        <div class="table-responsive">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr style="background-color: #000000; color: #ffffff;">
+                                                        <th scope="col"><strong>Product</strong></th>
+                                                        <th scope="col"><strong>Quantity</strong></th>
+                                                        <th scope="col"><strong>Total(₹)</strong></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <% let totalPriceSum=0 %>
+                                                            <% let priceaftercoupon=0%>
+                                                                <% cart.products.forEach(function(item) { %>
+                                                                    <% let totalPrice=item.product.price *
+                                                                        item.quantity; %>
+                                                                        <% totalPriceSum +=totalPrice; %>
+                                                                            <td>
+                                                                                <p>
+                                                                                    <%= item.product.productname %>
+                                                                                </p>
+                                                                            </td>
+                                                                            <td>
+                                                                                <p>Rs. <%=item.product.price.toFixed(2)
+                                                                                        %> x
+                                                                                        <%=item.quantity %>
+                                                                                </p>
+                                                                            </td>
+                                                                            <td>
+                                                                                <p>
+                                                                                    <%= totalPrice.toFixed(2) %>
+                                                                                </p>
+                                                                            </td>
+                                                    </tr>
+                                                    <% }); %>
+                                                        <tr>
+                                                            <td>
+                                                                <h4>Subtotal</h4>
+                                                            </td>
+                                                            <td>
+                                                                <h5></h5>
+                                                            </td>
+                                                            <td>
+                                                                <p>
+                                                                    <%= totalPriceSum.toFixed(2) %>
+                                                                </p>
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td>
+                                                                <span id="coupon"
+                                                                    data-coupon="<%= coupon.couponId %>"></span>
+                                                                <h4>Coupon Discount</h4>
+                                                            </td>
+                                                            <td>
+                                                                <p>
+                                                                    <%= coupon %>
+                                                                </p>
+                                                            </td>
+                                                            <td>
+                                                                <% if (coupon && discountAmount !==undefined) { %>
+                                                                    <p>
+                                                                        <%= discountAmount%>
+                                                                    </p>
+                                                                    <% priceaftercoupon=totalPriceSum - discountAmount
+                                                                        %>
+                                                                        <% } else { %>
+                                                                            <% discountAmount=0 %>
+                                                                                <p>
+                                                                                    <%= discountAmount %>
+                                                                                </p>
+                                                                                <% priceaftercoupon=totalPriceSum %>
+                                                                                    <% } %>
+
+                                                            </td>
+                                                        </tr>
+
+                                                        <tr>
+                                                            <td>
+                                                                <h4>Total (₹)</h4>
+                                                            </td>
+                                                            <td>
+                                                                <h5></h5>
+                                                            </td>
+                                                            <td>
+                                                                <p class="total-price-sum">
+                                                                    <%= priceaftercoupon.toFixed(2) %>
+                                                                </p>
+                                                            </td>
+                                                        </tr>
+                                                </tbody>
+                                            </table>
+                                            <p class="scheduled-delivery"
+                                                style="margin-top: 10px; color: darkgreen; font-weight: bold; font-size: 18px;">
+                                                <i class="material-icons md-local_shipping"
+                                                    style="font-size: 24px; vertical-align: middle;"></i>
+                                                Delivery Date: <%= new Date(Date.now() + 5 * 24 * 60 * 60 *
+                                                    1000).toLocaleString('en-US', { weekday: 'short' , month: 'short' ,
+                                                    day: 'numeric' , year: 'numeric' }) %> (Standard Delivery)
+                                            </p>
+
+                                            <br><br>
+                                            <div class="payment_item">
+                                                <div class="radion_btn">
+                                                    <input type="radio" id="f-option5" name="paymentoptions"
+                                                        value="cashondelivery">
+                                                    <label for="f-option5" style="color: #000;">Cash On Delivery</label>
+                                                    <div class="check"></div>
+                                                </div>
+                                                <p id="description-cod" style="display: none;">Kindly settle the invoice
+                                                    amount upon
+                                                    receiving your order!</p>
+                                            </div>
+
+                                            <div class="payment_item">
+                                                <div class="radion_btn">
+                                                    <input type="radio" id="f-option6" name="paymentoptions"
+                                                        value="onlinepayment">
+                                                    <label for="f-option6" style="color: #000;">Online Payment </label>
+                                                    <img src="img/product/card.jpg" alt="">
+                                                    <div class="check"></div>
+                                                </div>
+                                                <p id="description-online" style="display: none;">You can make an online
+                                                    payment for
+                                                    your order.</p>
+                                            </div><br>
+
+                                            <div class="payment_item">
+                                                <div class="radion_btn">
+                                                    <input type="radio" id="f-option7" name="paymentoptions"
+                                                        value="walletpayment">
+                                                    <label for="f-option7" style="color: #000;">Time-Za Wallet
+                                                        Payment</label>
+                                                    <div class="check"></div>
+                                                </div>
+                                                <p id="description-wallet" style="display: none;">You can make payment
+                                                    from your
+                                                    wallet for your order.</p>
+                                                <p id="wallet-balance" style="margin-left: 20px;">Wallet Balance: INR
+                                                    <%=user.wallet.balance%>
+                                                </p> <!-- Add your wallet balance information here -->
+                                            </div>
+
+                                            <br>
+                                            <button id="place-order-button" class="primary-btn"
+                                                style="background-color: #28a745; color: #fff; border: none; border-radius: 5px; padding: 10px; margin: 0 auto; display: block;">Place
+                                                Order</button>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- top container -->
+
+                    </div>
+                </section>
+
+                <% }%>
+                    <!--================End Checkout Area =================-->
+
+                    <%- include('../layouts/userFooter.ejs') %>
+
+                        <script>
+
+                            const totalpricesum = document.querySelector('.total-price-sum');
+                            const priceaftercoupon = document.querySelector('.price-after-coupon');
+                            const order = document.querySelector('.primary-btn');
+
+                            /////////////////////////script to fetch the order data to the checkout post//////////////////////////////
+                            order.addEventListener('click', function () {
+
+                                console.log("clicked on on 'Place Order' in checkout page")
+                                const address = document.querySelector('input[name="defaultaddress"]:checked').getAttribute('data-address')
+                                const couponId = document.querySelector('.applycoupon').getAttribute('data-coupon');
+
+                                console.log("coupon data in checkout page:", couponId);
+                                const paymentType = document.querySelector('input[name="paymentoptions"]:checked').value
+                                const orderData = {
+                                    address,
+                                    couponId,
+                                    paymentType
+
+                                };
+
+
+                                if (couponId) {
+                                    orderData.coupon = coupon.getAttribute('data-coupon')
+                                }
+
+                                fetch("/checkoutpost", {
+                                    method: "POST",
+                                    headers: { "Content-Type": "application/json" },
+                                    body: JSON.stringify(orderData),
+                                })
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        if (data.success) {
+                                            window.location = data.url
+                                        } else {
+                                            Toastify({
+                                                text: data.message,
+                                                duration: 3000,
+                                                gravity: "bottom",
+                                                position: "center",
+                                                style: {
+                                                    background: "#FFC300",
+                                                },
+                                            }).showToast();
+                                        }
+                                    })
+                                    .catch(error => {
+                                        showToast("Something went wrong")
+                                    })
+
+                            });
+
+
+
+                            const applycoupon = document.querySelector('.applycoupon')
+                            applycoupon.addEventListener('click', e => {
+                                e.preventDefault();
+                                window.location.href = `/usecoupon?total=${totalpricesum.textContent}`
+                            })
+
+
+
+
+
+
+                            //////////////////////JavaScript code to toggle the  Address "Edit" button visibility/////////////////////////
+                            document.addEventListener("DOMContentLoaded", function () {
+                                const radioButtons = document.querySelectorAll(".address-radio");
+                                const editButtons = document.querySelectorAll(".edit-button");
+
+                                radioButtons.forEach((radio, index) => {
+                                    radio.addEventListener("change", function () {
+                                        // Hide all "Edit" buttons
+                                        editButtons.forEach((editButton) => {
+                                            editButton.style.display = "none";
+                                        });
+
+                                        // Show the "Edit" button associated with the selected radio
+                                        if (this.checked) {
+                                            editButtons[index].style.display = "block";
+                                        }
+                                    });
+                                });
+                            });
+
+
+
+                            ////////////////script for address validation/////////////////////////////////////
+                            document.addEventListener('DOMContentLoaded', function () {
+                                const addressForm = document.getElementById('addaddressform');
+                                const addressInput = document.querySelector('input[name="address"]');
+                                const addressError = document.getElementById('address-error');
+                                const cityInput = document.querySelector('input[name="city"]');
+                                const cityError = document.getElementById('city-error');
+                                const stateInput = document.querySelector('input[name="state"]');
+                                const stateError = document.getElementById('state-error');
+                                const pincodeInput = document.querySelector('input[name="pincode"]');
+                                const pincodeError = document.getElementById('pincode-error');
+
+                                addressForm.addEventListener('submit', function (event) {
+                                    // Check if any field is empty and validate
+                                    if (!isValidAddress(addressInput.value) || !isValidCity(cityInput.value) || !isValidState(stateInput.value) || !isValidPincode(pincodeInput.value)) {
+                                        event.preventDefault(); // Prevent form submission
+
+                                        if (!isValidAddress(addressInput.value)) {
+                                            addressError.textContent = 'Invalid input';
+                                            addressError.style.display = 'block';
+                                        } else {
+                                            addressError.style.display = 'none';
+                                        }
+
+                                        if (!isValidCity(cityInput.value)) {
+                                            cityError.textContent = 'Invalid input';
+                                            cityError.style.display = 'block';
+                                        } else {
+                                            cityError.style.display = 'none';
+                                        }
+
+                                        if (!isValidState(stateInput.value)) {
+                                            stateError.textContent = 'Invalid input';
+                                            stateError.style.display = 'block';
+                                        } else {
+                                            stateError.style.display = 'none';
+                                        }
+
+                                        if (!isValidPincode(pincodeInput.value)) {
+                                            pincodeError.textContent = 'Invalid input';
+                                            pincodeError.style.display = 'block';
+                                        } else {
+                                            pincodeError.style.display = 'none';
+                                        }
+                                    }
+                                });
+
+                                function isValidAddress(address) {
+                                    const addressPattern = /^(?!\s*$)[\w\s\d!@#$%^&*(),.?":{}|<>_-]+$/;
+                                    return addressPattern.test(address);
+                                }
+
+                                function isValidCity(city) {
+                                    const cityPattern = /^[A-Z][a-zA-Z]*$/;
+                                    return cityPattern.test(city);
+                                }
+
+                                function isValidState(state) {
+                                    const validIndianStates = [
+                                        'Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh',
+                                        'Goa', 'Gujarat', 'Haryana', 'Himachal Pradesh', 'Jharkhand',
+                                        'Karnataka', 'Kerala', 'Madhya Pradesh', 'Maharashtra', 'Manipur',
+                                        'Meghalaya', 'Mizoram', 'Nagaland', 'Odisha', 'Punjab',
+                                        'Rajasthan', 'Sikkim', 'Tamil Nadu', 'Telangana', 'Tripura',
+                                        'Uttar Pradesh', 'Uttarakhand', 'West Bengal', 'Andaman and Nicobar Islands',
+                                        'Chandigarh', 'Dadra and Nagar Haveli and Daman and Diu', 'Lakshadweep', 'Delhi', 'Puducherry'
+                                    ];
+                                    return state.trim() !== '' && validIndianStates.includes(state);
+                                }
+
+                                function isValidPincode(pincode) {
+                                    const validPincodePattern = /^\d{6}$/;
+                                    if (!validPincodePattern.test(pincode)) {
+                                        return false;
+                                    }
+                                    for (let i = 0; i <= 9; i++) {
+                                        if (pincode.indexOf(i.toString().repeat(6)) !== -1) {
+                                            return false;
+                                        }
+                                    }
+                                    return pincode.trim() !== '';
+                                }
+                            });
+
+
+
+                            
+
+                            ////////////////////// JavaScript code to toggle the description based on radio button selection/////////////////////////
+                            const radioButtonCOD = document.getElementById("f-option5");
+                            const radioButtonOnline = document.getElementById("f-option6");
+                            const radioButtonWallet = document.getElementById("f-option7");
+                            const descriptionCOD = document.getElementById("description-cod");
+                            const descriptionOnline = document.getElementById("description-online");
+                            const descriptionWallet = document.getElementById("description-wallet");
+
+                            radioButtonCOD.addEventListener("click", function () {
+                                if (radioButtonCOD.checked) {
+                                    descriptionCOD.style.display = "block"; // Show the COD description
+                                    descriptionOnline.style.display = "none"; // Hide the online payment description
+                                    descriptionWallet.style.display = "none"; // Hide the wallet payment description
+                                }
+                            });
+
+                            radioButtonOnline.addEventListener("click", function () {
+                                if (radioButtonOnline.checked) {
+                                    descriptionOnline.style.display = "block"; // Show the online payment description
+                                    descriptionCOD.style.display = "none"; // Hide the COD description
+                                    descriptionWallet.style.display = "none"; // Hide the wallet payment description
+                                }
+                            });
+
+                            radioButtonWallet.addEventListener("click", function () {
+                                if (radioButtonWallet.checked) {
+                                    descriptionWallet.style.display = "block"; // Show the wallet payment description
+                                    descriptionCOD.style.display = "none"; // Hide the COD description
+                                    descriptionOnline.style.display = "none"; // Hide the online payment description
+                                }
+                            });
+
+                        </script>
+
+                        <style>
+                            .error-message {
+                                color: red;
+                                display: none;
+                            }
+                        </style>

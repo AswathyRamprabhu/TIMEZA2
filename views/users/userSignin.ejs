@@ -1,0 +1,71 @@
+<%- include('../layouts/landingHeader.ejs') %>
+
+
+	<!-- Start Banner Area -->
+	<section class="banner-area organic-breadcrumb">
+		<div class="container">
+			<div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+				<div class="col-first">
+					<h1 style="background-color: black; color: white; padding: 10px;">Signin/Register</h1>
+					<nav class="d-flex align-items-center">
+
+					</nav>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- End Banner Area -->
+
+	<!--================Login Box Area =================-->
+	<section class="login_box_area section_gap">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-6">
+					<div class="login_box_img">
+						<img class="img-fluid" src="img/login.jpg" alt="loginimg">
+						<div class="hover">
+							<h4>New to our website?</h4>
+							<p>Explore Great Offers & Hot Deals! <br>Check out for more!!</p>
+							<a class="primary-btn" href="/signup">Create an Account</a>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-6">
+					<div class="login_form_inner">
+						<h3>Sign in to enter</h3>
+						<form class="row login_form" action="/signin" method="POST" id="loginform">
+							<div class="col-md-12 form-group">
+								<input type="typeEmailX" class="form-control" id="email" name="email"
+									placeholder="Email" onfocus="this.placeholder = ''"
+									onblur="this.placeholder = 'Email'">
+								<span id="emailError" style="color: red;;"></span>
+							</div>
+							<div class="col-md-12 form-group">
+								<input type="password" class="form-control" id="password" name="password"
+									placeholder="Password" onfocus="this.placeholder = ''"
+									onblur="this.placeholder = 'Password'">
+								<span id="passwordError" style="color: red;"></span>
+							</div>
+
+							<div class="col-md-12 form-group">
+								<button type="submit" value="submit" class="primary-btn">Sign In</button>
+								<a href="/forgotpassword">Forgot Password?</a>
+							</div>
+
+							<div class="error-message" style="color: rgb(218, 15, 15);  ">
+								<strong>
+									<%= error %>
+								</strong>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!--================End Login Box Area =================-->
+
+
+	<script src="javascripts/signinValidation.js"></script>
+
+	<%- include('../layouts/userFooter.ejs') %>

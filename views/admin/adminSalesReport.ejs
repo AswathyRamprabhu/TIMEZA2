@@ -1,0 +1,119 @@
+<%- include('../layouts/adminHeader.ejs') %>
+
+    <section class="content-main">
+        <div class="card mb-4">
+            <header class="card-header">
+                <h2 class="card-title">Sales Reports</h2>
+                <div class="filter-section">
+                    <form action="/admin/salesreport" method="GET">
+                        <div class="date-range">
+                            <span>From</span>
+                            <input name="from" type="date" value="<%= from %>" class="form-control">
+                        </div>
+                        <div class="date-range">
+                            <span>To</span>
+                            <input name="to" type="date" value="<%= to %>" class="form-control">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Generate Report</button>
+                    </form>
+                </div>
+                <div class="download-links">
+                    <a class="download-link" href="/admin/reports/sales/download/excel?from=<%= from %>&to=<%= to %>">
+                        <div class="download-button">
+                            <span class="download-icon">
+                                <i class="fas fa-file-excel"></i>
+                            </span>
+                            <span class="download-text">Download Excel</span>
+                        </div>
+                    </a>
+                    <a class="download-link" href="/admin/reports/sales/download/pdf?from=<%= from %>&to=<%= to %>">
+                        <div class="download-button">
+                            <span class="download-icon">
+                                <i class="fas fa-file-pdf"></i>
+                            </span>
+                            <span class="download-text">Download PDF</span>
+                        </div>
+                    </a>
+                </div><br><br>
+
+                <div class="date-range-links">
+                    <% dateRanges.forEach(function(item) { %>
+                        <a class="date-range-link" href="/admin/salesreport?from=<%= item.from %>&to=<%= item.to %>">
+                            <div class="date-range-button">
+                                <span class="date-range-text">
+                                    <%= item.text %>
+                                </span>
+                            </div>
+                        </a>
+                        <% }) %>
+                </div>
+
+            </header>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table align-middle table-nowrap">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="align-middle" scope="col">Order ID</th>
+                                <th class="align-middle" scope="col">Billing Name</th>
+                                <th class="align-middle" scope="col">Date</th>
+                                <th class="align-middle" scope="col">Total</th>
+                                <th class="align-middle" scope="col">Payment Method</th>
+                                <th class="align-middle" scope="col">View Details</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% orders.forEach(function(item) { %>
+                                <tr>
+                                    <td>
+                                        <%= item.humanReadableID %>
+                                    </td>
+                                    <td><b>
+                                            <%= item.user.name %>
+                                        </b></td>
+                                    <td>
+                                        <%= new Date(item.createdAt).toLocaleDateString("en-GB") %>
+                                    </td>
+                                    <td>₹
+                                        <% if (item.coupon && item.totalAmount>=
+                                            item.coupon.minimumAmount) { %>
+                                            <%= item.finalPrice %>
+                                                <% } else { %>
+                                                    <%= item.totalAmount %>
+                                                        <% } %>
+                                    </td>
+                                    <td><span class="badge rounded-pill alert-warning text-capitalize">
+                                            <%= item.paymentMode %>
+                                        </span></td>
+                                    <td class="">
+                                        <a href="/admin/order/edit?_id=<%= item._id %>"
+                                            class="btn btn-primary">Detail</a>
+                                    </td>
+                                </tr>
+                                <% }); %>
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+            <div class="pagination-area">
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-start">
+                        <% for(let i=1; i<=totalPages;i++) { %>
+                            <% if(i===currentPage){ %>
+                                <li class="page-item active"><a class="page-link" href="#">
+                                        <%= i %>
+                                    </a></li>
+                                <% } else { %>
+                                    <li class="page-item"><a class="page-link" href="/admin/salesreport?page=<%= i %>">
+                                            <%= i %>
+                                        </a></li>
+                                    <% } %>
+                                        <% } %>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </section>
+
+    <%- include('../layouts/adminFooter.ejs') %>

@@ -1,0 +1,245 @@
+<% if (typeof isUpdated !=='undefined' && isUpdated) { %>
+  <script>
+    Swal.fire({
+      icon: 'info',
+      title: 'Profile Updated',
+      showConfirmButton: true,
+    });
+  </script>
+  <% } %>
+
+    <%- include('../layouts/userHeader.ejs') %>
+
+      <section
+        style="background-color: #eee; display: flex; flex-direction: column; align-items: center; min-height: 100vh; padding: 100px 0;">
+        <!-- Add top padding to prevent content from being hidden by the navbar -->
+        <div class="container" style="padding-top: 140px;">
+          <div class="row">
+            <div class="col-lg-4">
+              <div class="card mb-4">
+                <div class="card-body text-center">
+                  <img src="/img/user.png" alt="avatar" class="rounded-circle img-fluid" style="width: 150px;">
+                  <h5 class="my-3">
+                    <%= user.name %>
+                  </h5>
+                  <h5 class="my-3">
+                    <%= user.email %>
+                  </h5>
+                  <h5 class="my-3">
+                    <%= user.phonenumber %>
+                  </h5>
+                </div>
+              </div>
+            </div>
+
+            <form action="/userprofile" method="POST" id="userprofileform">
+              <div class="row mt-3">
+                <div class="col-md-6">
+                  <div class="inputbox mt-3 mr-2">
+                    <input type="text" name="name" class="form-control" required="required" value="<%= user.name %>">
+                    User Name
+                    <span class="error-message" id="name-error"></span>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="inputbox mt-3 mr-2">
+                    <input type="text" name="phonenumber" class="form-control" required="required"
+                      value="<%= user.phonenumber %>">
+                    Mobile Number
+                    <span class="error-message" id="phonenumber-error"></span>
+                  </div>
+                </div>
+              </div>
+              <!-- The email field is displayed as readonly -->
+              <div class="row mt-3">
+                <div class="col-md-6">
+                  <div class="inputbox mt-3 mr-2">
+                    <input type="text" name="email" class="form-control" required="required" value="<%= user.email %>"
+                      readonly style="width: 300px;"> User Email
+                  </div>
+                </div>
+              </div>
+
+              <br>
+              <button class="genric-btn success" type="submit"
+                style="background-color: #080808; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;">UPDATE
+                USER</button>
+              <a href="/forgotpassword" class="genric-btn success"
+                style="background-color: #fffdfd; color: rgb(6, 6, 6); padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; text-decoration: none; margin-left: 10px;">RESET
+                PASSWORD</a>
+            </form>
+
+          </div>
+
+          <style>
+            /* Style for the "ADDRESS INFORMATION" heading */
+            h5.text-uppercase {
+              color: #333;
+              /* Heading color */
+            }
+
+            /* Style for each address item */
+            .border-2 {
+              border: 2px solid #080909;
+              /* Border color */
+              padding: 20px;
+              margin: 10px;
+              background-color: #f5f5f5;
+              /* Background color */
+              border-radius: 10px;
+            }
+
+            /* Style for labels */
+            h6.font-weight-bold {
+              color: #050505;
+              /* Label color */
+            }
+
+            /* Style for the "ADD ADDRESS" button */
+            .genric-btn.success-border {
+              background-color: #fefefe;
+              /* Button background color */
+              color: rgb(11, 11, 11);
+              /* Button text color */
+              border: none;
+              border-radius: 5px;
+              padding: 10px 20px;
+              cursor: pointer;
+              font-size: 16px;
+              text-decoration: none;
+            }
+
+            /* Hover effect for the button */
+            .genric-btn.success-border:hover {
+              background-color: #555756;
+              /* Hover background color */
+            }
+
+            .error-message {
+              color: red;
+              display: none;
+            }
+          </style>
+
+          <!-- Your HTML content with the styled elements -->
+          <h5 class="text-uppercase mt-4">ADDRESS INFORMATION</h5>
+          <div class="mt-4 mb-4 d-flex flex-wrap justify-content-between">
+            <% user.address.forEach(function(item, index) { %>
+              <div class="border-2 p-3">
+                <h6 class="font-weight-bold">Address:</h6>
+                <p>
+                  <%= item.address %>
+                </p>
+                <h6 class="font-weight-bold">City:</h6>
+                <p>
+                  <%= item.city %>
+                </p>
+                <h6 class="font-weight-bold">State:</h6>
+                <p>
+                  <%= item.state %>
+                </p>
+                <h6 class="font-weight-bold">Pincode:</h6>
+                <p>
+                  <%= item.pincode %>
+                </p>
+                <a href="/removeaddress?addressId=<%= item._id %>">
+                  <button class="btn btn-danger"
+                    style="background-color: #eee; color: #050505; border-color: #080808;">X</button>
+                </a>
+                <a href="/editaddress/<%= item._id %>">
+                  <button
+                    style="height: 39px; width: 40px; background-color: #090a0a; border: none; border-radius: 5px; color: #eee; margin-left: 30px;">
+                    <i class="fas fa-pencil-alt"></i> <!-- Replace with the pencil icon you want -->
+                  </button>
+                </a>
+
+
+
+              </div>
+
+              </a>
+              <% }); %>
+                <a href="/addaddress" class="text-decoration-none">
+                  <button class="genric-btn success-border mt-2">+ ADD ADDRESS</button>
+                </a>
+
+                <% if (cartVolume> 0) { %>
+                  <a href="/checkout" class="text-decoration-none">
+                    <button class="genric-btn success-border mt-2">CHECKOUT</button>
+                  </a>
+                  <% } %>
+          </div>
+
+        </div>
+      </section>
+
+      <%- include('../layouts/userFooter.ejs') %>
+
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+        <script>
+          document.addEventListener('DOMContentLoaded', function () {
+            const nameInput = document.querySelector('input[name="name"]');
+            const nameError = document.getElementById('name-error');
+            const phonenumberInput = document.querySelector('input[name="phonenumber"]');
+            const phonenumberError = document.getElementById('phonenumber-error');
+            const form = document.getElementById('userprofileform'); // Add the form element
+
+            form.addEventListener('submit', function (event) {
+              // Check input validity when the form is submitted
+              if (!isValidName(nameInput.value) || !isValidPhoneNumber(phonenumberInput.value)) {
+                event.preventDefault(); // Prevent form submission
+                // Display error messages (if any)
+                if (!isValidName(nameInput.value)) {
+                  nameError.textContent = 'Name must begin with a capital letter and contain only letters';
+                  nameError.style.display = 'block';
+                }
+                if (!isValidPhoneNumber(phonenumberInput.value)) {
+                  phonenumberError.textContent = 'Invalid mobile number';
+                  phonenumberError.style.display = 'block';
+                }
+              }
+            });
+
+            nameInput.addEventListener('input', function () {
+              if (!isValidName(nameInput.value)) {
+                nameError.textContent = 'Name must begin with a capital letter and contain only letters';
+                nameError.style.display = 'block';
+              } else {
+                nameError.style.display = 'none';
+              }
+            });
+
+            phonenumberInput.addEventListener('input', function () {
+              if (!isValidPhoneNumber(phonenumberInput.value)) {
+                phonenumberError.textContent = 'Invalid mobile number';
+                phonenumberError.style.display = 'block';
+              } else {
+                phonenumberError.style.display = 'none';
+              }
+            });
+
+            function isValidName(name) {
+              const namePattern = /^[A-Z][a-zA-Z\s]*$/; // Allow spaces with \s
+              return namePattern.test(name);
+            }
+
+
+            function isValidPhoneNumber(phonenumber) {
+              const phoneNumberPattern = /^\d{10}$/;
+              if (!phoneNumberPattern.test(phonenumber)) {
+                return false;
+              }
+              for (let i = 0; i <= 9; i++) {
+                if (phonenumber.indexOf(i.toString().repeat(10)) !== -1) {
+                  return false;
+                }
+              }
+              return true;
+            }
+          });
+
+
+
+        </script>

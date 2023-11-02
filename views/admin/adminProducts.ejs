@@ -1,0 +1,103 @@
+<%- include('../layouts/adminHeader.ejs') %>
+
+    <section class="content-main">
+        <div class="content-header">
+            <div>
+                <h2 class="content-title card-title">Products List</h2>
+                <!-- <p>Lorem ipsum dolor sit amet.</p> -->
+            </div>
+            <div>
+                <a href="/admin/addproduct" class="btn btn-primary btn-sm rounded">Create new</a>
+            </div>
+        </div>
+
+        <!-- <div class="col-md-9"> -->
+
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <!-- <th>ID</th> -->
+                                    <th style="width: 20%;">Product Image</th>
+                                    <th style="width: 20%;">Product name</th>
+                                    <th style="width: 20%;">Product Category</th>
+                                    <th style="width: 20%;">MRP</th>
+                                    <th style="width: 20%;">Offer Price</th>
+                                    <th style="width: 20%;">Stock</th>
+                                    <th style="width: 20%;">Status</th>
+
+                                    <!-- <th>Slug</th>
+                                <th>Order</th> -->
+                                    <th class="text-end" style="width: 10%;">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% data.forEach(function(item) { %>
+                                    <tr>
+                                        <td>
+                                            <img src="/uploadProductImage/<%= item.image?.[0] %>" alt="item"
+                                                height="70px">
+                                        </td>
+                                        <td>
+                                            <%= item.productname %>
+                                        </td>
+                                        <!-- <td><%= item.description %></td> -->
+                                        <td>
+                                            <%= item.categoryname.categoryname %>
+                                        </td>
+                                        <td>
+                                            <%= item.mrp %>
+                                        </td>
+                                        <td>
+                                            <%= item.price %>
+                                        </td>
+                                        <td>
+                                            <%= item.stock %>
+                                        </td>
+                                        <td>
+                                            <%= item.status %>
+                                        </td>
+
+                                        <td class="text-end">
+
+                                            <a href="/admin/editproduct?_id=<%= item._id %>">
+                                                <button class="btn btn-primary">Edit</button>
+                                            </a>
+                                            <a href="/admin/deleteproduct?_id=<%= item._id %>">
+                                                <button class="btn btn-primary"
+                                                    style="background-color: red;">Delete</button>
+                                            </a>
+
+                                        </td>
+                                    </tr>
+
+                                    <% }); %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div> <!-- .row // -->
+            </div> <!-- card body .// -->
+        </div> <!-- card .// -->
+
+
+
+
+        <div class="pagination-area mt-30 mb-50">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-start">
+                    <li class="page-item active"><a class="page-link" href="#">01</a></li>
+                    <li class="page-item"><a class="page-link" href="#">02</a></li>
+                    <li class="page-item"><a class="page-link" href="#">03</a></li>
+                    <li class="page-item"><a class="page-link dot" href="#">...</a></li>
+                    <li class="page-item"><a class="page-link" href="#">16</a></li>
+                    <li class="page-item"><a class="page-link" href="#"><i
+                                class="material-icons md-chevron_right"></i></a></li>
+                </ul>
+            </nav>
+        </div>
+    </section> <!-- content-main end// -->
+
+    <%- include('../layouts/adminFooter.ejs') %>

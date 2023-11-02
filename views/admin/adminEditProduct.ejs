@@ -1,0 +1,322 @@
+<%- include('../layouts/adminHeader.ejs') %>
+
+  <section class=" gradient-custom">
+    <div class="content-header">
+      <div class="container py-5 h-100">
+        <div class="row justify-content-center align-items-center h-100">
+          <div class="col-12 col-lg-9 col-xl-7">
+            <div class="card shadow-2-strong card-registration" style="border-radius: 15px">
+              <div class="card-body p-4 p-md-5">
+                <h3 class="mb-4 pb-2 pb-md-0 mb-md-5">Edit Products</h3>
+                <form id="productForm" action="/admin/editproduct?_id=<%= products._id %>" method="POST"
+                  enctype="multipart/form-data">
+                  <div class="row">
+                    <div class="col-md-6 mb-4">
+                      <input name="id" value="<%= products._id %>" hidden />
+                      <div class="form-outline">
+                        <label class="form-label" for="productName">Product Name</label>
+                        <input type="text" id="productName" class="form-control form-control-lg"
+                          value="<%= products.productname %>" name="productname" />
+                        <span class="error-message" id="productname-error"></span>
+                      </div>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                      <div class="form-outline">
+                        <label class="form-label" for="categoryname">Product Category</label>
+
+                        <div class="col-12">
+                          <select class="select form-control-lg" name="categoryname">
+                            <% category.forEach(function(item) { %>
+                              <% if (products.categoryname._id.toString()===item._id.toString()) { %>
+                                <option value="<%= item._id%>" selected>
+                                  <%= item.categoryname %>
+                                </option>
+                                <% } else { %>
+                                  <option value="<%= item._id %>">
+                                    <%= item.categoryname %>
+                                  </option>
+                                  <% } %>
+                                    <% }); %>
+                          </select>
+                        </div>
+
+
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-6 mb-4 d-flex align-items-center"></div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-6 mb-4 pb-2">
+                      <div class="form-outline">
+                        <label class="form-label" for="description">Product Description</label>
+                        <input type="text" id="description" class="form-control form-control-lg"
+                          value="<%= products.description %>" name="description" />
+                        <span class="error-message" id="description-error"></span>
+                      </div>
+                    </div>
+                    <div class="col-md-6 mb-4 pb-2">
+                      <div class="form-outline">
+                        <label class="form-label" for="mrp">MRP</label>
+                        <input type="number" id="mrp" class="form-control form-control-lg" value="<%= products.mrp %>"
+                          name="mrp" />
+                        <span class="error-message" id="mrp-error"></span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6 mb-4 pb-2">
+                      <div class="form-outline">
+                        <label class="form-label" for="price">Offer Price</label>
+                        <input type="number" id="price" value="<%= products.price %>" name="price"
+                          class="form-control form-control-lg" readonly />
+                        <span class="error-message" id="price-error"></span>
+                      </div>
+                    </div>
+
+                    <div class="col-md-6 mb-4 pb-2">
+                      <div class="form-outline">
+                        <label class="form-label" for="addimage">Add images</label>
+                        <input type="file" name="file" accept="image/*" multiple />
+                        <div>
+                          <% if (products.image) { %>
+                            <% products.image.forEach(function(item) { %>
+                              <div>
+                                <img src="/uploadProductImage/<%= item %>" height="50px" />
+                                <button data-id="<%= item %>" class="removeImagesButton ms-4">Remove Image</button>
+                              </div>
+                              <% }); %>
+                                <% } %>
+
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+
+                    <div class="col-md-6 mb-4 pb-2">
+                      <div class="form-outline">
+                        <label class="form-label" for="price">Stock</label>
+                        <input type="number" id="stock" value="<%= products.stock %>" name="stock"
+                          class="form-control form-control-lg" />
+                        <span class="error-message" id="stock-error"></span>
+                      </div>
+
+                      <div class="col-md-6 mb-4 pb-2">
+                        <div class="form-outline">
+                          <label class="form-label" for="offerprice">Product Offer</label>
+                          <input type="number" id="productOffer" value="<%=products.productOffer%>" name="productOffer"
+                            class="form-control form-control-lg" />
+                          <span class="error-message" id="productOffer-error"></span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-12">
+                      <select class="select form-control-lg" name="status">
+                        <option value="Listed" <%=products.status==='Listed' ? 'selected' : '' %>>Listed</option>
+                        <option value="Delisted" <%=products.status==='Delisted' ? 'selected' : '' %>>Delisted</option>
+                      </select>
+                    </div>
+
+
+                  </div>
+
+                  <div class="mt-4 pt-2">
+                    <button class="btn btn-primary btn-lg" type="submit">
+                      Submit
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <%- include('../layouts/adminFooter.ejs') %>
+
+    <script>
+      const button = document.querySelectorAll('.removeImagesButton')
+      button.forEach(item => {
+
+        item.addEventListener('click', function (e) {
+
+          const file = e.target.getAttribute("data-id")
+
+          fetch('/admin/removeimages', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ id: '<%= products._id %>', file }) // Assuming you have access to the product ID in your EJS template
+          })
+            .then(response => response.json())
+            .then(data => {
+              // Handle the response data, such as displaying a success message
+              if (data.success) { location.reload(true) }
+
+            })
+            .catch(error => {
+              // Handle any error that occurred during the request
+              console.error(error);
+            });
+
+        })
+      });
+    </script>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        const productForm = document.getElementById('productForm');
+        const productnameInput = document.querySelector('input[name="productname"]');
+        const productnameError = document.getElementById('productname-error');
+        const descriptionInput = document.querySelector('input[name="description"]');
+        const descriptionError = document.getElementById('description-error');
+        const mrpInput = document.querySelector('input[name="mrp"]');
+        const mrpError = document.getElementById('mrp-error');
+        const priceInput = document.querySelector('input[name="price"]');
+        const priceError = document.getElementById('price-error');
+        const productOfferInput = document.querySelector('input[name="productOffer"]');
+        const productOfferError = document.getElementById('productOffer-error');
+
+
+        const stockInput = document.querySelector('input[name="stock"]');
+        const stockError = document.getElementById('stock-error');
+
+        productForm.addEventListener('submit', function (event) {
+          // Check if any field is empty and validate
+          let isValid = true; // Add this flag to track overall form validity
+
+          if (!isValidProductName(productnameInput.value)) {
+            productnameError.textContent = 'Invalid input';
+            productnameError.style.display = 'block';
+            isValid = false;
+          } else {
+            productnameError.style.display = 'none'; // Corrected the typo here
+          }
+
+          if (!isValidDescription(descriptionInput.value)) {
+            descriptionError.textContent = 'Invalid input';
+            descriptionError.style.display = 'block';
+            isValid = false;
+          } else {
+            descriptionError.style.display = 'none'; // Corrected the typo here
+          }
+
+          if (!isValidMrp(mrpInput.value)) {
+            mrpError.textContent = 'Invalid input';
+            mrpError.style.display = 'block';
+            isValid = false;
+          } else {
+            mrpError.style.display = 'none'; // Corrected the typo here
+          }
+
+
+
+          if (!isValidStock(stockInput.value)) {
+            stockError.textContent = 'Invalid input';
+            stockError.style.display = 'block';
+            isValid = false;
+          } else {
+            stockError.style.display = 'none'; // Corrected the typo here
+          }
+
+          if (!isValidProductOffer(productOfferInput.value)) {
+            productOfferError.textContent = 'Invalid input';
+            productOfferError.style.display = 'block';
+            isValid = false;
+          } else {
+            productOfferError.style.display = 'none'; // Corrected the typo here
+          }
+
+
+          // Prevent form submission if any field is invalid
+          if (!isValid) {
+            event.preventDefault(); // Prevent form submission
+          }
+        });
+
+        const productName = productData[0];
+        function isValidProductName(productname) {
+          const productnamePattern = /^[A-Za-z\s]{1,50}$/;
+          return productnamePattern.test(productname);
+        }
+
+
+
+        function isValidDescription(description) {
+          // Check if the input is not empty and contains the allowed characters
+          const descriptionPattern = /^[A-Za-z0-9\s!@#$%^&*()_+-=,.<>;:'"\\/{}[\]]*$/;
+          return description.trim() !== '' && descriptionPattern.test(description);
+        }
+
+
+        function isValidMrp(mrp) {
+          // Check if the input is not empty and is a number
+          if (mrp.trim() === '' || isNaN(mrp)) {
+            return false;
+          }
+
+          // Parse the input as an integer
+          const parsedMrp = parseInt(mrp);
+
+          // Check if it's a number, within the specified range
+          return parsedMrp >= 1000 && parsedMrp <= 30000;
+        }
+
+
+
+        function isValidProductOffer(productOffer) {
+          // Check if the input is not empty and is a number
+          if (productOffer.trim() === '' || isNaN(productOffer)) {
+            return false;
+          }
+
+          // Parse the inputs as integers
+          // Parse the input as an integer
+          const parsedProductOffer = parseInt(productOffer);
+
+          // Check if it's a number, within the specified range
+          return parsedProductOffer >= 0 && parsedProductOffer <= 30000;
+        }
+
+
+
+
+
+
+        function isValidStock(stock) {
+          // Check if the input is not empty and is a number
+          if (stock.trim() === '' || isNaN(stock)) {
+            return false;
+          }
+
+          // Parse the input as an integer
+          const parsedStock = parseInt(stock);
+
+          // Check if stock is within the specified range
+          return parsedStock >= 0 && parsedStock <= 50;
+        }
+
+
+
+
+
+
+      });
+
+    </script>
+
+    <style>
+      .error-message {
+        color: red;
+        display: none;
+      }
+    </style>

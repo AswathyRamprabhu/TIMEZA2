@@ -1,0 +1,238 @@
+<%- include('../layouts/adminHeader.ejs') %>
+
+  <section class="content-main">
+    <div class="content-header"
+      style="background-color: #f0f0f0; color: #333; padding: 20px; border-radius: 5px; text-align: center; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
+      <div style="margin: 0 auto; max-width: 400px; text-align: center;">
+        <h2 class="content-title card-title" style="font-size: 24px; margin-bottom: 10px;">Order Information</h2>
+        <p style="font-size: 16px; margin: 0;">Details for Order ID: <%= order.humanReadableID %>
+        </p>
+      </div>
+    </div>
+
+
+
+
+
+    <div class="card order-card"
+      style="margin: 20px; padding: 20px; border-radius: 10px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
+      <header class="card-header">
+        <div class="order-header">
+          <div class="order-details">
+
+            <p class="order-date" style="margin-top: 10px;">Order Date: <%= new
+                Date(order.createdAt).toLocaleString('en-US', { weekday: 'short' , month: 'short' , day: 'numeric' ,
+                year: 'numeric' , hour: 'numeric' , minute: 'numeric' , hour12: true }) %>
+            </p>
+            <% if (order.orderStatus==='pending' || order.orderStatus==='placed' ) { %>
+              <p class="scheduled-delivery"
+                style="margin-top: 10px; color: darkgreen; font-weight: bold; font-size: 18px;">
+                <i class="material-icons md-local_shipping" style="font-size: 24px; vertical-align: middle;"></i>
+                Scheduled Delivery Date: <%= new Date(order.createdAt.getTime() + 5 * 24 * 60 * 60 *
+                  1000).toLocaleString('en-US', { weekday: 'short' , month: 'short' , day: 'numeric' , year: 'numeric'
+                  }) %>
+              </p>
+              <% } %>
+
+
+
+          </div>
+          <form action="/admin/admineditorder" method="POST">
+            <input name="id" value="<%= order._id %>" hidden />
+            <div class="order-status">
+              <select name="status" class="order-status-select" style="width: 150px;">
+                <option value="pending" <%=order.orderStatus==='pending' ? 'selected' : '' %>>Pending</option>
+                <option value="Cancelled" <%=order.orderStatus==='Cancelled' ? 'selected' : '' %>>Cancelled</option>
+                <option value="placed" <%=order.orderStatus==='placed' ? 'selected' : '' %>>Placed</option>
+                <option value="Delivered" <%=order.orderStatus==='Delivered' ? 'selected' : '' %>>Delivered</option>
+              </select>
+              <button class="btn btn-primary save-button" type="submit" style="margin-left: 10px;">Save</button>
+            </div>
+          </form>
+        </div>
+      </header>
+
+      <div class="card-body">
+        <div class="customer-info" style="display: flex; align-items: center; margin-top: 20px;">
+          <div class="customer-icon"
+            style="background-color: #007bff; color: #fff; border-radius: 50%; width: 40px; height: 40px; display: flex; justify-content: center; align-items: center; margin-right: 15px;">
+            <i class="material-icons md-person"></i>
+          </div>
+          <div class="customer-details">
+            <h6 class="customer-title" style="font-size: 18px; margin-bottom: 5px;">Customer</h6>
+            <p class="customer-name" style="margin: 0;">
+              <%= order.user.name %>
+            </p>
+            <p class="customer-email" style="margin: 0;">
+              <%= order.user.email %>
+            </p>
+            <p class="customer-phone" style="margin: 0;">
+              <%= order.user.phonenumber %>
+            </p>
+          </div>
+        </div>
+
+        <div class="delivery-info" style="display: flex; align-items: center; margin-top: 20px;">
+          <div class="delivery-icon"
+            style="background-color: #007bff; color: #fff; border-radius: 50%; width: 40px; height: 40px; display: flex; justify-content: center; align-items: center; margin-right: 15px;">
+            <i class="material-icons md-place"></i>
+          </div>
+          <div class="delivery-details">
+            <h6 class="delivery-title" style="font-size: 18px; margin-bottom: 5px;">Deliver to</h6>
+            <p class="delivery-address" style="margin: 0;">City: <%= order.address.city %>, <%= order.address.state %>
+            </p>
+            <p class="delivery-address" style="margin: 0;">
+              <%= order.address.address %>
+            </p>
+            <p class="delivery-pincode" style="margin: 0;">
+              <%= order.address.pincode %>
+            </p>
+          </div>
+        </div>
+
+        <div class="order-info" style="display: flex; align-items: center; margin-top: 20px;">
+          <div class="order-icon"
+            style="background-color: #007bff; color: #fff; border-radius: 50%; width: 40px; height: 40px; display: flex; justify-content: center; align-items: center; margin-right: 15px;">
+            <i class="material-icons md-shopping_cart"></i>
+          </div>
+          <div class="order-details">
+            <h6 class="order-title" style="font-size: 18px; margin-bottom: 5px;">Order Info</h6>
+            <% if (order.coupon && order.totalAmount>=
+              order.coupon.minimumAmount) { %>
+              <p class="order-info" style="margin: 0;">Subtotal: ₹<%= order.totalAmount.toLocaleString('en-US', {
+                  minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>
+              </p>
+              <p class="order-info" style="margin: 0;">Discount: ₹<%=
+                  order.coupon.discountAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits:
+                  2 }) %>
+              </p>
+              <p class="order-info" style="margin: 0;">Grand Total: ₹<%= order.finalPrice.toLocaleString('en-US', {
+                  minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>
+              </p>
+              <% } else { %>
+                <p class="order-info" style="margin: 0;">Subtotal: ₹<%= order.totalAmount.toLocaleString('en-US', {
+                    minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>
+                </p>
+                <p class="order-info" style="margin: 0;">Grand Total: ₹<%= order.totalAmount.toLocaleString('en-US', {
+                    minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>
+                </p>
+                <% } %>
+                  <p class="order-info" style="margin: 0;">
+                    Status:
+                    <span class="order-status-badge"
+                      style="padding: 5px 30px; border-radius: 5px; font-weight: bold; text-transform: uppercase; display: inline-block; text-align: center; min-width: 120px; background-color: <%= order.orderStatus === 'pending' ? '#ffc107' : (order.orderStatus === 'Cancelled' ? '#dc3545' : (order.orderStatus === 'placed' ? '#007bff' : (order.orderStatus === 'Delivered' ? '#28a745' : '#17a2b8'))) %>; color: <%= order.orderStatus === 'Cancelled' ? '#fff' : '#000' %>;">
+                      <%= order.orderStatus %>
+                    </span>
+                  </p>
+
+
+
+          </div>
+        </div>
+
+        <div class="table-responsive" style="margin-top: 20px;">
+          <table class="table">
+            <thead>
+              <tr>
+                <th width="40%" style="width: 40%;">Product</th>
+                <th width="20%" style="width: 20%;">Unit Price</th>
+                <th width="20%" style="width: 20%;">Quantity</th>
+                <th width="20%" style="width: 20%;" class="text-end">Total</th>
+                <th width="20%" style="width: 20%;" class="text-end">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% order.items.forEach(function(item) { %>
+                <tr>
+                  <td class="product-info" style="display: flex; align-items: center;">
+                    <img src="/uploadProductImage/<%= item.productId.image[0] %>" width="40" height="40"
+                      class="product-image" style="width: 40px; height: 40px; margin-right: 10px;">
+                    <p class="product-name" style="margin: 0;">
+                      <%= item.productId.productname %>
+                    </p>
+                  </td>
+                  <td class="unit-price" style="font-size: 16px;">
+                    <%= item.price %>
+                  </td>
+                  <td class="quantity" style="font-size: 16px;">
+                    <%= item.quantity %>
+                  </td>
+                  <td class="total text-end" style="font-size: 16px;">
+                    <%= item.price %>
+                  </td>
+                  <td class="total text-end"
+                    style="font-size: 16px; color: <%= item.productOrderStatus === 'Cancelled' ? 'red' : 'inherit' %>;">
+                    <%= item.productOrderStatus %>
+                  </td>
+
+
+
+                </tr>
+                <% }) %>
+                  <tr>
+                    <td colspan="4" style="padding-top: 10px; border-top: 2px solid #ccc;">
+                      <article class="float-end">
+                        <% if (order.coupon && order.totalAmount>=
+                          order.coupon.minimumAmount) { %>
+                          <dl class="dlist">
+                            <dt>Subtotal:</dt>
+                            <dd>₹<%= order.totalAmount.toLocaleString('en-US', { minimumFractionDigits: 2,
+                                maximumFractionDigits: 2 }) %>
+                            </dd>
+                          </dl>
+                          <dl class="dlist">
+                            <dt>Discount:</dt>
+                            <dd>₹<%= order.coupon.discountAmount.toLocaleString('en-US', { minimumFractionDigits: 2,
+                                maximumFractionDigits: 2 }) %>
+                            </dd>
+                          </dl>
+                          <dl class="dlist">
+                            <dt>Grand total:</dt>
+                            <dd><b class="h5">₹<%= order.finalPrice.toLocaleString('en-US', { minimumFractionDigits: 2,
+                                  maximumFractionDigits: 2 }) %></b></dd>
+                          </dl>
+                          <% } else { %>
+                            <dl class="dlist">
+                              <dt>Subtotal:</dt>
+                              <dd>₹<%= order.totalAmount.toLocaleString('en-US', { minimumFractionDigits: 2,
+                                  maximumFractionDigits: 2 }) %>
+                              </dd>
+                            </dl>
+
+                            <dl class="dlist">
+                              <dt>Grand total:</dt>
+                              <dd><b class="h5">₹<%= order.totalAmount.toLocaleString('en-US', { minimumFractionDigits:
+                                    2, maximumFractionDigits: 2 }) %></b></dd>
+                            </dl>
+
+                            <% } %>
+                              <% if (order.orderStatus==='Cancelled' ) {%>
+                                <dl class="dlist">
+                                  <dt>Cancelled Order Total:</dt>
+                                  <dd><b class="h5">₹<%= order.cancelledPrice.toLocaleString('en-US', {
+                                        minimumFractionDigits: 2, maximumFractionDigits: 2 }) %></b></dd>
+                                </dl>
+                                <%}%>
+
+                                  <dl class="dlist">
+                                    <dt class="text-muted">Status:</dt>
+                                    <dd>
+                                      <span class="badge rounded-pill text-capitalize"
+                                        style="padding: 5px 10px; border-radius: 5px; font-weight: bold; text-transform: uppercase; display: inline-block; text-align: center; width: 100px; background-color: <%= order.orderStatus === 'pending' ? '#ffc107' : (order.orderStatus === 'Cancelled' ? '#dc3545' : (order.orderStatus === 'placed' ? '#007bff' : (order.orderStatus === 'Delivered' ? '#28a745' : '#17a2b8'))) %>; color: <%= order.orderStatus === 'Cancelled' ? 'white' : 'black' %>;">
+                                        <%= order.orderStatus %>
+                                      </span>
+
+
+                                    </dd>
+                                  </dl>
+                      </article>
+                    </td>
+                  </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <%- include('../layouts/adminFooter.ejs') %>

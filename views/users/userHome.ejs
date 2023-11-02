@@ -1,0 +1,250 @@
+<%- include('../layouts/userHeader.ejs') %>
+
+    <!-- start banner Area -->
+    <section class="banner-area">
+        <h1
+            style="text-align: center; line-height: 2; font-family: Arial, sans-serif; font-size: 25px; font-weight: regular; color: #0b0b0b ;">
+            Welcome to the Time-Za World!</h1>
+
+        <div class="container">
+            <div class="row fullscreen align-items-center justify-content-start">
+                <div class="col-lg-12">
+
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End banner Area -->
+
+    <!-- start features Area -->
+    <section class="features-area section_gap">
+        <div class="container">
+            <div class="row features-inner">
+                <!-- single features -->
+                <div class="col-lg-3 col-md-6 col-sm-6">
+                    <div class="single-features">
+                        <div class="f-icon">
+                            <img src="img/features/f-icon1.png" alt="">
+                        </div>
+                        <h6>Free Delivery</h6>
+                        <p>Free Shipping on all order</p>
+                    </div>
+                </div>
+                <!-- single features -->
+                <div class="col-lg-3 col-md-6 col-sm-6">
+                    <div class="single-features">
+                        <div class="f-icon">
+                            <img src="img/features/f-icon2.png" alt="">
+                        </div>
+                        <h6>Return Policy</h6>
+                        <p>Free Shipping on all order</p>
+                    </div>
+                </div>
+                <!-- single features -->
+                <div class="col-lg-3 col-md-6 col-sm-6">
+                    <div class="single-features">
+                        <div class="f-icon">
+                            <img src="img/features/f-icon3.png" alt="">
+                        </div>
+                        <h6>24/7 Support</h6>
+                        <p>Free Shipping on all order</p>
+                    </div>
+                </div>
+                <!-- single features -->
+                <div class="col-lg-3 col-md-6 col-sm-6">
+                    <div class="single-features">
+                        <div class="f-icon">
+                            <img src="img/features/f-icon4.png" alt="">
+                        </div>
+                        <h6>Secure Payment</h6>
+                        <p>Free Shipping on all order</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- start banner Area -->
+
+    <!-- Carousel Start -->
+    <div class="container-fluid mb-3" style="width: 2100px; height: 500px;">
+        <div class="row px-xl-5">
+            <div class="col-lg-8">
+                <div id="header-carousel" class="carousel slide carousel-fade mb-30 mb-lg-0 " data-ride="carousel">
+                    <ol class="carousel-indicators">
+                        <li data-target="#header-carousel" data-slide-to="0" class="active"></li>
+                        <% for(let i=1;i<banner.length;i++){ %>
+                            <li data-target="#header-carousel" data-slide-to="<%= i %>"></li>
+                            <% } %>
+                    </ol>
+                    <div class="carousel-inner">
+                        <div class="carousel-item position-relative active" style="height: 430px; padding-left: 30px;">
+                            <img class="position-absolute w-100 h-100" src="/uploadProductImage/<%= banner[0].images %>"
+                                style="width: 2000px; height: 1000px;">
+
+
+                        </div>
+                        <% for(let i=1;i<banner.length;i++){ %>''
+                            <div class="carousel-item position-relative" style="height: 430px; padding-left: 30px;">
+                                <img class="position-absolute w-100 h-100"
+                                    src="uploadProductImage/<%= banner[i].images %>"
+                                    style="width: 2000px; height: 1000px;">
+
+
+                            </div>
+                            <% } %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Carousel End -->
+    <div>
+        <% category.forEach(function (cat) { %>
+            <% if (cat.offerPercentage> 0) { %>
+                <marquee behavior="scroll" direction="left" scrollamount="15"
+                    style="font-weight: bold; color: rgb(255, 255, 255); background-color: rgb(12, 12, 11); font-size: 40px; white-space: nowrap; border: 1px solid #333; width: 100%; height: 50px; display: flex; align-items: center; margin-top: 20px;">
+                    Flat <%= cat.offerPercentage %>% off on <%= cat.categoryname %>'s Watches!
+                </marquee>
+                <% } %>
+                    <% }); %>
+    </div><br><br>
+
+
+
+
+
+    <!-- End banner Area -->
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 text-center">
+                <div class="section-title">
+                    <h1>Latest Products</h1>
+                    <p>Latest collections of all types of Watches available here!!!.</p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <% products.forEach(function(product) { %>
+                <% if (product.status==='Listed' ) { %>
+                    <!-- single product -->
+                    <div class="col-lg-3 col-md-6" style="margin-bottom: 20px;">
+                        <!-- Apply inline styles to control the size and spacing -->
+                        <div class="single-product" style="padding: 10px; text-align: center;
+                        border: 1px solid #ccc; border-radius: 10px ;
+                        box-shadow: 25px 25px 25px rgba(0, 0, 0, 0.2);">
+                            <div class="product-box" style="width: 100%; height: 100%; position: relative;">
+                                <% if (product.image && product.image.length> 0) { %>
+                                    <img class="img-fluid" src="/uploadProductImage/<%= product.image[0] %>" alt=""
+                                        style="max-width: 100%; max-height: 100%; margin: 0 auto;">
+                                    <% } else { %>
+                                        <img class="img-fluid" src="/default-placeholder-image.jpg" alt="Placeholder"
+                                            style="max-width: 100%; max-height: 100%; margin: 0 auto;">
+                                        <% } %>
+                                            <div class="product-details" style="padding: 10px;">
+                                                <h6>
+                                                    <%= product.productname %>
+                                                </h6>
+                                                <h7>
+                                                    <%= product.description %>
+                                                </h7>
+                                                <h7>(Inclusive of all taxes)</h7>
+                                                <div class="price">
+                                                    <h6>
+                                                        MRP ₹ <%= product.price.toLocaleString('en-IN', {
+                                                            minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>
+                                                    </h6>
+
+                                                    <h6 class="l-through">MRP ₹ <%= product.mrp.toLocaleString('en-IN',
+                                                            { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>
+                                                    </h6>
+                                                    <h6>
+                                                        <% if (product.stock===0) { %>
+                                                            <span
+                                                                style="color: red; font-size:10px; white-space: nowrap;">Out
+                                                                of
+                                                                Stock</span>
+                                                            <% }%>
+                                                </div>
+                                                <div class="prd-bottom">
+                                                    <a href="/productdetails/<%= product._id %>" class="social-info">
+                                                        <span class="ti-layers"></span>
+                                                        <p class="hover-text">compare</p>
+                                                    </a>
+                                                    <a href="/productdetails/<%= product._id %>?timestamp=<%= Date.now() %>"
+                                                        class="social-info">
+                                                        <span class="ti-more-alt"></span>
+                                                        <p class="hover-text">view more</p>
+                                                    </a>
+
+                                                    <a onclick="buttonclick('<%= product._id %>')" class="social-info">
+                                                        <p id="proId" value="<%= product._id %>" hidden></p>
+                                                        <span class="ti-heart"></span>
+
+                                                        <p class="hover-text">wishlist</p>
+                                                    </a>
+                                                </div>
+
+                                            </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- single product -->
+                    <% } %>
+                        <% }); %>
+        </div>
+
+    </div>
+
+    <div class="modal" id="addToWishlisttModal" style="display: none;">
+        <div class="modal-dialog modal-dialog-centered" style="max-width: 400px;">
+            <div class="modal-content"
+                style="border-radius: 10px; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2); background-color: #fff; color: #000;">
+                <div class="modal-body" style="padding: 20px;">
+                    <h4 style="text-align: center; font-size: 20px; color: #000;">Hooray! <br> Product added to your
+                        wishlist</h4>
+                    <div style="text-align: center; margin-top: 20px;">
+                        <button class="btn btn-primary" data-dismiss="modal"
+                            onclick="$('#addToWishlisttModal').modal('hide')"
+                            style="background-color: #000; color: #fff; border: none; border-radius: 5px; padding: 10px 20px;">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+
+
+    <script>
+        //////////////////////script to show add to cart modal//////////////////
+        function buttonclick(id) {
+            // Display the custom modal
+            $('#addToWishlisttModal').modal('show');
+
+            // Perform your AJAX request here
+            $.ajax({
+                url: '/addtowishlist',
+                method: 'post',
+                data: {
+                    productId: id
+                },
+                success: function (response) {
+                    // Handle the success response if needed
+                },
+                error: function (error) {
+                    // Handle any errors if needed
+                }
+            });
+        }
+    </script>
+
+
+
+
+    <%- include('../layouts/userFooter.ejs') %>

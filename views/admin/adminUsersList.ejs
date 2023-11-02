@@ -1,0 +1,106 @@
+<%- include('../layouts/adminHeader.ejs') %>
+
+    <section class="content-main">
+        <div class="content-header">
+            <div>
+                <h2 class="content-title card-title">Users List</h2>
+            </div>
+        </div>
+        <div class="card mb-4">
+            <header class="card-header">
+                <div class="row gx-3">
+                    <div class="col-lg-4 col-md-6 me-auto">
+                        <input type="text" placeholder="Search..." class="form-control">
+                    </div>
+                </div>
+            </header>
+            <!-- card-header end -->
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">Name</th>
+                                <th scope="col">Phonenumber</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Block/Unblock User</th>
+                            </tr>
+
+                        </thead>
+                        <tbody>
+                        <tbody>
+                            <% data.forEach(function(item) { %>
+                                <tr>
+                                    <td>
+                                        <%= item.name %>
+                                    </td>
+                                    <td>
+                                        <%= item.phonenumber %>
+                                    </td>
+                                    <td>
+                                        <%= item.email %>
+                                    </td>
+
+                                    <td>
+                                        <% if (item.isActive) { %>
+                                            <button class="btn btn-md rounded font-sm block-button"
+                                                data-id="<%= item._id%>"
+                                                style="min-width:100px; padding: 5px 10px; font-size: 12px;">Block
+                                                User</button>
+                                            <% } else { %>
+                                                <button class="btn btn-md rounded font-sm unblock-button"
+                                                    data-id="<%= item._id%>"
+                                                    style="min-width:100px; padding: 5px 10px; font-size: 12px;">Unblock
+                                                    User</button>
+                                                <% } %>
+                                    </td>
+
+
+                                </tr>
+                                <% }); %>
+                        </tbody>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <%- include('../layouts/adminFooter.ejs') %>
+
+
+        <script>
+            const button = document.querySelectorAll(".btn");
+            button.forEach((item) => {
+                item.addEventListener("click", () => {
+                    const id = item.getAttribute("data-id");
+                    const isBlockButton = item.classList.contains("block-button");
+
+                    fetch("/admin/blockunblock", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({ id: id }),
+                    })
+                        .then((response) => response.json())
+                        .then((data) => {
+                            if (data.status) {
+                                if (isBlockButton) {
+                                    item.innerHTML = "Unblock User";
+                                    item.classList.replace("block-button", "unblock-button");
+                                } else {
+                                    item.innerHTML = "Block User";
+                                    item.classList.replace("unblock-button", "block-button");
+                                }
+                            }
+                        })
+                        .catch((error) => console.error(error));
+                });
+            });
+
+
+        </script>
