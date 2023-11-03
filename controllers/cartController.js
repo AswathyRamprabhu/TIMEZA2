@@ -193,7 +193,7 @@ const userCheckOut = async (req, res) => {
     }
 
     if (canProceed) {
-      res.render("users/userCheckOut", { user, cart, category, coupon, discountAmount, couponId });
+      res.render("users/userCheckout", { user, cart, category, coupon, discountAmount, couponId });
     } else {
       res.render("users/userCart", { message: "Some products in your cart are out of stock. Please remove them before proceeding.", cart });
     }

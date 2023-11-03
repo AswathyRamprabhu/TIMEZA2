@@ -4,7 +4,7 @@ const crypto = require('crypto');
 const app = express()
 const path = require('path')
 const bodyParser = require('body-parser')
-const Swal =  require('sweetalert2')
+const Swal = require('sweetalert2')
 const bcrypt = require('bcrypt')
 const logger = require('morgan')
 const dbConnect = require('./config/dbConnection')
@@ -55,3 +55,7 @@ app.listen(3000, function () {
     console.log("Server Started at port 3000...")
 })
 module.exports = app;
+
+
+
+
