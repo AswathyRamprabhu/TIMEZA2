@@ -62,13 +62,12 @@ const adminAddProduct = async (req, res) => {
     res.setHeader('Surrogate-Control', 'no-store');
 
     let product = req.body;
-
+    product.price = product.mrp;
     await cropImage.crop(req)
     const images = req.files.map(file => file.filename);
 
     product.image = images;
     try {
-        console.log(product)
         await productModel.create(product);
         res.redirect("/admin/adminproducts");
     } catch (error) {

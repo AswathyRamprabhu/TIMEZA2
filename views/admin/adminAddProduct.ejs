@@ -60,7 +60,7 @@
                     <div class="col-md-6 mb-4 pb-2">
                       <div class="form-outline">
                         <label class="form-label" for="price">Offer Price</label>
-                        <input type="number" id="price" name="price" class="form-control form-control-lg" />
+                        <input type="number" id="price" name="price" class="form-control form-control-lg"  />
                         <span class="error-message" id="price-error"></span>
 
                       </div>
@@ -161,7 +161,7 @@
           }
 
           if (!isValidPrice(priceInput.value)) {
-            priceError.textContent = 'offer price should be ZERO';
+            priceError.textContent = 'offer price should be ZERO while adding the product';
             priceError.style.display = 'block';
             isValid = false;
           } else {
@@ -178,7 +178,7 @@
           }
 
           if (!isValidProductOffer(productOfferInput.value)) {
-            productOfferError.textContent = 'Invalid input';
+            productOfferError.textContent = 'product Offer should be ZERO while adding the product';
             productOfferError.style.display = 'block';
             isValid = false;
           } else {
@@ -195,7 +195,7 @@
         const productName = productData[0];
         function isValidProductName(productname) {
           const productnamePattern = /^[A-Za-z\s]{1,50}$/;
-          return productnamePattern.test(productname);
+          return productname.trim() !== '' && productnamePattern.test(productname);
         }
 
 
