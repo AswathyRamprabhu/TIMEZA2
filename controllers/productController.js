@@ -63,6 +63,7 @@ const adminAddProduct = async (req, res) => {
 
     let product = req.body;
     product.price = product.mrp;
+    
     await cropImage.crop(req)
     const images = req.files.map(file => file.filename);
 
