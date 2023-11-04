@@ -6,7 +6,7 @@ const categoryModel = require("../models/categoryModel");
 const categoryHelper = require('../helpers/categoryHelper')
 
 
-
+///admin side
 
 ////////////////////////////////////////////////// ADMIN SIDE CATEGORY MANAGEMENT ///////////////////////////////////////////////////////////// 
 
@@ -124,6 +124,7 @@ const adminEditCategory = async (req, res) => {
         } else if (updatedCategory.offerPercentage === 0 && product.productOffer > 0) {
           product.price = product.productOffer;
         } else {
+          
           product.price = product.mrp;
         }
       });
