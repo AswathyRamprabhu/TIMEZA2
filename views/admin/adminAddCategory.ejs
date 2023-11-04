@@ -107,7 +107,7 @@
         });
 
         function isValidCategoryName(categoryname) {
-          const categorynamePattern =/^[A-Za-z\s!@#$%^&*()_+-=,.<>;:'"\\/{}[\]]*$/;
+          const categorynamePattern = /^[A-Za-z]+$/;
           return categoryname.trim() !== '' && categorynamePattern.test(categoryname);
         }
 
