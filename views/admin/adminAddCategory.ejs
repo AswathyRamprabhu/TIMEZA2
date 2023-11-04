@@ -108,7 +108,7 @@
 
         function isValidCategoryName(categoryname) {
           const categorynamePattern =/^[A-Za-z\s!@#$%^&*()_+-=,.<>;:'"\\/{}[\]]*$/;
-          return categorynamePattern.test(categoryname) && !/^\s*$/.test(categoryname);
+          return categoryname.trim() !== '' && categorynamePattern.test(categoryname);
         }
 
 
