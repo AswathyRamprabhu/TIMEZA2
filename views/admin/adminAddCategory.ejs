@@ -108,7 +108,7 @@
 
         function isValidCategoryName(categoryname) {
           const categorynamePattern = /^[A-Za-z\s]{1,15}$/;
-          return categorynamePattern.test(categoryname);
+          return categoryname.trim() !== '' && ategorynamePattern.test(categoryname);
         }
 
         function isValidDescription(description) {
