@@ -108,8 +108,9 @@
 
         function isValidCategoryName(categoryname) {
           const categorynamePattern = /^[A-Za-z]{1,15}$/;
-          return categoryname.trim() !== '' && ategorynamePattern.test(categoryname);
+          return categorynamePattern.test(categoryname) && !/^\s*$/.test(categoryname);
         }
+
 
         function isValidDescription(description) {
           // Check if the input is not empty and contains the allowed characters
