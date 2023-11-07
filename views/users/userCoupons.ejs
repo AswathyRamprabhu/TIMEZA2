@@ -34,11 +34,12 @@
     <% } else { %>
       <div class="row">
         <% coupons.forEach(function(item) { %>
+          <% if (!item.isReferral) { %>
             <div class="col-md-6">
               <div class="card"
                 style="background-color: #363434; border: none; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
                 <div class="card-body text-center">
-                  <% if (!item.isReferral) { %>
+                 
                   <h2 class="couponcode bg-light"
                     style="font-size: 18px; padding: 10px; border-radius: 10px 10px 0 0; color: grey;"><b><%= item.code %></b></h2>
                   <p class="description" style="font-size: 14px; margin-top: 15px; color: #fff;"><%= item.description %></p>
@@ -46,7 +47,7 @@
                     class="discountAmount1"><%= item.discountAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %></span></p>
                   <p class="expire " style="font-size: 14px; color: #fff;">Coupon Expiry: <%= new
                     Date(item.expirationDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' }) %></p>
-                     <% } %>
+                   
                   <!-- Inside the forEach loop that generates coupons -->
                   <a class="apply-coupon-button btn btn-warning"
                     href="/checkout?couponCode=<%= item.code %>&discountAmount=<%= item.discountAmount %>&couponId=<%= item._id %>"
@@ -54,6 +55,7 @@
                 </div>
               </div>
             </div>
+            <% } %>
         <% }); %>
       </div>
     <% } %>
