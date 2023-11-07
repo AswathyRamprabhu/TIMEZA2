@@ -16,53 +16,47 @@
     </section>
     <!-- End banner Area -->
 
-    <!-- start features Area -->
     <section class="features-area section_gap">
         <div class="container">
             <div class="row features-inner">
-                <!-- single features -->
+                <!-- Feature 1 -->
                 <div class="col-lg-3 col-md-6 col-sm-6">
-                    <div class="single-features">
-                        <div class="f-icon">
-                            <img src="img/features/f-icon1.png" alt="">
+                    <a href="/orders">
+                        <div class="feature-card feature-card-1">
+                            <i class="ti-package fa-5x"></i>
                         </div>
-                        <h6>Free Delivery</h6>
-                        <p>Free Shipping on all order</p>
-                    </div>
+                    </a>
                 </div>
-                <!-- single features -->
+                <!-- Feature 2 -->
                 <div class="col-lg-3 col-md-6 col-sm-6">
-                    <div class="single-features">
-                        <div class="f-icon">
-                            <img src="img/features/f-icon2.png" alt="">
+                    <a href="/userprofile">
+                        <div class="feature-card feature-card-2">
+                            <i class="ti-user fa-5x"></i>
                         </div>
-                        <h6>Return Policy</h6>
-                        <p>Free Shipping on all order</p>
-                    </div>
+                    </a>
                 </div>
-                <!-- single features -->
+                <!-- Feature 3 -->
                 <div class="col-lg-3 col-md-6 col-sm-6">
-                    <div class="single-features">
-                        <div class="f-icon">
-                            <img src="img/features/f-icon3.png" alt="">
+                    <a href="/wishlist">
+                        <div class="feature-card feature-card-3">
+                            <i class="ti-heart fa-5x"></i>
                         </div>
-                        <h6>24/7 Support</h6>
-                        <p>Free Shipping on all order</p>
-                    </div>
+                    </a>
                 </div>
-                <!-- single features -->
+                <!-- Feature 4 -->
                 <div class="col-lg-3 col-md-6 col-sm-6">
-                    <div class="single-features">
-                        <div class="f-icon">
-                            <img src="img/features/f-icon4.png" alt="">
+                    <a href="/wallet">
+                        <div class="feature-card feature-card-4">
+                            <i class="ti-wallet fa-5x"></i>
                         </div>
-                        <h6>Secure Payment</h6>
-                        <p>Free Shipping on all order</p>
-                    </div>
+                    </a>
                 </div>
             </div>
         </div>
     </section>
+    
+
+
 
     <!-- start banner Area -->
 
@@ -160,9 +154,14 @@
                                                             minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>
                                                     </h6>
 
-                                                    <h6 class="l-through">MRP ₹ <%= product.mrp.toLocaleString('en-IN',
+                                                    <%if(product.price === product.mrp) {%>
+                                                        <br>
+                                                    <%} else {%>
+                                                        <h6 class="l-through">MRP ₹ <%= product.mrp.toLocaleString('en-IN',
                                                             { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>
                                                     </h6>
+                                                    <%}%>
+                                                    
                                                     <h6>
                                                         <% if (product.stock===0) { %>
                                                             <span
@@ -292,7 +291,7 @@
 
             .attractive-background {
                 background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.8)),
-                    url('your-background-image.jpg');
+                    url('');
                 /* Add an attractive background image */
                 background-size: cover;
                 background-position: center;
@@ -311,5 +310,37 @@
                 100% {
                     transform: scale(1.1);
                 }
+            }
+
+            .feature-card {
+                text-align: center;
+                padding: 20px;
+                border-radius: 10px;
+                margin: 10px;
+                color: #fff;
+                font-weight: bold;
+                transition: background-color 0.3s;
+            }
+
+            .feature-card:hover {
+                background-color: #a09f9f;
+                /* Change the background color on hover */
+            }
+
+            .feature-card-1 {
+                background-color: #000000;
+                /* Customize the background color for each feature */
+            }
+
+            .feature-card-2 {
+                background-color: #000000;
+            }
+
+            .feature-card-3 {
+                background-color: #000000;
+            }
+
+            .feature-card-4 {
+                background-color: #000000;
             }
         </style>

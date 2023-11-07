@@ -16,7 +16,7 @@
 
 
   <div class="container mt-5 px-5">
-    <% if (!coupons || coupons.length===0) { %>
+    <% if (!coupons || coupons.length === 0 ){ %>
       <div class="container-fluid mt-100">
         <div class="row">
           <div class="col-md-12 text-center">
@@ -25,50 +25,40 @@
               <div class="card-body text-center">
                 <h3 style="color: #1c1c1c; font-size: 24px;"><strong>You have no coupons!</strong></h3>
                 <!-- Add a button to go back to checkout with empty couponId -->
-                <a href="/checkout?couponCode=&discountAmount=0&couponId=" class="btn btn-primary">Go Back to
-                  Checkout</a>
+                <a href="/checkout?couponCode=&discountAmount=0&couponId=" class="btn btn-primary">Go Back to Checkout</a>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <% } else { %>
-        <div class="row">
-          <% coupons.forEach(function(item) { %>
+    <% } else { %>
+      <div class="row">
+        <% coupons.forEach(function(item) { %>
             <div class="col-md-6">
               <div class="card"
                 style="background-color: #363434; border: none; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
                 <div class="card-body text-center">
+                  <% if (!item.isReferral) { %>
                   <h2 class="couponcode bg-light"
-                    style="font-size: 18px; padding: 10px; border-radius: 10px 10px 0 0; color: grey;"><b>
-                      <%= item.code %>
-                    </b></h2>
-
-
-                  <p class="description" style="font-size: 14px; margin-top: 15px; color: #fff;">
-                    <%= item.description %>
-                  </p>
+                    style="font-size: 18px; padding: 10px; border-radius: 10px 10px 0 0; color: grey;"><b><%= item.code %></b></h2>
+                  <p class="description" style="font-size: 14px; margin-top: 15px; color: #fff;"><%= item.description %></p>
                   <p class="discountAmount" style="font-size: 16px; color: #fff;">Discount Amount: Rs.<span
-                      class="discountAmount1">
-                      <%= item.discountAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits:
-                        2 }) %>
-                    </span></p>
+                    class="discountAmount1"><%= item.discountAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %></span></p>
                   <p class="expire " style="font-size: 14px; color: #fff;">Coupon Expiry: <%= new
-                      Date(item.expirationDate).toLocaleDateString(undefined, { month: 'short' , day: 'numeric' ,
-                      year: 'numeric' }) %>
-                  </p>
+                    Date(item.expirationDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' }) %></p>
+                     <% } %>
                   <!-- Inside the forEach loop that generates coupons -->
                   <a class="apply-coupon-button btn btn-warning"
-                    href="/checkout?couponCode=<%= item.code %>&discountAmount=<%=item.discountAmount%>&couponId=<%= item._id%>"
-                    style="background-color: #ffffff; color: #000000; text-transform: uppercase; border: none; border-radius: 10px; font-weight: bold; padding: 10px 20px; margin-top: 20px; text-decoration: none;">Apply
-                    Coupon</a>
+                    href="/checkout?couponCode=<%= item.code %>&discountAmount=<%= item.discountAmount %>&couponId=<%= item._id %>"
+                    style="background-color: #ffffff; color: #000000; text-transform: uppercase; border: none; border-radius: 10px; font-weight: bold; padding: 10px 20px; margin-top: 20px; text-decoration: none;">Apply Coupon</a>
                 </div>
               </div>
             </div>
-            <% }); %>
-        </div>
-        <% } %>
+        <% }); %>
+      </div>
+    <% } %>
   </div>
+  
 
 
   <br> <br>

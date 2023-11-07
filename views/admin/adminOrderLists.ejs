@@ -72,10 +72,10 @@
 <!-- Add this at the end of your EJS template -->
 <div class="custom-pagination">
   <div class="paging">
-    <ul>
+    <ul class="pagination-list">
       <% for (let i = 1; i <= totalPages; i++) { %>
         <li class="<%= i === page ? 'active' : '' %>">
-          <a class="page-button" href="?page=<%= i %>&perPage=<%= perPage %>"><%= i %></a>
+          <a class="page-content page-button" href="?page=<%= i %>&perPage=<%= perPage %>"><%= i %></a>
         </li>
       <% } %>
       <% if (page < totalPages) { %>
@@ -86,6 +86,10 @@
     </ul>
   </div>
 </div>
+
+</div>
+
+<%- include('../layouts/adminFooter.ejs') %>
 
 <script>
   jQuery(document).ready(function() {
@@ -117,17 +121,19 @@
   .custom-pagination {
     display: flex;
     justify-content: center;
+    align-items: center;
     margin: 10px 0;
   }
 
   .custom-pagination .paging {
     list-style: none;
     padding: 0;
-    display: inline-block;
+    display: flex; /* Display list items in a row */
   }
 
   .custom-pagination .page-content {
-    display: inline;
+    display: inline-flex; /* Display page numbers in a row */
+    align-items: center; /* Align page numbers vertically in the center */
     margin-right: 5px;
   }
 
@@ -150,4 +156,5 @@
   }
 </style>
 
-<%- include('../layouts/adminFooter.ejs') %>
+
+

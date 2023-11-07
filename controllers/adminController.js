@@ -743,6 +743,27 @@ const adminEditedBanner = async (req, res) => {
 };
 
 
+/////////////////to delete banner
+const deleteBanner = async (req, res) => {
+  try {
+    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
+    res.setHeader('Surrogate-Control', 'no-store');
+
+    const bannerId = req.query._id;
+
+    // Delete the category with the specified ID
+    await bannerModel.deleteOne({ _id: bannerId });
+
+    res.redirect('/admin/bannerlist');
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send('Internal Server Error');
+  }
+}
+
+
 
 
 
@@ -764,5 +785,6 @@ module.exports = {
   adminAddbanner,
   adminAddedBanner,
   adminEditBanner,
-  adminEditedBanner
+  adminEditedBanner,
+  deleteBanner,
 }

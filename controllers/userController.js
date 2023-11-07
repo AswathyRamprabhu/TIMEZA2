@@ -1044,8 +1044,9 @@ const userAddCoupon = async (req, res) => {
     const currentDate = new Date();
     const category = await categoryModel.find();
     const coupons = await couponModel.find({
-      minimumAmount: { $lt: totalAmountInCheckout },
+      minimumAmount: { $lte: totalAmountInCheckout },
       expirationDate: { $gt: currentDate },
+      isReferral:false, 
     });
     res.render("users/userCoupons", { coupons, category });
   } catch (error) {

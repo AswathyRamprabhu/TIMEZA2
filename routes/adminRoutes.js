@@ -42,6 +42,8 @@ adminRoute.get('/addcoupon', auth.isAdminAuthorized, couponController.adminAddCo
 adminRoute.post('/addcoupon', auth.isAdminAuthorized, couponController.adminAddCouponPost); // Add a new coupon
 adminRoute.get('/coupon/edit', auth.isAdminAuthorized, couponController.adminEditCoupon); // Display coupon edit page
 adminRoute.post('/editcoupon', auth.isAdminAuthorized, couponController.adminEditCouponPost); // Edit a coupon
+adminRoute.get('/deletecoupon', auth.isAdminAuthorized, couponController.deleteCoupon); // Delete a coupon
+
 
 // Order management routes
 adminRoute.get('/adminorderlists', auth.isAdminAuthorized, adminController.adminOrderList); // Display order list
@@ -59,5 +61,7 @@ adminRoute.get('/addbanner', auth.isAdminAuthorized, adminController.adminAddban
 adminRoute.post('/addbanner', productUpload.single('images'), auth.isAdminAuthorized, adminController.adminAddedBanner); // Add a new banner
 adminRoute.get('/banner/edit', auth.isAdminAuthorized, adminController.adminEditBanner); // Display banner edit page
 adminRoute.post('/editbanner', productUpload.single('images'), auth.isAdminAuthorized, adminController.adminEditedBanner); // Edit a banner
+adminRoute.get('/deletebanner', auth.isAdminAuthorized, adminController.deleteBanner); // Delete a banner
+
 
 module.exports = adminRoute;

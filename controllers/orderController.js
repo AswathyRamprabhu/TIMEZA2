@@ -122,6 +122,7 @@ const userOrderDetails = async (req, res) => {
 
 ///////////////////////to cancel the order done by user by user itself and do wallet credit operation
 const editOrderDetails = async (req, res) => {
+  let user;
   try {
     const orderId = req.params.id;
     const action = req.query.action;

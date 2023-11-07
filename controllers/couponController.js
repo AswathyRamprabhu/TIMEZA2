@@ -57,6 +57,7 @@ const adminAddCouponPost = async (req, res) => {
     res.setHeader('Surrogate-Control', 'no-store');
 
     const couponData = req.body;
+    console.log(couponData);
     await couponModel.create(couponData);
     res.redirect("/admin/coupons");
   } catch (error) {
@@ -103,6 +104,7 @@ const adminEditCouponPost = async (req, res) => {
     updatedCoupon.minimumAmount = req.body.minimumAmount;
     updatedCoupon.expirationDate = req.body.expirationDate;
     updatedCoupon.maxRedemptions = req.body.maxRedemptions;
+    updatedCoupon.isReferral = req.body.isReferral;
 
     await updatedCoupon.save();
     res.redirect("/admin/coupons");
@@ -113,6 +115,29 @@ const adminEditCouponPost = async (req, res) => {
 
 
 
+/////////////////to delete coupon
+const deleteCoupon = async (req, res) => {
+  try {
+    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
+    res.setHeader('Surrogate-Control', 'no-store');
+
+    const couponId = req.query._id;
+
+    // Delete the category with the specified ID
+    await couponModel.deleteOne({ _id: couponId });
+
+    res.redirect('/admin/coupons');
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send('Internal Server Error');
+  }
+}
+
+
+
+
 
 module.exports = {
   adminCoupons,
@@ -120,4 +145,5 @@ module.exports = {
   adminAddCouponPost,
   adminEditCoupon,
   adminEditCouponPost,
+  deleteCoupon,
 }
