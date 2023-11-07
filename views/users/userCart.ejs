@@ -58,7 +58,6 @@
                                             <th scope="col" style="font-weight: bold;">Remove</th>
                                         </tr>
                                     </thead>
-
                                     <tbody>
 
                                         <% cart.products.forEach(function(item) { %>
@@ -299,5 +298,31 @@
                         }
 
                     </script>
+
+                    <style>
+                        /* Apply responsive styles to the table */
+                        @media (max-width: 768px) {
+                            .table-responsive table {
+                                display: block;
+                                width: 100%;
+                            }
+
+                            .table-responsive table tr {
+                                display: block;
+                                width: 100%;
+                                margin-bottom: 10px;
+                                /* Adjust the spacing between rows */
+                            }
+
+                            .table-responsive table td {
+                                display: block;
+                                text-align: center;
+                                /* Center the table data on smaller screens */
+                            }
+                        }
+                    </style>
+
+
+
 
                     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

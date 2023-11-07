@@ -67,30 +67,24 @@
     <!-- start banner Area -->
 
     <!-- Carousel Start -->
-    <div class="container-fluid mb-3" style="width: 2100px; height: 500px;">
-        <div class="row px-xl-5">
+    <div class="container-fluid mb-3">
+        <div class="row px-3 justify-content-center attractive-background">
             <div class="col-lg-8">
-                <div id="header-carousel" class="carousel slide carousel-fade mb-30 mb-lg-0 " data-ride="carousel">
+                <div id="header-carousel" class="carousel slide carousel-fade mb-3 mb-lg-0" data-ride="carousel">
                     <ol class="carousel-indicators">
                         <li data-target="#header-carousel" data-slide-to="0" class="active"></li>
-                        <% for(let i=1;i<banner.length;i++){ %>
+                        <% for(let i=1; i < banner.length; i++) { %>
                             <li data-target="#header-carousel" data-slide-to="<%= i %>"></li>
                             <% } %>
                     </ol>
                     <div class="carousel-inner">
-                        <div class="carousel-item position-relative active" style="height: 430px; padding-left: 30px;">
-                            <img class="position-absolute w-100 h-100" src="/uploadProductImage/<%= banner[0].images %>"
-                                style="width: 2000px; height: 1000px;">
-
-
+                        <div class="carousel-item active">
+                            <img src="/uploadProductImage/<%= banner[0].images %>" class="d-block w-100" alt="Slide 1">
                         </div>
-                        <% for(let i=1;i<banner.length;i++){ %>''
-                            <div class="carousel-item position-relative" style="height: 430px; padding-left: 30px;">
-                                <img class="position-absolute w-100 h-100"
-                                    src="uploadProductImage/<%= banner[i].images %>"
-                                    style="width: 2000px; height: 1000px;">
-
-
+                        <% for(let i=1; i < banner.length; i++) { %>
+                            <div class="carousel-item">
+                                <img src="uploadProductImage/<%= banner[i].images %>" class="d-block w-100"
+                                    alt="Slide <%= i + 1 %>">
                             </div>
                             <% } %>
                     </div>
@@ -98,17 +92,27 @@
             </div>
         </div>
     </div>
-    <!-- Carousel End -->
+
+
     <div>
         <% category.forEach(function (cat) { %>
             <% if (cat.offerPercentage> 0) { %>
-                <marquee behavior="scroll" direction="left" scrollamount="15"
-                    style="font-weight: bold; color: rgb(255, 255, 255); background-color: rgb(12, 12, 11); font-size: 40px; white-space: nowrap; border: 1px solid #333; width: 100%; height: 50px; display: flex; align-items: center; margin-top: 20px;">
-                    Flat <%= cat.offerPercentage %>% off on <%= cat.categoryname %>'s Watches!
+                <marquee behavior="scroll" direction="left" scrollamount="8"
+                    style="font-weight: bold; color: #f39c12; background-color: #000; font-size: 24px; white-space: nowrap; border: 2px solid #f39c12; padding: 10px; display: flex; align-items: center; margin-top: 20px; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);">
+                    <span style="animation: pulse 1s infinite alternate;">🔥</span> <span
+                        style="text-decoration: underline; font-weight: bold;">Hurry Up!</span> Flat <%=
+                        cat.offerPercentage %>% off on
+                        <span style="text-decoration: underline;">
+                            <%= cat.categoryname %>
+                        </span>'s Watches! <span style="animation: pulse 1s infinite alternate;">🔥</span>
                 </marquee>
                 <% } %>
                     <% }); %>
     </div><br><br>
+
+
+
+
 
 
 
@@ -248,3 +252,64 @@
 
 
     <%- include('../layouts/userFooter.ejs') %>
+
+        <style>
+            /* Apply responsive styles to the banner-area */
+            .banner-area {
+                background-image: url('../img/banner/banner-bg.jpg');
+                /* Add your background image here */
+                background-size: cover;
+                background-position: center;
+                padding: 100px 0;
+                text-align: center;
+            }
+
+            .banner-area h1 {
+                font-size: 2rem;
+                /* Adjust the font size as needed for different screen sizes */
+            }
+
+            .banner-area p {
+                font-size: 1rem;
+                /* Adjust the font size as needed for different screen sizes */
+            }
+
+            /* Add additional responsive CSS as needed */
+            @media (max-width: 768px) {
+                .banner-area {
+                    background-size: contain;
+                }
+
+                .banner-area h1 {
+                    font-size: 1.5rem;
+                }
+
+                .banner-area p {
+                    font-size: 0.9rem;
+                }
+            }
+
+
+            .attractive-background {
+                background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.8)),
+                    url('your-background-image.jpg');
+                /* Add an attractive background image */
+                background-size: cover;
+                background-position: center;
+                color: white;
+                /* Set text color to white for better contrast */
+                padding: 20px;
+                /* Add padding to the row for spacing */
+            }
+
+
+            @keyframes pulse {
+                0% {
+                    transform: scale(1);
+                }
+
+                100% {
+                    transform: scale(1.1);
+                }
+            }
+        </style>
