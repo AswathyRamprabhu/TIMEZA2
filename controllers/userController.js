@@ -21,12 +21,6 @@ var emailOtp;
 //////////////////to load user landing page. itwont give any any access but can see products
 const userLandingPage = async (req, res) => {
   try {
-    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-    res.setHeader('Pragma', 'no-cache');
-    res.setHeader('Expires', '0');
-    res.setHeader('Surrogate-Control', 'no-store');
-
-
     // Fetch products and populate the 'categoryname' field with 'category' model
     const products = await productModel.find().populate('categoryname');
     const categories = await categoryModel.find();
@@ -46,12 +40,6 @@ const userLandingPage = async (req, res) => {
 /////////////////user signout
 const userSignout = async (req, res) => {
   try {
-
-    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-    res.setHeader('Pragma', 'no-cache');
-    res.setHeader('Expires', '0');
-    res.setHeader('Surrogate-Control', 'no-store');
-
     // Clear the user's session and clear the history
     req.session.destroy((err) => {
       if (err) {
@@ -73,11 +61,6 @@ const userSignout = async (req, res) => {
 //////////////////to dispaly signup page
 const userSignup = async (req, res) => {
   try {
-    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-    res.setHeader('Pragma', 'no-cache');
-    res.setHeader('Expires', '0');
-    res.setHeader('Surrogate-Control', 'no-store');
-
     res.render('users/userSignup', { error: null })
   } catch (error) {
     console.log(error.message)
@@ -213,13 +196,7 @@ const userSignedup = async (req, res) => {
 
 /////////////////to sign in with some validation
 const userSigninPage = async (req, res) => {
-  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-  res.setHeader('Pragma', 'no-cache');
-  res.setHeader('Expires', '0');
-  res.setHeader('Surrogate-Control', 'no-store');
-
-
-  const { email, password } = req.body;
+   const { email, password } = req.body;
   let data = { email: email, password: password };
 
   if (!email || !password) {
@@ -265,10 +242,7 @@ const userSigninPage = async (req, res) => {
 //////////////////to  get signin in to the user home page with all access
 const userSignin = async (req, res) => {
   try {
-    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-    res.setHeader('Pragma', 'no-cache');
-    res.setHeader('Expires', '0');
-    res.setHeader('Surrogate-Control', 'no-store');
+    
 
     if (req.session.user) res.redirect("/home");
     else
@@ -284,12 +258,6 @@ const userSignin = async (req, res) => {
 ///////////////////to load user home page
 const userHome = async (req, res) => {
   try {
-
-    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-    res.setHeader('Pragma', 'no-cache');
-    res.setHeader('Expires', '0');
-    res.setHeader('Surrogate-Control', 'no-store');
-
     if (!req.session.user) res.redirect("/");
     else {
       let category = await categoryModel.find().select('offerPercentage').select('categoryname');
@@ -308,12 +276,6 @@ const userHome = async (req, res) => {
 ////////////////////to show user forgot password page
 const userForgotPassword = async (req, res) => {
   try {
-
-    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-    res.setHeader('Pragma', 'no-cache');
-    res.setHeader('Expires', '0');
-    res.setHeader('Surrogate-Control', 'no-store');
-
     res.render("users/userForgotPassword", { message: " " });
   } catch (error) {
     console.log(error.message);
@@ -368,12 +330,6 @@ const userResetPassword = async (req, res) => {
 //////////////////////////to display single product details
 const userProductDetails = async (req, res) => {
   try {
-
-    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-    res.setHeader('Pragma', 'no-cache');
-    res.setHeader('Expires', '0');
-    res.setHeader('Surrogate-Control', 'no-store');
-
     const productId = req.params.id;
     const category = await categoryModel.find();
 
@@ -396,11 +352,6 @@ const userProductDetails = async (req, res) => {
 ///////////////////////////to dispaly product list in the home page and landing page
 const userProductLists = async (req, res) => {
   try {
-    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-    res.setHeader('Pragma', 'no-cache');
-    res.setHeader('Expires', '0');
-    res.setHeader('Surrogate-Control', 'no-store');
-
     const results = await productModel.aggregate([
       {
         $group: {
@@ -464,12 +415,6 @@ const userProductLists = async (req, res) => {
 ///////////////////////to show the products based on the category
 const userCategory = async (req, res) => {
   try {
-
-    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-    res.setHeader('Pragma', 'no-cache');
-    res.setHeader('Expires', '0');
-    res.setHeader('Surrogate-Control', 'no-store');
-
     const catId = req.params.id;
     const category = await categoryModel.findOne({ _id: catId })
     const categoryname = category.categoryname
@@ -506,11 +451,6 @@ const userCategory = async (req, res) => {
 ///////////////////////////to dispaly the products based on the price
 const userSortPrice = async (req, res) => {
   try {
-    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-    res.setHeader('Pragma', 'no-cache');
-    res.setHeader('Expires', '0');
-    res.setHeader('Surrogate-Control', 'no-store');
-
     const results = await productModel.aggregate([
       {
         $group: {
@@ -595,11 +535,6 @@ const userSortPrice = async (req, res) => {
 //////////////////////to seach the products
 const userSearch = async (req, res, next) => {
   try {
-    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-    res.setHeader('Pragma', 'no-cache');
-    res.setHeader('Expires', '0');
-    res.setHeader('Surrogate-Control', 'no-store');
-
     const query = req.query.query;
     const regex = new RegExp(query, "i");
     const searchResults = await productModel.find({
@@ -632,11 +567,6 @@ const userSearch = async (req, res, next) => {
 ////////////////////to display user wishlist 
 const userWishlist = async (req, res) => {
   try {
-    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-    res.setHeader('Pragma', 'no-cache');
-    res.setHeader('Expires', '0');
-    res.setHeader('Surrogate-Control', 'no-store');
-
     const user1 = req.session.user
     const userId = req.session.user._id;
 
@@ -662,11 +592,6 @@ const userWishlist = async (req, res) => {
 //////////////////////add product to the wishlist
 const addToWishlist = async (req, res) => {
   try {
-    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-    res.setHeader('Pragma', 'no-cache');
-    res.setHeader('Expires', '0');
-    res.setHeader('Surrogate-Control', 'no-store');
-
     const userId = req.session.user._id;
     const { productId } = req.body;
 
@@ -702,11 +627,6 @@ const addToWishlist = async (req, res) => {
 ////////////////////remove product from the wishlist
 const removeFromWishlist = async (req, res) => {
   try {
-    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-    res.setHeader('Pragma', 'no-cache');
-    res.setHeader('Expires', '0');
-    res.setHeader('Surrogate-Control', 'no-store');
-
     const { wishlistId, productId } = req.params;
     // Find the cartlist document by ID
     const wishlist = await wishlistModel.findById(wishlistId);
@@ -746,11 +666,6 @@ const removeFromWishlist = async (req, res) => {
 //////////////////to display user profile
 const userProfile = async (req, res) => {
   try {
-    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-    res.setHeader('Pragma', 'no-cache');
-    res.setHeader('Expires', '0');
-    res.setHeader('Surrogate-Control', 'no-store');
-
     const category = await categoryModel.find();
     const userId = req.session.user._id;
     const user = await userModel.findById(userId);
@@ -771,11 +686,6 @@ const userProfile = async (req, res) => {
 ////////////////////to update user profile details
 const userProfileUpdated = async (req, res) => {
   try {
-    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-    res.setHeader('Pragma', 'no-cache');
-    res.setHeader('Expires', '0');
-    res.setHeader('Surrogate-Control', 'no-store');
-
     const userId = req.session.user._id;
     const name = req.body.name;
     const phonenumber = req.body.phonenumber;
@@ -807,11 +717,6 @@ const userProfileUpdated = async (req, res) => {
 ////////////////////////to display add address page
 const userAddress = async (req, res) => {
   try {
-    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-    res.setHeader('Pragma', 'no-cache');
-    res.setHeader('Expires', '0');
-    res.setHeader('Surrogate-Control', 'no-store');
-
     const category = await categoryModel.find();
     const userId = req.session.user._id;
     const user = await userModel.findById(userId);
@@ -828,11 +733,6 @@ const userAddress = async (req, res) => {
 //////////////////////to add new address
 const userAddAddress = async (req, res) => {
   try {
-    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-    res.setHeader('Pragma', 'no-cache');
-    res.setHeader('Expires', '0');
-    res.setHeader('Surrogate-Control', 'no-store');
-
     const userId = req.session.user._id;
     const address = req.body.address;
     const city = req.body.city;
@@ -878,12 +778,6 @@ const userAddAddress = async (req, res) => {
 /////////////////////////to displat edit existing address  page
 const userEditAddress = async (req, res) => {
   try {
-    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-    res.setHeader('Pragma', 'no-cache');
-    res.setHeader('Expires', '0');
-    res.setHeader('Surrogate-Control', 'no-store');
-
-
     const userId = req.session.user._id;
     const user = await userModel.findById(userId);
 
@@ -918,13 +812,6 @@ const userEditAddress = async (req, res) => {
 ///////////////////////to update existing address
 const userUpdatedAddress = async (req, res) => {
   try {
-
-    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-    res.setHeader('Pragma', 'no-cache');
-    res.setHeader('Expires', '0');
-    res.setHeader('Surrogate-Control', 'no-store');
-
-
     const userId = req.session.user._id;
     const addressId = req.query.addressId;
 
@@ -960,10 +847,7 @@ const userUpdatedAddress = async (req, res) => {
 const removeAddress = async (req, res) => {
   try {
 
-    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-    res.setHeader('Pragma', 'no-cache');
-    res.setHeader('Expires', '0');
-    res.setHeader('Surrogate-Control', 'no-store');
+    
 
 
     const userId = req.session.user._id; // Assuming you have user information in the session
@@ -997,13 +881,6 @@ const removeAddress = async (req, res) => {
 ///////////////////to add new address in the checkout page
 const addNewAddress = async (req, res) => {
   try {
-
-    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-    res.setHeader('Pragma', 'no-cache');
-    res.setHeader('Expires', '0');
-    res.setHeader('Surrogate-Control', 'no-store');
-
-
     const userId = req.session.user._id;
     const address = req.body.address;
     const city = req.body.city;
@@ -1035,11 +912,6 @@ const addNewAddress = async (req, res) => {
 ///////////////////////user side  add coupon button in checkout
 const userAddCoupon = async (req, res) => {
   try {
-    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-    res.setHeader('Pragma', 'no-cache');
-    res.setHeader('Expires', '0');
-    res.setHeader('Surrogate-Control', 'no-store');
-
     const totalAmountInCheckout = req.query.total;
     const currentDate = new Date();
     const category = await categoryModel.find();
@@ -1058,11 +930,6 @@ const userAddCoupon = async (req, res) => {
 
 //////////////////adding coupon to the checkout
 const userAddCouponpost = async (req, res) => {
-  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-  res.setHeader('Pragma', 'no-cache');
-  res.setHeader('Expires', '0');
-  res.setHeader('Surrogate-Control', 'no-store');
-
   const shouldRedirect = true;
   if (shouldRedirect) {
     res.json({ redirect: true });
@@ -1080,12 +947,6 @@ const userAddCouponpost = async (req, res) => {
 ///////////////////to display user wallet details
 const userWallet = async (req, res) => {
   try {
-
-    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-    res.setHeader('Pragma', 'no-cache');
-    res.setHeader('Expires', '0');
-    res.setHeader('Surrogate-Control', 'no-store');
-
     // Check if the user is authenticated
     if (!req.session.user) {
       return res.redirect('/home'); // Redirect to the login page or handle it as per your authentication flow
@@ -1117,11 +978,6 @@ const userWallet = async (req, res) => {
 ////////////////////////to show the user invite friend page
 const userRefer = async (req, res) => {
   try {
-    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-    res.setHeader('Pragma', 'no-cache');
-    res.setHeader('Expires', '0');
-    res.setHeader('Surrogate-Control', 'no-store');
-
     res.render('users/userReferal')
   } catch (error) {
     console.log(error.message)
@@ -1131,11 +987,6 @@ const userRefer = async (req, res) => {
 
 ///////////////////////to send the email to the friend
 const sendEmail = async (req, res) => {
-  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-  res.setHeader('Pragma', 'no-cache');
-  res.setHeader('Expires', '0');
-  res.setHeader('Surrogate-Control', 'no-store');
-
   const friendEmail = req.body.friendEmail;
   const websiteLink = 'http://localhost:3000/';
 
