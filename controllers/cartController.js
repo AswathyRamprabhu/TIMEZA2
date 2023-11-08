@@ -17,13 +17,6 @@ const Swal = require('sweetalert2')
 ///////////////to display and create user cart
 const userCart = async (req, res) => {
   try {
-
-    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-    res.setHeader('Pragma', 'no-cache');
-    res.setHeader('Expires', '0');
-    res.setHeader('Surrogate-Control', 'no-store');
-
-
     const user1 = req.session.user;
     const userId = req.session.user._id;
     const message = "Exciting items are patiently waiting in your cart for your final touch.";
@@ -167,11 +160,6 @@ const updateCart = async (req, res) => {
 ///////////////////to display checkout page
 const userCheckOut = async (req, res) => {
   try {
-    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-    res.setHeader('Pragma', 'no-cache');
-    res.setHeader('Expires', '0');
-    res.setHeader('Surrogate-Control', 'no-store');
-
     const category = await categoryModel.find();
     const userId = req.session.user._id;
     const cart = await cartModel
@@ -209,11 +197,6 @@ const userCheckOut = async (req, res) => {
 //////////////////to update the datas related to products and chose the payment ro place the order make payment
 const userCheckOutPost = async (req, res) => {
   try {
-    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-    res.setHeader('Pragma', 'no-cache');
-    res.setHeader('Expires', '0');
-    res.setHeader('Surrogate-Control', 'no-store');
-
     const userId = req.session.user._id;
     const { address, couponId, paymentType } = req.body;
     const validatedCouponId = couponId === "" ? null : couponId;

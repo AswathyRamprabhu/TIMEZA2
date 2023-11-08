@@ -11,14 +11,17 @@ module.exports = {
     },
     checkSession: async (req, res, next) => {
         try {
-            if (req.session.user) {
+            if (req.path === '/resetpassword') {
+                // Skip session check for specific routes
+                next();
+            } else if (req.session.user) {
                 const user = await User.findById(req.session.user);
-    
+
                 if (!user || !user.isActive) {
                     req.session.destroy();
                     return res.redirect("/");
                 }
-    
+
                 // User is authenticated, and their session is valid
                 next();
             } else {
@@ -31,16 +34,16 @@ module.exports = {
         }
     },
     setCacheControl: (req, res, next) => {
-		res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-		res.setHeader('Pragma', 'no-cache');
-		res.setHeader('Expires', '0');
-		res.setHeader('Surrogate-Control', 'no-store');
-		next()
-	},
+        res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+        res.setHeader('Pragma', 'no-cache');
+        res.setHeader('Expires', '0');
+        res.setHeader('Surrogate-Control', 'no-store');
+        next()
+    },
     adminlogin: async (req, res, next) => {
         try {
             if (req.session.user) {
-                res.redirect("/admin/dashboard"); 
+                res.redirect("/admin/dashboard");
             } else {
                 next();
             }
@@ -49,7 +52,7 @@ module.exports = {
         }
     },
     isAdminAuthorized: (req, res, next) => {
-                if (req.session.admin) next()
-                else res.redirect('/admin/login')
-            },
+        if (req.session.admin) next()
+        else res.redirect('/admin/login')
+    },
 };

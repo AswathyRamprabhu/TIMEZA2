@@ -100,6 +100,7 @@ const userSignup = async (req, res) => {
 //////////////////////to send otp for the verification to user email
 const userSendOtp = async (req, res) => {
   try {
+    console.log("in send otp function");
     const phone = "+91" + req.body.phonenumber;
     const email = req.body.email
 
@@ -124,7 +125,7 @@ const userSendOtp = async (req, res) => {
       subject: 'OTP Verification',
       text: `Your OTP is: ${otp}`,
     };
-
+    req.session.otp = otp;
     //Send the email
     transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
@@ -135,7 +136,7 @@ const userSendOtp = async (req, res) => {
 
     });
 
-    emailOtp = otp;
+    emailOtp = req.session.otp;
   } catch (error) {
     console.log(error.message);
   }
@@ -157,7 +158,8 @@ const userSignedup = async (req, res) => {
         const existingUser = await userModel.findOne({ email: req.body.email });
 
         if (existingUser) {
-          return res.render('users/userSignup', { error: 'Email address is already registered.' });
+          const error = 'Email address is already registered.'
+          return res.render('users/userSignup', { error });
         }
 
         const { name, phonenumber, email, password } = req.body;
@@ -174,16 +176,19 @@ const userSignedup = async (req, res) => {
             res.redirect("/");
           }
           else {
-            res.render('users/userSignup', { error: 'User registration failed.' });
+            const error = "User registration failed"
+            res.render('users/userSignup', { error });
           }
         });
       } else {
-        return res.render('users/userSignup', { error: "OTP does not match!" });
+        const error = "OTP does not match!"
+        return res.render('users/userSignup', { error });
       }
     }
 
     else {
-      return res.render('users/userSignup', { error: "No OTP data in session. Redirecting to signup with error." });
+      const error = "No OTP data in session. Redirecting to signup with error."
+      return res.render('users/userSignup', { error });
     }
 
   } catch (error) {
@@ -196,7 +201,7 @@ const userSignedup = async (req, res) => {
 
 /////////////////to sign in with some validation
 const userSigninPage = async (req, res) => {
-   const { email, password } = req.body;
+  const { email, password } = req.body;
   let data = { email: email, password: password };
 
   if (!email || !password) {
@@ -242,7 +247,7 @@ const userSigninPage = async (req, res) => {
 //////////////////to  get signin in to the user home page with all access
 const userSignin = async (req, res) => {
   try {
-    
+
 
     if (req.session.user) res.redirect("/home");
     else
@@ -264,7 +269,7 @@ const userHome = async (req, res) => {
       let category = await categoryModel.find().select('offerPercentage').select('categoryname');
       let products = await productModel.find().populate('categoryname');
       let banner = await bannerModel.find();
-      res.render('users/userHome', { products: products, banner, category ,user})
+      res.render('users/userHome', { products: products, banner, category, user })
     }
   } catch (error) {
     console.log(error.message)
@@ -288,33 +293,45 @@ const userForgotPassword = async (req, res) => {
 
 ////////////////////to reset password of an existing user
 const userResetPassword = async (req, res) => {
+  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+  res.setHeader('Pragma', 'no-cache');
+  res.setHeader('Expires', '0');
+  res.setHeader('Surrogate-Control', 'no-store');
+
+
   const resetOtp = emailOtp.toString();
   const otpWritten = req.body.otp;
+  console.log(resetOtp);
+  console.log(otpWritten);
 
   let message = {};
 
   try {
     if (resetOtp === otpWritten) {
 
-      res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-      res.setHeader('Pragma', 'no-cache');
-      res.setHeader('Expires', '0');
-      res.setHeader('Surrogate-Control', 'no-store');
-
       const { email, password } = req.body;
       const user = await userModel.findOne({ email });
+      console.log(user);
       if (user) {
         user.password = await bcrypt.hash(password, 10);
         await user.save();
         message.text = "Password Changed successfully";
+        // Continue processing or render the page
+        res.render("users/userForgotPassword", { message });
+        // Log out the user
+        //userSignout(req, res);
       } else {
-        message.text = "User not found. Can't find user with this email";
+        // User not found
+        message.text = "User not found. Can't find a user with this email";
+        res.render("users/userForgotPassword", { message });
       }
     } else {
+      // Incorrect OTP
       message.text = "OTP incorrect. Please try again";
+      res.render("users/userForgotPassword", { message });
     }
-    userSignout(req, res);
   } catch (error) {
+    // Handle other errors
     console.error("Error in userResetPassword:", error);
     message.text = "An error occurred. Please try again";
     res.render("users/userForgotPassword", { message });
@@ -848,7 +865,7 @@ const userUpdatedAddress = async (req, res) => {
 const removeAddress = async (req, res) => {
   try {
 
-    
+
 
 
     const userId = req.session.user._id; // Assuming you have user information in the session
@@ -919,7 +936,7 @@ const userAddCoupon = async (req, res) => {
     const coupons = await couponModel.find({
       minimumAmount: { $lte: totalAmountInCheckout },
       expirationDate: { $gt: currentDate },
-      isReferral:false, 
+      isReferral: false,
     });
     res.render("users/userCoupons", { coupons, category });
   } catch (error) {

@@ -46,11 +46,6 @@ const adminLogout = async (req, res) => {
 /////////////////////to login to get admin access
 const verifyAdmin = async (req, res) => {
   try {
-    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-    res.setHeader('Pragma', 'no-cache');
-    res.setHeader('Expires', '0');
-    res.setHeader('Surrogate-Control', 'no-store');
-
     const { email, password } = req.body;
     const admin = await userHelper.getUser({ email, password });
 
@@ -72,11 +67,6 @@ const verifyAdmin = async (req, res) => {
 ////////////////////////////to disaplay admin home and it shows the grapgical representation of sales
 const adminHome = async (req, res) => {
   try {
-    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-    res.setHeader('Pragma', 'no-cache');
-    res.setHeader('Expires', '0');
-    res.setHeader('Surrogate-Control', 'no-store');
-
     if (!req.session.admin) {
       // If the user is not authenticated as an admin, redirect them to the admin login page
       return res.redirect('/admin/login');
@@ -110,11 +100,6 @@ const adminHome = async (req, res) => {
 ////////to display the Users List page
 const adminUsersList = async (req, res) => {
   try {
-    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-    res.setHeader('Pragma', 'no-cache');
-    res.setHeader('Expires', '0');
-    res.setHeader('Surrogate-Control', 'no-store');
-
     const user = await userModel.find();
     if (user) res.render("admin/adminUsersList", { data: user });
   } catch (error) {
@@ -129,11 +114,6 @@ const adminUsersList = async (req, res) => {
 //////////////////////to block users from admin side to deny their access 
 const adminBlockUnblock = async (req, res) => {
   try {
-    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-    res.setHeader('Pragma', 'no-cache');
-    res.setHeader('Expires', '0');
-    res.setHeader('Surrogate-Control', 'no-store');
-
     const user = await userModel.findById(req.body.id);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
@@ -160,11 +140,6 @@ const adminBlockUnblock = async (req, res) => {
 //////////////////////to display admin side order list
 const adminOrderList = async (req, res) => {
   try {
-    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-    res.setHeader('Pragma', 'no-cache');
-    res.setHeader('Expires', '0');
-    res.setHeader('Surrogate-Control', 'no-store');
-
     const page = parseInt(req.query.page) || 1;
     const perPage = parseInt(req.query.perPage) || 15;
 
@@ -197,11 +172,6 @@ const adminOrderList = async (req, res) => {
 ////////////////////to display  admin side side order list editing page
 const adminEditOrderListPage = async (req, res) => {
   try {
-    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-    res.setHeader('Pragma', 'no-cache');
-    res.setHeader('Expires', '0');
-    res.setHeader('Surrogate-Control', 'no-store');
-
     const orderId = req.query._id;
     const order = await orderModel.findById({ _id: orderId }).populate('user items.productId').populate("coupon")
     res.render("admin/adminOrderDetail", { order, coupon: order.coupon });
@@ -215,11 +185,6 @@ const adminEditOrderListPage = async (req, res) => {
 ///////////////////////to edit orders from admin side
 const adminEditOrderList = async (req, res) => {
   try {
-    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-    res.setHeader('Pragma', 'no-cache');
-    res.setHeader('Expires', '0');
-    res.setHeader('Surrogate-Control', 'no-store');
-
     const orderId = req.body.id;
     const orderStatus = req.body.status;
     const updatedOrder = await orderModel.findById(orderId);
@@ -253,11 +218,6 @@ const adminEditOrderList = async (req, res) => {
 ///////////////////to update product order status when order got cancelled
 const updateProductStatus = async (req, res) => {
   try {
-    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-    res.setHeader('Pragma', 'no-cache');
-    res.setHeader('Expires', '0');
-    res.setHeader('Surrogate-Control', 'no-store');
-
     const orderId = req.body.orderId;
     const productId = req.body.productId;
     const status = req.body.status;
@@ -290,11 +250,6 @@ const updateProductStatus = async (req, res) => {
 ////////////////////to show sales report in admin side
 const adminSalesReport = async (req, res, next) => {
   try {
-    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-    res.setHeader('Pragma', 'no-cache');
-    res.setHeader('Expires', '0');
-    res.setHeader('Surrogate-Control', 'no-store');
-
     let { from, to } = req.query;
 
     const today = moment().format('YYYY-MM-DD');
@@ -366,12 +321,6 @@ const adminSalesReport = async (req, res, next) => {
 //////////////////to download sales reports in excel form and pdf form
 const adminDownloadReports = async (req, res, next) => {
   try {
-    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-    res.setHeader('Pragma', 'no-cache');
-    res.setHeader('Expires', '0');
-    res.setHeader('Surrogate-Control', 'no-store');
-
-    console.log("Hi")
     const { type } = req.params
     let { from, to } = req.query
     to += 'T23:59:59.999Z'
@@ -621,11 +570,6 @@ const adminDownloadReports = async (req, res, next) => {
 ////////////////////to show banner list
 const adminBannerList = async (req, res) => {
   try {
-    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-    res.setHeader('Pragma', 'no-cache');
-    res.setHeader('Expires', '0');
-    res.setHeader('Surrogate-Control', 'no-store');
-
     const ITEMS_PER_PAGE = 9
     const page = parseInt(req.query.page) || 1
     const skipItems = (page - 1) * ITEMS_PER_PAGE
@@ -646,11 +590,6 @@ const adminBannerList = async (req, res) => {
 ////////////////////to show the page to add new banner
 const adminAddbanner = async (req, res) => {
   try {
-    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-    res.setHeader('Pragma', 'no-cache');
-    res.setHeader('Expires', '0');
-    res.setHeader('Surrogate-Control', 'no-store');
-
     res.render("admin/adminAddBanner");
   } catch (error) {
     console.error(error.message);
@@ -662,11 +601,6 @@ const adminAddbanner = async (req, res) => {
 
 ///////////////////to add new banner
 const adminAddedBanner = async (req, res) => {
-  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-  res.setHeader('Pragma', 'no-cache');
-  res.setHeader('Expires', '0');
-  res.setHeader('Surrogate-Control', 'no-store');
-
   const { bannername, bannerurl } = req.body;
   let images = req.file.filename;
   let imageName = `cropped_${images}`;
@@ -695,12 +629,6 @@ const adminAddedBanner = async (req, res) => {
 ///////////////to show edit banner page
 const adminEditBanner = async (req, res) => {
   try {
-
-    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-    res.setHeader('Pragma', 'no-cache');
-    res.setHeader('Expires', '0');
-    res.setHeader('Surrogate-Control', 'no-store');
-
     const bannerId = req.query._id;
     const banner = await bannerModel.findById(bannerId);
     res.render('admin/adminEditBanner', { banner });
@@ -716,12 +644,6 @@ const adminEditBanner = async (req, res) => {
 ///////////////////to edit existing banner
 const adminEditedBanner = async (req, res) => {
   try {
-
-    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-    res.setHeader('Pragma', 'no-cache');
-    res.setHeader('Expires', '0');
-    res.setHeader('Surrogate-Control', 'no-store');
-
     const { bannername, _id, bannerurl } = req.body;
     const data = { bannername, bannerurl };
     if (req.file && req.file.filename) {
@@ -746,11 +668,6 @@ const adminEditedBanner = async (req, res) => {
 /////////////////to delete banner
 const deleteBanner = async (req, res) => {
   try {
-    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-    res.setHeader('Pragma', 'no-cache');
-    res.setHeader('Expires', '0');
-    res.setHeader('Surrogate-Control', 'no-store');
-
     const bannerId = req.query._id;
 
     // Delete the category with the specified ID

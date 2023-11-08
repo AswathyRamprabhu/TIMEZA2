@@ -13,11 +13,6 @@ const categoryHelper = require('../helpers/categoryHelper')
 ////////////////to show admin side category page
 const adminCategory = async (req, res) => {     // to display the category list page for admin
   try {
-    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-    res.setHeader('Pragma', 'no-cache');
-    res.setHeader('Expires', '0');
-    res.setHeader('Surrogate-Control', 'no-store');
-
     const category = await categoryModel.find()
     res.render('admin/adminCategory', { data: category })
   } catch (error) {
@@ -31,11 +26,6 @@ const adminCategory = async (req, res) => {     // to display the category list 
 ///////////////to dispaly admin side  new category creating page
 const adminAddCategoryPage = async (req, res) => {     // to render add category page of admin
   try {
-    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-    res.setHeader('Pragma', 'no-cache');
-    res.setHeader('Expires', '0');
-    res.setHeader('Surrogate-Control', 'no-store');
-
     res.render('admin/adminAddCategory')
   } catch (error) {
     console.error(error.message);
@@ -48,11 +38,6 @@ const adminAddCategoryPage = async (req, res) => {     // to render add category
 ////////////////to create new catrgory
 const adminAddCategory = async (req, res) => {
   try {
-    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-    res.setHeader('Pragma', 'no-cache');
-    res.setHeader('Expires', '0');
-    res.setHeader('Surrogate-Control', 'no-store');
-
     const categoryData = req.body;
     await categoryHelper.addCategory(categoryData);
     res.redirect('/admin/admincategory');
@@ -69,11 +54,6 @@ const adminAddCategory = async (req, res) => {
 //////////////////to dispaly admin side category editing page
 const adminEditCategoryPage = async (req, res) => {
   try {
-    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-    res.setHeader('Pragma', 'no-cache');
-    res.setHeader('Expires', '0');
-    res.setHeader('Surrogate-Control', 'no-store');
-
     const categoryId = req.query._id;
     const category = await categoryModel.findById(categoryId);
 
@@ -91,11 +71,6 @@ const adminEditCategoryPage = async (req, res) => {
 /////////////////////to edit category
 const adminEditCategory = async (req, res) => {
   try {
-    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-    res.setHeader('Pragma', 'no-cache');
-    res.setHeader('Expires', '0');
-    res.setHeader('Surrogate-Control', 'no-store');
-
     const categoryId = req.body.id;
     const updatedCategoryData = {
       categoryname: req.body.categoryname,
@@ -146,11 +121,6 @@ const adminEditCategory = async (req, res) => {
 /////////////////to delete category
 const deleteCategory = async (req, res) => {
   try {
-    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-    res.setHeader('Pragma', 'no-cache');
-    res.setHeader('Expires', '0');
-    res.setHeader('Surrogate-Control', 'no-store');
-
     const categoryId = req.query._id;
 
     // Delete the category with the specified ID

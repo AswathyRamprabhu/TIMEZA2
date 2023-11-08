@@ -19,11 +19,6 @@ const fs = require('fs');
 ////////////////to dispaly order confirmation page and implement wallet debit opersation
 const userOrderConfirmation = async (req, res) => {
   try {
-    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-    res.setHeader('Pragma', 'no-cache');
-    res.setHeader('Expires', '0');
-    res.setHeader('Surrogate-Control', 'no-store');
-
     const category = await categoryModel.find();
     const orderId = req.params.id;
     const userId = req.session.user._id;
@@ -45,6 +40,12 @@ const userOrderConfirmation = async (req, res) => {
 /////////////////to list orders done by user
 const orders = async (req, res) => {
   try {
+    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
+    res.setHeader('Surrogate-Control', 'no-store');
+
+    
     const userId = req.session.user._id;
     const page = parseInt(req.query.page) || 1;
     const perPage = 5;

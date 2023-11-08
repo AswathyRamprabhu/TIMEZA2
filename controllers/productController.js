@@ -19,11 +19,6 @@ const path = require('path');
 ///////////////////to disaply admin side products list page
 const adminProducts = async (req, res) => {
     try {
-        res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-        res.setHeader('Pragma', 'no-cache');
-        res.setHeader('Expires', '0');
-        res.setHeader('Surrogate-Control', 'no-store');
-
         const product = await productModel.find().populate('categoryname')
         res.render('admin/adminProducts', { data: product })
 
@@ -38,11 +33,6 @@ const adminProducts = async (req, res) => {
 ///////////////////to display admin side add product page
 const adminAddProductPage = async (req, res) => {         // to render the add category page for admin
     try {
-        res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-        res.setHeader('Pragma', 'no-cache');
-        res.setHeader('Expires', '0');
-        res.setHeader('Surrogate-Control', 'no-store');
-
         const category = await categoryModel.find()
         res.render('admin/adminAddProduct', { data: category })
     } catch (error) {
@@ -56,11 +46,6 @@ const adminAddProductPage = async (req, res) => {         // to render the add c
 
 //////////////////////to add new products
 const adminAddProduct = async (req, res) => {
-    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-    res.setHeader('Pragma', 'no-cache');
-    res.setHeader('Expires', '0');
-    res.setHeader('Surrogate-Control', 'no-store');
-
     let product = req.body;
 
     const category = await categoryModel.findById(product.categoryname);
@@ -92,11 +77,6 @@ const adminAddProduct = async (req, res) => {
 ///////////////////////to display admin side edit product page
 const adminEditProductPage = async (req, res) => {                 //To GET edit products page by admin .
     try {
-        res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-        res.setHeader('Pragma', 'no-cache');
-        res.setHeader('Expires', '0');
-        res.setHeader('Surrogate-Control', 'no-store');
-
         const productId = req.query._id;
         const product = await productModel.findById(productId);
         if (!product) {
@@ -116,11 +96,6 @@ const adminEditProductPage = async (req, res) => {                 //To GET edit
 /////////////////////to edit product from admin side
 const adminEditProduct = async (req, res) => {
     try {
-        res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-        res.setHeader('Pragma', 'no-cache');
-        res.setHeader('Expires', '0');
-        res.setHeader('Surrogate-Control', 'no-store');
-
         const id = req.query._id;
 
         // Find the product by ID
@@ -205,11 +180,6 @@ const adminEditProduct = async (req, res) => {
 ////////////////////to delete product 
 const adminDeleteProduct = async (req, res) => {
     try {
-        res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-        res.setHeader('Pragma', 'no-cache');
-        res.setHeader('Expires', '0');
-        res.setHeader('Surrogate-Control', 'no-store');
-
         const productId = req.query._id;
         // Use the correct field to specify the category ID in the query
         await productModel.deleteOne({ _id: productId });
@@ -228,11 +198,6 @@ const adminDeleteProduct = async (req, res) => {
 const adminDeleteImage = async (req, res) => {
     const { id, file } = req.body;
     try {
-        res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-        res.setHeader('Pragma', 'no-cache');
-        res.setHeader('Expires', '0');
-        res.setHeader('Surrogate-Control', 'no-store');
-
         // Construct the image file path
         const path = require('path');
         const imagePath = path.join(__dirname, '..', 'public', 'uploadProductImage', file);

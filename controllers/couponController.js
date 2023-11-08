@@ -9,11 +9,6 @@ const couponModel = require('../models/couponModel')
 ////////////////////////to show the coupon list
 const adminCoupons = async (req, res) => {
   try {
-    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-    res.setHeader('Pragma', 'no-cache');
-    res.setHeader('Expires', '0');
-    res.setHeader('Surrogate-Control', 'no-store');
-
     const ITEMS_PER_PAGE = 10;
     const page = parseInt(req.query.page) || 1;
     const skipItems = (page - 1) * ITEMS_PER_PAGE;
@@ -34,11 +29,6 @@ const adminCoupons = async (req, res) => {
 //////////////////////to show admin create coupon page
 const adminAddCoupon = async (req, res) => {
   try {
-    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-    res.setHeader('Pragma', 'no-cache');
-    res.setHeader('Expires', '0');
-    res.setHeader('Surrogate-Control', 'no-store');
-
     res.render("admin/adminAddCoupon");
   } catch (error) {
     console.log(error.message);
@@ -51,11 +41,6 @@ const adminAddCoupon = async (req, res) => {
 ////////////////////to create new coupon from admin side
 const adminAddCouponPost = async (req, res) => {
   try {
-    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-    res.setHeader('Pragma', 'no-cache');
-    res.setHeader('Expires', '0');
-    res.setHeader('Surrogate-Control', 'no-store');
-
     const couponData = req.body;
     console.log(couponData);
     await couponModel.create(couponData);
@@ -71,11 +56,6 @@ const adminAddCouponPost = async (req, res) => {
 ////////////////////to show edit coupon page
 const adminEditCoupon = async (req, res) => {
   try {
-    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-    res.setHeader('Pragma', 'no-cache');
-    res.setHeader('Expires', '0');
-    res.setHeader('Surrogate-Control', 'no-store');
-
     const couponId = req.query._id;
     const coupon = await couponModel.findById(couponId);
     res.render("admin/adminEditCoupon", { coupon });
@@ -89,11 +69,6 @@ const adminEditCoupon = async (req, res) => {
 /////////////////to edit the existing coupon
 const adminEditCouponPost = async (req, res) => {
   try {
-    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-    res.setHeader('Pragma', 'no-cache');
-    res.setHeader('Expires', '0');
-    res.setHeader('Surrogate-Control', 'no-store');
-
     const couponId = req.body.id;
     const updatedCoupon = await couponModel.findById(couponId);
 
@@ -118,11 +93,6 @@ const adminEditCouponPost = async (req, res) => {
 /////////////////to delete coupon
 const deleteCoupon = async (req, res) => {
   try {
-    res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
-    res.setHeader('Pragma', 'no-cache');
-    res.setHeader('Expires', '0');
-    res.setHeader('Surrogate-Control', 'no-store');
-
     const couponId = req.query._id;
 
     // Delete the category with the specified ID

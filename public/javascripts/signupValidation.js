@@ -53,14 +53,34 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Function to validate the password
   function validatePassword(password) {
-    if (password.length < 4) {
-      return 'Password should have at least 4 characters';
-    }
-    if (!/\d/.test(password)) {
-      return 'Password should contain at least one number';
-    }
-    return '';
+    // Minimum length of 8 characters
+  if (password.length < 8) {
+    return 'Password should have at least 8 characters';
   }
+
+  // At least one uppercase letter
+  if (!/[A-Z]/.test(password)) {
+    return 'Password should include at least one uppercase letter';
+  }
+
+  // At least one lowercase letter
+  if (!/[a-z]/.test(password)) {
+    return 'Password should include at least one lowercase letter';
+  }
+
+  // At least one digit
+  if (!/\d/.test(password)) {
+    return 'Password should include at least one digit';
+  }
+
+  // At least one special character
+  if (!/[!@#$%^&*]/.test(password)) {
+    return 'Password should include at least one special character (!@#$%^&*)';
+  }
+
+  // Return null if the password is strong
+  return '';
+}
 
   // Function to handle input events and display error messages under the respective input
   function handleInput(inputField, validationFunction, errorElement) {
