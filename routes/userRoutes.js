@@ -31,7 +31,7 @@ userRoute.post('/verifyotp', userController.userSignedup);
 userRoute.post('/signup', userController.userSignedup);
 
 // User forgot password routes
-userRoute.get('/forgotpassword',  auth. setCacheControl, userController.userForgotPassword);
+userRoute.get('/forgotpassword', userController.userForgotPassword);
 userRoute.post('/resetpassword', auth. setCacheControl, auth.checkSession, userController.userResetPassword);
 
 // User home route
