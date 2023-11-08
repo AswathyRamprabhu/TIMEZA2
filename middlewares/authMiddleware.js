@@ -11,7 +11,7 @@ module.exports = {
     },
     checkSession: async (req, res, next) => {
         try {
-            if (req.path === '/resetpassword') {
+            if (req.path === '/resetpassword' || req.path === '/forgotpassword') {
                 // Skip session check for specific routes
                 next();
             } else if (req.session.user) {
