@@ -260,10 +260,11 @@ const userHome = async (req, res) => {
   try {
     if (!req.session.user) res.redirect("/");
     else {
+      let user = await userModel.find();
       let category = await categoryModel.find().select('offerPercentage').select('categoryname');
       let products = await productModel.find().populate('categoryname');
       let banner = await bannerModel.find();
-      res.render('users/userHome', { products: products, banner, category })
+      res.render('users/userHome', { products: products, banner, category ,user})
     }
   } catch (error) {
     console.log(error.message)
