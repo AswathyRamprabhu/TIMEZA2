@@ -19,7 +19,7 @@
                     <div class="form-outline flex-fill mb-0">
                       <input type="text" id="name" class="form-control" name="name" />
                       <label class="form-label" for="form3Example1c">Your Name</label>
-                      <span class="error-message" id="nameError" style="color: red;"></span>
+                      <span class="error-message" id="nameError" ></span>
                     </div>
                   </div>
 
@@ -28,7 +28,7 @@
                     <div class="form-outline flex-fill mb-0">
                       <input type="email" id="email" class="form-control" name="email" />
                       <label class="form-label" for="email">Your Email</label>
-                      <span class="error-message" id="emailError" style="color: red;"></span>
+                      <span class="error-message" id="emailError"></span>
                     </div>
                   </div>
 
@@ -38,7 +38,7 @@
                       <input type="tel" id="phonenumber" class="form-control" oninput="validateNumber(event)"
                         name="phonenumber" pattern="[0-9]{10}" maxlength="10" />
                       <label class="form-label" for="phonenumber">Your Phone Number</label>
-                      <span class="error-message" id="phoneNumberError" style="color: red;"></span>
+                      <span class="error-message" id="phoneNumberError" ></span>
                     </div>
                   </div>
 
@@ -47,7 +47,7 @@
                     <div class="form-outline flex-fill mb-0">
                       <input type="password" id="form3Example4c" class="form-control" name="password" />
                       <label class="form-label" for="form3Example4c">Password</label>
-                      <span class="error-message" id="passwordError" style="color: red;"></span>
+                      <span class="error-message" id="passwordError"></span>
                     </div>
                   </div>
 
@@ -56,8 +56,10 @@
                       style="background-color: black;  border-color: black;">Send OTP</button>
                       
                   </div>
-                  <span id="otpmessage" name="otpmessage" ></span>
-                      <br>
+                  <span id="otpmessage" name="otpmessage" style="display: none; color: red; font-size: 16px;"></span>
+<br>
+
+                  
 
                  
                   
@@ -67,7 +69,7 @@
                     <div class="form-outline flex-fill mb-0">
                       <input type="text" id="typeOtpX" class="form-control" name="otp" />
                       <label class="form-label" for="form3Example4c">Enter the OTP</label>
-                      <span class="error-message" id="otpError" style="color: red;"></span>
+                      <span class="error-message" id="otpError" ></span>
                     </div>
                   </div>
 

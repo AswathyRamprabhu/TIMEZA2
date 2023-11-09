@@ -130,8 +130,11 @@ const userSendOtp = async (req, res) => {
     transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
         console.error('Error sending email:', error);
+        res.status(500).json({ status: 'ERROR', message: 'Failed to send OTP' });
+
       } else {
         console.log('Email sent:', info.response);
+        res.status(200).json({ status: 'OTP_SEND', message: 'OTP sent successfully' });
       }
 
     });
