@@ -1,174 +1,153 @@
 <%- include('../layouts/adminHeader.ejs') %>
 
-  <section class="content-main" style="padding: 20px; background-color: #f0f0f0;">
-    <div class="content-header"
-      style="background-color: #f0f0f0; color: #333; padding: 20px; border-radius: 5px; text-align: center; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
-      <div style="margin: 0 auto; max-width: 400px; text-align: center;">
-        <h2 class="content-title card-title" style="font-size: 24px; margin-bottom: 10px;">Order List</h2>
-        <p style="font-size: 16px; margin: 0;">Order Management Hub</p>
-      </div>
+<section class="content-main" style="padding: 20px; background-color: #f0f0f0;">
+  <div class="content-header"
+    style="background-color: #f0f0f0; color: #333; padding: 20px; border-radius: 5px; text-align: center; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
+    <div style="margin: 0 auto; max-width: 400px; text-align: center;">
+      <h2 class="content-title card-title" style="font-size: 24px; margin-bottom: 10px;">Order List</h2>
+      <p style="font-size: 16px; margin: 0;">Order Management Hub</p>
     </div>
+  </div>
+</div>
+
+<div class="card mb-4"
+  style="margin-top: 20px; background-color: #fff; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+  <div class="card-body">
+    <!-- Add a dropdown to filter orders -->
+    <div>
+      <label for="orderFilter">Select Order Status:</label>
+      <select id="orderFilter">
+        <option value="all">All Orders</option>
+        <option value="Delivered">Delivered Orders</option>
+        <option value="Cancelled">Cancelled Orders</option>
+        <option value="pending">Pending Orders</option>
+        <option value="placed">Placed Orders</option>
+      </select>
     </div>
 
-    <div class="card mb-4"
-      style="margin-top: 20px; background-color: #fff; border-radius: 10px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
-      <div class="card-body">
-        <div>
-          <label for="orderFilter">Select Order Status:</label>
-          <select id="orderFilter">
-            <option value="all">All Orders</option>
-            <option value="Delivered">Delivered Orders</option>
-            <option value="Cancelled">Cancelled Orders</option>
-            <option value="pending">Pending Orders</option>
-            <option value="placed">Placed Orders</option>
-          </select>
-        </div>
-
-        <div class="table-responsive">
-          <table class="table table-striped table-bordered" id="orderTable">
-            <thead>
-              <tr>
-                <th># Order ID</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Total Amount</th>
-                <th>Status</th>
-                <th>Date</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% order.forEach(function(item) { %>
-                <tr>
-                  <td>
-                    <%= item.humanReadableID %>
-                  </td>
-                  <td>
-                    <%= item.user.name %>
-                  </td>
-                  <td>
-                    <%= item.user.email %>
-                  </td>
-                  <%if(item.orderStatus==='Cancelled') {%>
-                    <td>₹<%= item.cancelledPrice %>
-                    </td>
-                    <%} else {%>
-                      <% if (item.coupon && item.totalAmount>=
+    <!-- Table to display orders -->
+    <div class="table-responsive">
+      <table class="table table-striped table-bordered" id="orderTable">
+        <thead>
+          <tr>
+            <th># Order ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Total Amount</th>
+            <th>Status</th>
+            <th>Date</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% order.forEach(function(item) { %>
+            <tr>
+              <td><%= item.humanReadableID %></td>
+              <td><%= item.user.name %></td>
+              <td><%= item.user.email %></td>
+              <%if(item.orderStatus==='Cancelled') {%>
+                <td>₹<%= item.cancelledPrice %></td>
+              <%} else {%>
+                <% if (item.coupon && item.totalAmount>=
                         item.coupon.minimumAmount) { %>
-                        <td>₹<%= item.finalPrice %>
-                        </td>
-                        <%}else {%>
-                          <td>₹<%= item.totalAmount %>
-                          </td>
+                          <td>₹<%= item.finalPrice %></td>
+                          <%}else {%>
+                            <td>₹<%= item.totalAmount %></td>
                           <%}%>
 
-                            <%}%>
-                              <td>
-                                <%= item.orderStatus %>
-                              </td>
-                              <td>
-                                <%= new Date(item.createdAt).toLocaleDateString("en-US") %>
-                              </td>
-                              <td class="text-center">
-                                <a href="/admin/order/edit?_id=<%= item._id %>" class="btn btn-primary btn-sm">View
-                                  Details</a>
-                              </td>
-                </tr>
-                <% }); %>
-            </tbody>
-          </table>
-        </div>
-      </div>
+              <%}%>
+              <td><%= item.orderStatus %></td>
+              <td><%= new Date(item.createdAt).toLocaleDateString("en-US") %></td>
+              <td class="text-center">
+                <a href="/admin/order/edit?_id=<%= item._id %>" class="btn btn-primary btn-sm">View Details</a>
+              </td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
     </div>
+  </div>
+</div>
 
+<!-- Add this at the end of your EJS template -->
+<div class="custom-pagination">
+  <div class="paging">
+    <ul>
+      <% for (let i = 1; i <= totalPages; i++) { %>
+        <li class="<%= i === page ? 'active' : '' %>">
+          <a class="page-button" href="?page=<%= i %>&perPage=<%= perPage %>"><%= i %></a>
+        </li>
+      <% } %>
+      <% if (page < totalPages) { %>
+        <li>
+          <a class="page-content page-button" href="?page=<%= page + 1 %>&perPage=<%= perPage %>"></a>
+        </li>
+      <% } %>
+    </ul>
+  </div>
+</div>
 
-    <div class="custom-pagination">
-      <div class="paging">
-        <ul class="pagination-list">
-          <% for (let i=1; i <=totalPages; i++) { %>
-            <li class="<%= i === page ? 'active' : '' %>">
-              <a class="page-content page-button" href="?page=<%= i %>&perPage=<%= perPage %>">
-                <%= i %>
-              </a>
-            </li>
-            <% } %>
-              <% if (page < totalPages) { %>
-                <li>
-                  <a class="page-content page-button" href="?page=<%= page + 1 %>&perPage=<%= perPage %>"></a>
-                </li>
-                <% } %>
-        </ul>
-      </div>
-    </div>
+<script>
+  jQuery(document).ready(function() {
+    // Handle filter selection change
+    $("#orderFilter").on("change", function() {
+      var selectedFilter = $(this).val();
+      filterOrders(selectedFilter);
+    });
 
-    </div>
+    // Initial display
+    filterOrders("all");
 
-    <%- include('../layouts/adminFooter.ejs') %>
+    function filterOrders(filter) {
+      $("#orderTable tbody tr").each(function() {
+        var statusColumn = $(this).find("td:nth-child(5)"); // Assuming status column is the 5th column
+        var shouldShow = filter === "all" || statusColumn.text() === filter;
 
-      <script>
-        jQuery(document).ready(function () {
-          // Handle filter selection change
-          $("#orderFilter").on("change", function () {
-            var selectedFilter = $(this).val();
-            filterOrders(selectedFilter);
-          });
-
-          // Initial display
-          filterOrders("all");
-
-          function filterOrders(filter) {
-            $("#orderTable tbody tr").each(function () {
-              var statusColumn = $(this).find("td:nth-child(5)"); // Assuming status column is the 5th column
-              var shouldShow = filter === "all" || statusColumn.text() === filter;
-
-              if (shouldShow) {
-                $(this).show();
-              } else {
-                $(this).hide();
-              }
-            });
-          }
-        });
-      </script>
-
-      <style>
-        .custom-pagination {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          margin: 10px 0;
+        if (shouldShow) {
+          $(this).show();
+        } else {
+          $(this).hide();
         }
+      });
+    }
+  });
+</script>
 
-        .custom-pagination .paging {
-          list-style: none;
-          padding: 0;
-          display: flex;
-          /* Display list items in a row */
-        }
+<style>
+  .custom-pagination {
+    display: flex;
+    justify-content: center;
+    margin: 10px 0;
+  }
 
-        .custom-pagination .page-content {
-          display: inline-flex;
-          /* Display page numbers in a row */
-          align-items: center;
-          /* Align page numbers vertically in the center */
-          margin-right: 5px;
-        }
+  .custom-pagination .paging {
+    list-style: none;
+    padding: 0;
+    display: inline-block;
+  }
 
-        .custom-pagination .page-button {
-          text-decoration: none;
-          padding: 5px 10px;
-          border: 1px solid #ddd;
-          background-color: #f0f0f0;
-          color: #333;
-        }
+  .custom-pagination .page-content {
+    display: inline;
+    margin-right: 5px;
+  }
 
-        .custom-pagination .page-content.active .page-button {
-          background-color: #007bff;
-          color: #fff;
-        }
+  .custom-pagination .page-button {
+    text-decoration: none;
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    background-color: #f0f0f0;
+    color: #333;
+  }
 
-        .custom-pagination .page-button:hover {
-          background-color: #007bff;
-          color: #fff;
-        }
-      </style>
+  .custom-pagination .page-content.active .page-button {
+    background-color: #007bff;
+    color: #fff;
+  }
+
+  .custom-pagination .page-button:hover {
+    background-color: #007bff;
+    color: #fff;
+  }
+</style>
+
+<%- include('../layouts/adminFooter.ejs') %>
