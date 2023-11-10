@@ -4,7 +4,7 @@ const bcrypt = require("bcrypt");
 
 module.exports.addUser = async (userData, callback) => {
   //console.log("Entered data in the form by user- in addUser helper fn- 1- ", userData)
-  
+
   let user1 = {
     name: userData.name,
     email: userData.email,

@@ -101,15 +101,14 @@
                                                         </td>
                                                         <td class="stock">
                                                             <% if (item.product.stock===0) { %>
-                                                                <span
-                                                                    style="color: red; font-size: larger; white-space: nowrap;">Out
-                                                                    of
-                                                                    Stock</span>
-                                                                <% } else { %>
-                                                                    <span
-                                                                        style="color: rgb(17, 194, 55); font-size: larger;">In
-                                                                        Stock</span>
-                                                                    <% } %>
+                                                                <p style="color: red; font-size: larger; white-space: nowrap;">Out of Stock</p>
+                                                                <% } else if (item.product.stock===2) {%>
+                                                                    <p style="color: rgb(220, 152, 26);">Only 2 left!</p>
+                                                                    <% } else if (item.product.stock===1) { %>
+                                                                        <p style="color: rgb(219, 149, 8);"> Only 1 left!</p>
+                                                                        <% } else { %>
+                                                                            <p style="color: rgb(17, 194, 55); font-size: larger;">In Stock</p>
+                                                                            <% } %>
                                                         </td>
                                                         <td class="align-middle">
                                                             <button class="btn btn-sm btn-danger"

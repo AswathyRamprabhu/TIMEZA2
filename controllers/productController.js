@@ -49,10 +49,10 @@ const adminAddProduct = async (req, res) => {
     let product = req.body;
 
     const category = await categoryModel.findById(product.categoryname);
-   
+
 
     const offerPercentage = category.offerPercentage;
-    if (offerPercentage !== 0 ) {
+    if (offerPercentage !== 0) {
         const priceReduction = (category.offerPercentage / 100) * product.mrp;
         product.price = product.mrp - priceReduction;
     } else {
@@ -100,7 +100,7 @@ const adminEditProduct = async (req, res) => {
 
         // Find the product by ID
         const productDoc = await productModel.findById(id);
-        
+
 
         if (!productDoc) {
             return res.status(404).send('Product not found');
@@ -128,14 +128,14 @@ const adminEditProduct = async (req, res) => {
         };
 
         const category = await categoryModel.findById(updatedProductData.categoryname);
-   
 
-    if (offerPercentage !== 0 ) {
-        const priceReduction = (category.offerPercentage / 100) * updatedProductData.mrp;
-        updatedProductData.price = updatedProductData.mrp - priceReduction;
-    } else {
-        updatedProductData.price = updatedProductData.mrp;
-    }
+
+        if (offerPercentage !== 0) {
+            const priceReduction = (category.offerPercentage / 100) * updatedProductData.mrp;
+            updatedProductData.price = updatedProductData.mrp - priceReduction;
+        } else {
+            updatedProductData.price = updatedProductData.mrp;
+        }
         // Update the price if the offerPercentage is 0 and productOffer is greater than 0
         if (offerPercentage === 0 && updatedProductData.productOffer > 0) {
             updatedProductData.price = updatedProductData.productOffer;

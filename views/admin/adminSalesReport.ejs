@@ -5,6 +5,7 @@
             <header class="card-header">
                 <h2 class="card-title">Sales Reports</h2>
                 <div class="filter-section">
+
                     <form action="/admin/salesreport" method="GET">
                         <div class="date-range">
                             <span>From</span>
@@ -16,7 +17,9 @@
                         </div>
                         <button type="submit" class="btn btn-primary">Generate Report</button>
                     </form>
+
                 </div>
+
                 <div class="download-links">
                     <a class="download-link" href="/admin/reports/sales/download/excel?from=<%= from %>&to=<%= to %>">
                         <div class="download-button">
@@ -26,6 +29,7 @@
                             <span class="download-text">Download Excel</span>
                         </div>
                     </a>
+
                     <a class="download-link" href="/admin/reports/sales/download/pdf?from=<%= from %>&to=<%= to %>">
                         <div class="download-button">
                             <span class="download-icon">
@@ -34,6 +38,7 @@
                             <span class="download-text">Download PDF</span>
                         </div>
                     </a>
+
                 </div><br><br>
 
                 <div class="date-range-links">
@@ -49,6 +54,7 @@
                 </div>
 
             </header>
+
             <div class="card-body">
                 <div class="table-responsive">
                     <table class="table align-middle table-nowrap">
@@ -62,6 +68,7 @@
                                 <th class="align-middle" scope="col">View Details</th>
                             </tr>
                         </thead>
+
                         <tbody>
                             <% orders.forEach(function(item) { %>
                                 <tr>
@@ -96,6 +103,7 @@
                     </table>
                 </div>
             </div>
+
             <div class="pagination-area">
                 <nav aria-label="Page navigation example">
                     <ul class="pagination justify-content-start">

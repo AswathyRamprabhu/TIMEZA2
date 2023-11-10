@@ -10,20 +10,24 @@
                 <a href="/admin/adminaddcategory" class="btn btn-primary btn-sm rounded">Create new Category</a>
             </div>
         </div>
+
         <div class="card">
             <div class="card-body">
                 <div class="row">
                     <div class="table-responsive">
+
                         <table class="table table-hover">
+
                             <thead>
                                 <tr>
                                     <th style="width: 35%;">Name</th>
                                     <th style="width: 35%;">Description</th>
                                     <th style="width: 35%;">Status</th>
-
-                                    <th class="text-end" style="width: 30%;">Action</th>
+                                    <th style="width: 30%;">Action</th>
+                                    <th style="width: 30%;">Remove</th>
                                 </tr>
                             </thead>
+
                             <tbody>
                                 <% data.forEach(function(item) { %>
                                     <tr>
@@ -49,8 +53,11 @@
                                         </td>
                                     </tr>
                                     <% }); %>
+
                             </tbody>
+                            
                         </table>
+
                     </div>
                 </div>
             </div>

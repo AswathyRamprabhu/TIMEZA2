@@ -10,16 +10,13 @@
       </div>
     </div>
 
-
-
-
-
     <div class="card order-card"
       style="margin: 20px; padding: 20px; border-radius: 10px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
       <header class="card-header">
-        <div class="order-header">
-          <div class="order-details">
 
+        <div class="order-header">
+
+          <div class="order-details">
             <p class="order-date" style="margin-top: 10px;">Order Date: <%= new
                 Date(order.createdAt).toLocaleString('en-US', { weekday: 'short' , month: 'short' , day: 'numeric' ,
                 year: 'numeric' , hour: 'numeric' , minute: 'numeric' , hour12: true }) %>
@@ -33,12 +30,11 @@
                   }) %>
               </p>
               <% } %>
-
-
-
           </div>
+
           <form action="/admin/admineditorder" method="POST">
             <input name="id" value="<%= order._id %>" hidden />
+
             <div class="order-status">
               <select name="status" class="order-status-select" style="width: 150px;">
                 <option value="pending" <%=order.orderStatus==='pending' ? 'selected' : '' %>>Pending</option>
@@ -48,11 +44,15 @@
               </select>
               <button class="btn btn-primary save-button" type="submit" style="margin-left: 10px;">Save</button>
             </div>
+
           </form>
+
         </div>
+
       </header>
 
       <div class="card-body">
+
         <div class="customer-info" style="display: flex; align-items: center; margin-top: 20px;">
           <div class="customer-icon"
             style="background-color: #007bff; color: #fff; border-radius: 50%; width: 40px; height: 40px; display: flex; justify-content: center; align-items: center; margin-right: 15px;">
@@ -124,14 +124,13 @@
                       <%= order.orderStatus %>
                     </span>
                   </p>
-
-
-
           </div>
         </div>
 
         <div class="table-responsive" style="margin-top: 20px;">
+
           <table class="table">
+
             <thead>
               <tr>
                 <th width="40%" style="width: 40%;">Product</th>
@@ -141,6 +140,7 @@
                 <th width="20%" style="width: 20%;" class="text-end">Status</th>
               </tr>
             </thead>
+
             <tbody>
               <% order.items.forEach(function(item) { %>
                 <tr>
@@ -164,9 +164,6 @@
                     style="font-size: 16px; color: <%= item.productOrderStatus === 'Cancelled' ? 'red' : 'inherit' %>;">
                     <%= item.productOrderStatus %>
                   </td>
-
-
-
                 </tr>
                 <% }) %>
                   <tr>
@@ -221,15 +218,16 @@
                                         style="padding: 5px 10px; border-radius: 5px; font-weight: bold; text-transform: uppercase; display: inline-block; text-align: center; width: 100px; background-color: <%= order.orderStatus === 'pending' ? '#ffc107' : (order.orderStatus === 'Cancelled' ? '#dc3545' : (order.orderStatus === 'placed' ? '#007bff' : (order.orderStatus === 'Delivered' ? '#28a745' : '#17a2b8'))) %>; color: <%= order.orderStatus === 'Cancelled' ? 'white' : 'black' %>;">
                                         <%= order.orderStatus %>
                                       </span>
-
-
                                     </dd>
                                   </dl>
                       </article>
                     </td>
                   </tr>
+
             </tbody>
+
           </table>
+
         </div>
       </div>
     </div>

@@ -87,12 +87,13 @@
             </div>
         </div>
     </div>
-<!-- Carousel End -->
+    <!-- Carousel End -->
 
 
 
     <!-- End banner Area -->
     <!-- <div class="single-product-slider"> -->
+        <section class="features-area section_gap">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-6 text-center">
@@ -112,47 +113,52 @@
 
                     <!-- single product -->
                     <div class="col-lg-3 col-md-6">
-                        <div class="single-product">
-                            <% if (product.image && product.image.length> 0) { %>
-                                <img class="img-fluid" src="/uploadProductImage/<%= product.image[0] %>" alt="">
-                                <% } else { %>
-                                    <!-- Handle the case where product.image is undefined or empty -->
-                                    <img class="img-fluid" src="/default-placeholder-image.jpg" alt="Placeholder">
-                                    <% } %>
+                        <a href="/signin">
 
-                                        <div class="product-details">
-                                            <h6>
-                                                <%= product.productname %>
-                                            </h6>
-                                            <h7>
-                                                <%= product.description %>
-                                            </h7>
-                                            <h7>(Inclusive of all taxes)</h7>
+                            <div class="single-product">
+                                <% if (product.image && product.image.length> 0) { %>
+                                    <img class="img-fluid" src="/uploadProductImage/<%= product.image[0] %>" alt="">
+                                    <% } else { %>
+                                        <!-- Handle the case where product.image is undefined or empty -->
+                                        <img class="img-fluid" src="/default-placeholder-image.jpg" alt="Placeholder">
+                                        <% } %>
 
-                                            <div class="price">
+                                            <div class="product-details">
                                                 <h6>
-                                                    MRP ₹ <%= product.price.toLocaleString('en-IN', {
-                                                        minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>
-
+                                                    <%= product.productname %>
                                                 </h6>
+                                                <h7>
+                                                    <%= product.description %>
+                                                </h7>
+                                                <h7>(Inclusive of all taxes)</h7>
 
-                                                <h6 class="l-through">MRP ₹ <%= product.mrp.toLocaleString('en-IN', {
-                                                        minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>
-                                                </h6>
+                                                <div class="price">
+                                                    <h6>
+                                                        MRP ₹ <%= product.price.toLocaleString('en-IN', {
+                                                            minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>
+
+                                                    </h6>
+
+                                                    <h6 class="l-through">MRP ₹ <%= product.mrp.toLocaleString('en-IN',
+                                                            { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %>
+                                                    </h6>
+                                                </div>
+
+
                                             </div>
-
-
-                                        </div>
-                        </div>
+                            </div>
+                            </a>
                     </div>
-                    <!-- single product -->
-
                     <% } %>
                         <% }); %>
+                            <!-- single product -->
+
+
         </div>
     </div>
+    </section>
 
-    <%- include('../layouts/userFooter.ejs') %>
+    
 
 
         <script>
@@ -168,35 +174,39 @@
         <style>
             /* Apply responsive styles to the banner-area */
             .banner-area {
-                background-image: url('../img/banner/banner-bg.jpg'); /* Add your background image here */
+                background-image: url('../img/banner/banner-bg.jpg');
+                /* Add your background image here */
                 background-size: cover;
                 background-position: center;
                 padding: 100px 0;
                 text-align: center;
             }
-        
+
             .banner-area h1 {
-                font-size: 2rem; /* Adjust the font size as needed for different screen sizes */
+                font-size: 2rem;
+                /* Adjust the font size as needed for different screen sizes */
             }
-        
+
             .banner-area p {
-                font-size: 1rem; /* Adjust the font size as needed for different screen sizes */
+                font-size: 1rem;
+                /* Adjust the font size as needed for different screen sizes */
             }
-        
+
             /* Add additional responsive CSS as needed */
             @media (max-width: 768px) {
                 .banner-area {
                     background-size: contain;
                 }
-        
+
                 .banner-area h1 {
                     font-size: 1.5rem;
                 }
-        
+
                 .banner-area p {
                     font-size: 0.9rem;
                 }
             }
+
             .attractive-background {
                 background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.8)),
                     url('');
@@ -209,4 +219,4 @@
                 /* Add padding to the row for spacing */
             }
         </style>
-        
+        <%- include('../layouts/userFooter.ejs') %>

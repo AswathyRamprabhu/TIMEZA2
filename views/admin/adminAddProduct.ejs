@@ -7,16 +7,19 @@
             <div class="card shadow-2-strong card-registration" style="border-radius: 15px">
               <div class="card-body p-4 p-md-5">
                 <h3 class="mb-4 pb-2 pb-md-0 mb-md-5">Add Products</h3>
+
                 <form id="productForm" action="/admin/addproduct" method="POST" enctype="multipart/form-data">
+
                   <div class="row">
+
                     <div class="col-md-6 mb-4">
                       <div class="form-outline">
                         <label class="form-label" for="productName">Product Name</label>
                         <input type="text" id="productName" class="form-control form-control-lg" name="productname" />
                         <span class="error-message" id="productname-error"></span>
-
                       </div>
                     </div>
+
                     <div class="col-md-6 mb-4">
                       <div class="form-outline">
                         <label class="form-label" for="productname"> Category</label>
@@ -29,40 +32,38 @@
                               <% }); %>
                           </select>
                         </div>
-
                       </div>
                     </div>
+
                   </div>
 
                   <div class="row">
-                    <div class="col-md-6 mb-4 d-flex align-items-center"></div>
-                  </div>
 
-                  <div class="row">
                     <div class="col-md-6 mb-4 pb-2">
                       <div class="form-outline">
                         <label class="form-label" for="description">Product Description</label>
                         <input type="text" id="description" class="form-control form-control-lg" name="description" />
                         <span class="error-message" id="description-error"></span>
-
                       </div>
                     </div>
+
                     <div class="col-md-6 mb-4 pb-2">
                       <div class="form-outline">
                         <label class="form-label" for="mrp">MRP</label>
                         <input type="number" id="mrp" class="form-control form-control-lg" name="mrp" />
                         <span class="error-message" id="mrp-error"></span>
-
                       </div>
                     </div>
+
                   </div>
+
                   <div class="row">
+
                     <div class="col-md-6 mb-4 pb-2">
                       <div class="form-outline">
                         <label class="form-label" for="price">Offer Price</label>
-                        <input type="number" id="price" name="price" class="form-control form-control-lg"  />
+                        <input type="number" id="price" name="price" class="form-control form-control-lg" />
                         <span class="error-message" id="price-error"></span>
-
                       </div>
                     </div>
 
@@ -70,11 +71,11 @@
                       <div class="form-outline">
                         <label class="form-label" for="addimage">Add images</label>
                         <input type="file" name="file" accept="image/*" multiple />
-
-
                       </div>
                     </div>
+
                   </div>
+
                   <div class="row">
 
                     <div class="col-md-6 mb-4 pb-2">
@@ -91,7 +92,6 @@
                         <label class="form-label" for="price">Stock</label>
                         <input type="number" id="stock" name="stock" class="form-control form-control-lg" />
                         <span class="error-message" id="stock-error"></span>
-
                       </div>
                     </div>
 
@@ -102,7 +102,9 @@
                       ADD PRODUCT
                     </button>
                   </div>
+
                 </form>
+
               </div>
             </div>
           </div>

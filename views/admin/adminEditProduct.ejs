@@ -8,9 +8,12 @@
             <div class="card shadow-2-strong card-registration" style="border-radius: 15px">
               <div class="card-body p-4 p-md-5">
                 <h3 class="mb-4 pb-2 pb-md-0 mb-md-5">Edit Products</h3>
+
                 <form id="productForm" action="/admin/editproduct?_id=<%= products._id %>" method="POST"
                   enctype="multipart/form-data">
+
                   <div class="row">
+
                     <div class="col-md-6 mb-4">
                       <input name="id" value="<%= products._id %>" hidden />
                       <div class="form-outline">
@@ -20,10 +23,10 @@
                         <span class="error-message" id="productname-error"></span>
                       </div>
                     </div>
+
                     <div class="col-md-6 mb-4">
                       <div class="form-outline">
                         <label class="form-label" for="categoryname">Product Category</label>
-
                         <div class="col-12">
                           <select class="select form-control-lg" name="categoryname">
                             <% category.forEach(function(item) { %>
@@ -39,17 +42,13 @@
                                     <% }); %>
                           </select>
                         </div>
-
-
                       </div>
                     </div>
+
                   </div>
 
                   <div class="row">
-                    <div class="col-md-6 mb-4 d-flex align-items-center"></div>
-                  </div>
 
-                  <div class="row">
                     <div class="col-md-6 mb-4 pb-2">
                       <div class="form-outline">
                         <label class="form-label" for="description">Product Description</label>
@@ -58,6 +57,7 @@
                         <span class="error-message" id="description-error"></span>
                       </div>
                     </div>
+
                     <div class="col-md-6 mb-4 pb-2">
                       <div class="form-outline">
                         <label class="form-label" for="mrp">MRP</label>
@@ -66,8 +66,11 @@
                         <span class="error-message" id="mrp-error"></span>
                       </div>
                     </div>
+
                   </div>
+
                   <div class="row">
+
                     <div class="col-md-6 mb-4 pb-2">
                       <div class="form-outline">
                         <label class="form-label" for="price">Offer Price</label>
@@ -90,11 +93,12 @@
                               </div>
                               <% }); %>
                                 <% } %>
-
                         </div>
                       </div>
                     </div>
+
                   </div>
+
                   <div class="row">
 
                     <div class="col-md-6 mb-4 pb-2">
@@ -122,7 +126,6 @@
                       </select>
                     </div>
 
-
                   </div>
 
                   <div class="mt-4 pt-2">
@@ -130,7 +133,9 @@
                       Submit
                     </button>
                   </div>
+
                 </form>
+
               </div>
             </div>
           </div>
@@ -143,6 +148,7 @@
   <%- include('../layouts/adminFooter.ejs') %>
 
     <script>
+      ////////////////////////script of remove image/////////////////////////////////////////////////
       const button = document.querySelectorAll('.removeImagesButton')
       button.forEach(item => {
 
@@ -170,9 +176,8 @@
 
         })
       });
-    </script>
 
-    <script>
+      ////////////////validation for inputs////////////////////////////////////////////////
       document.addEventListener('DOMContentLoaded', function () {
         const productForm = document.getElementById('productForm');
         const productnameInput = document.querySelector('input[name="productname"]');
@@ -218,8 +223,6 @@
             mrpError.style.display = 'none'; // Corrected the typo here
           }
 
-
-
           if (!isValidStock(stockInput.value)) {
             stockError.textContent = 'Invalid input';
             stockError.style.display = 'block';
@@ -236,7 +239,6 @@
             productOfferError.style.display = 'none'; // Corrected the typo here
           }
 
-
           // Prevent form submission if any field is invalid
           if (!isValid) {
             event.preventDefault(); // Prevent form submission
@@ -249,14 +251,11 @@
           return productnamePattern.test(productname);
         }
 
-
-
         function isValidDescription(description) {
           // Check if the input is not empty and contains the allowed characters
           const descriptionPattern = /^[A-Za-z0-9\s!@#$%^&*()_+-=,.<>;:'"\\/{}[\]]*$/;
           return description.trim() !== '' && descriptionPattern.test(description);
         }
-
 
         function isValidMrp(mrp) {
           // Check if the input is not empty and is a number
@@ -270,8 +269,6 @@
           // Check if it's a number, within the specified range
           return parsedMrp >= 1000 && parsedMrp <= 30000;
         }
-
-
 
         function isValidProductOffer(productOffer) {
           // Check if the input is not empty and is a number
@@ -287,11 +284,6 @@
           return parsedProductOffer >= 0 && parsedProductOffer <= 30000;
         }
 
-
-
-
-
-
         function isValidStock(stock) {
           // Check if the input is not empty and is a number
           if (stock.trim() === '' || isNaN(stock)) {
@@ -304,11 +296,6 @@
           // Check if stock is within the specified range
           return parsedStock >= 0 && parsedStock <= 50;
         }
-
-
-
-
-
 
       });
 

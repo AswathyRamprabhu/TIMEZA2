@@ -45,7 +45,7 @@ const orders = async (req, res) => {
     res.setHeader('Expires', '0');
     res.setHeader('Surrogate-Control', 'no-store');
 
-    
+
     const userId = req.session.user._id;
     const page = parseInt(req.query.page) || 1;
     const perPage = 5;
